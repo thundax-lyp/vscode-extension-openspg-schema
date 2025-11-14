@@ -1,0 +1,62 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`comment 1`] = `
+"// line-comment[1]
+/**
+ * block-comment[1]
+ */
+namespace Sample
+
+/**
+ * block-comment[2]
+ */
+/* one-line-block-comment[1] */
+\`TaxOfRiskUser\`/\`赌博App开发者-with-action\`: // tail-comment[1]
+    // line-comment[2]
+    rule: [[
+        /* one-line-block-comment[2] * */
+        // line-comment[3]
+        Define (s:\`ProductChain\`.\`TaxonomyOfCompanyAccident\`/\`周期性行业头部上市公司停产事故\`)-[p:leadTo]->(o:\`ProductChain\`.\`TaxonomyOfIndustryInfluence\`/\`成本上升\`) {
+            // line-comment[4]
+            Structure {
+                // line-comment[5]
+                \`TaxOfRiskApp\` [\`TaxOfRiskApp\`] /* one-line-block-comment[3] * */
+            }
+
+            // line-comment[6]
+            Constraint {
+                R(("30天内浏览")): p.timestamp>-30 // tail-comment[2]
+                // line-comment[7]
+                o = group(s).count(u) // tail-comment[3]
+            }
+
+            // line-comment[8]
+            Action {
+                // line-comment[9]
+                downEvent = createNodeInstance(
+                    // line-comment[10]
+                    type = ProductChain.IndustryInfluence,
+                    value = {
+                        subject = down.id
+                    } // tail-comment[4]
+                )
+                // line-comment[11]
+                createEdgeInstance(
+                    src = s,
+                    // line-comment[12]
+                    dst = downEvent,
+                    type = leadTo, // tail-comment[5]
+                    value = {
+                    } // tail-comment[6]
+                )
+            }
+        }
+
+        // line-comment[11]
+        Define (s:\`ProductChain\`)-[p:leadTo]->(o) {
+            Structure {
+            }
+        }
+    ]]
+"
+`;

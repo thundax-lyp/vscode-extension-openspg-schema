@@ -1,0 +1,50 @@
+// SPDX-License-Identifier: GPL-3.0
+/**
+ * RickMining
+ */
+namespace RiskMining
+
+/**
+ * @Entity TaxOfRiskUser
+ * @Alias 赌博App开发者
+ */
+`TaxOfRiskUser`/`赌博App开发者-with-action`: // a line-comment at the end of line
+    rule: [[
+        // line-comment before a block
+        Define (s: `ProductChain`.`TaxonomyOfCompanyAccident`/`周期性行业头部上市公司停产事故`)-[p: leadTo]->(o: `ProductChain`.`TaxonomyOfIndustryInfluence`/`成本上升`) {
+            StructurE {
+                `TaxOfRiskApp`<->`ProductChain` [`TaxOfRiskApp`, version=1] repeat (1,5) as newEdgeNam
+                `TaxOfRiskApp` [`TaxOfRiskApp`]
+            }
+            ConstrainT {
+                R("30天内浏览"): p.timestamp > -30
+                o = group(s).count(u) //赋值
+            }
+            Action {
+                downEvent = createNodeInstance(
+                    type = ProductChain.IndustryInfluence,
+                    value = {
+                            subject = down.id
+                            objectWho = "上升"
+                            influenceDegree = "上升"
+                            indexTag = "成本"
+                            }
+                )
+            // 在事件s和新生成的downEvent建立一条leadTo边 代表一个事件实例导致了另外一个事件实例
+                createEdgeInstance(
+                    src = s,
+                    dst = downEvent,
+                    type = leadTo,
+                    value = {
+                            }
+                )
+            }
+        }
+        Define (s: `ProductChain`)-[p: leadTo]->(o) {
+            StructurE {
+                `TaxOfRiskApp`<->`ProductChain` [`TaxOfRiskApp`, version=`1.0.0`] repeat (1,5) as newEdgeNam
+                `TaxOfRiskApp` [title, value]
+            }
+        }
+
+    ]]

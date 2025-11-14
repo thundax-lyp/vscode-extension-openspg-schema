@@ -1,0 +1,373 @@
+
+parser grammar ConceptRuleParser;
+
+options { tokenVocab=ConceptRuleLexer; }
+
+sourceUnit: (namespace | ruleWrapper | theDefineStructure | labelPropertyList)*;
+
+namespace: NAMESPACE_KEYWORD namespaceValue;
+namespaceValue: UNESCAPED_SYMBOLIC_NAME | STRING_LITERAL | ESCAPED_SYMBOLIC_NAME;
+
+ruleWrapper : ruleWrapperHead (ruleWrapperBody)?;
+ruleWrapperHead : ruleWrapperPattern;
+ruleWrapperPattern :  labelExpression (COLON labelExpression)+ | labelExpression COLON;
+ruleWrapperBody : WRAPPER_RULE_KEYWORD COLON OPEN_RULE_BLOCK theDefineStructure* CLOSE_RULE_BLOCK;
+
+//#############################################################################
+// 词法分析
+//#############################################################################
+//#############################################################################
+// 应用模式
+//#############################################################################
+//计算模式
+//    GraphStructure {
+//        path1: (s)-[p1:x]->(end:y)
+//    }
+//    Rule {
+//        R1('xxx'): path1
+//    }
+//    Action {
+//
+//    }
+baseRuleDefine : theGraphStructure theRule? theAction?;
+
+// define 模式
+//    Define (s:label1)-[p:label2]->(o:concept/concept1) {
+//        GraphStructure {
+//            path1: (s)-[p1:x]->(end:y)
+//        }
+//        Rule {
+//            R1('xxx'): path1
+//        }
+//        Action {
+//
+//        }
+//    }
+//basePredicatedDefine : theDefineStructure;
+
+//#############################################################################
+// Define 定义部分
+//#############################################################################
+theDefineStructure : DEFINE_KEYWORD predicatedDefine LBRACE baseRuleDefine RBRACE;
+predicatedDefine : nodePattern fullEdgePointingRight nodePattern;
+
+//#############################################################################
+// graph structure 定义部分
+//#############################################################################
+theGraphStructure : theGraphStructureHead LBRACE theGraphStructureBody? RBRACE;
+
+theGraphStructureHead : GRAPH_STRUCTURE_KEYWORD | STRUCTURE_KEYWORD;
+
+theGraphStructureBody : graphStructureList | pathPatternList;
+
+graphStructureList : graphStructure+;
+
+graphStructure : defineEdge | defineVertex;
+
+// 定义边 start
+defineEdge: vertexFrom edgeDirection vertexTo (LBRACKET labelPropertyList RBRACKET)? (REPEAT_KEYWORD repeatTime)? (AS_KEYWORD edgeName)?;
+
+edgeDirection: RIGHT_ARROW | BOTH_ARROW;
+repeatTime : LPARENTH lowerBound COMMA upperBound RPARENTH;
+vertexFrom : vertexName;
+vertexTo : vertexName;
+edgeName : identifier;
+// 定义边 end
+
+// 定义点 start
+defineVertex : vertexName (COMMA vertexName)* (LBRACKET labelPropertyList RBRACKET)?;
+
+vertexName : identifier;
+
+labelPropertyList : (labelNameList | propertyExpression) (COMMA propertyExpression)*;
+
+propertyExpression: propertyKey EQ propertyValue;
+propertyKey : identifier;
+propertyValue : numericLiteral | identifier | characterStringLiteral | parameterValueSpecification;
+labelNameList : labelName (COMMA labelName)*;
+
+// path pattern expression, for iso gql
+// path1: abc\n path2: a
+pathPatternList : pathPattern+;
+pathPattern : (pathCondition? pathVariable COLON )? elementPatternList;
+pathCondition : OPTIONAL_KEYWORD;
+pathVariable : identifier;
+elementPatternList : elementPattern (COMMA elementPattern)*;
+elementPattern : nodePattern elementPatternAddition*;
+elementPatternAddition : edgePattern nodePattern;
+nodePattern : LPARENTH elementPatternDeclarationAndFiller RPARENTH;
+edgePattern : (fullEdgePattern | abbreviatedEdgePattern) graphPatternQuantifier?;
+
+fullEdgePattern : fullEdgePointingRight | fullEdgePointingLeft | fullEdgeAnyDirection;
+fullEdgePointingRight : MINUS LBRACKET elementPatternDeclarationAndFiller (edgePatternPerNodeLimitClause)? RBRACKET RIGHT_ARROW;
+fullEdgePointingLeft : LEFT_ARROW_BRACKET elementPatternDeclarationAndFiller (edgePatternPerNodeLimitClause)? RBRACKET MINUS;
+fullEdgeAnyDirection : MINUS LBRACKET elementPatternDeclarationAndFiller (edgePatternPerNodeLimitClause)? RBRACKET MINUS;
+
+edgePatternPerNodeLimitClause : perNodeLimit INTEGER_LITERAL;
+perNodeLimit : PER_NODE_LIMIT_KEYWORD;
+graphPatternQuantifier : QUEST | quantifier;
+quantifier : LBRACE ( lowerBound )? COMMA ( upperBound )? RBRACE;
+lowerBound : INTEGER_LITERAL;
+upperBound : INTEGER_LITERAL;
+abbreviatedEdgePattern : RIGHT_ARROW | LEFT_ARROW | MINUS;
+
+elementPatternDeclarationAndFiller : elementVariableDeclaration? elementLookup? elementPatternWhereClause?;
+elementLookup : COLON ( labelExpression | linkedEdge )?;
+elementVariableDeclaration : elementVariable;
+elementVariable : identifier;
+labelExpression : labelName (VBAR labelName)*;
+
+// labelName
+// `TaxOfRiskApp`
+// `TaxOfRiskApp`.`Version`
+// `TaxOfRiskApp`/`赌博应用`
+// `TaxOfRiskApp`/`赌博应用`+`TaxOfRiskApp`/`赌博应用`
+labelName : (conceptName (PLUS conceptName)*) | conceptType;
+conceptType : identifier (DOT identifier)?;
+conceptName : conceptType DIV conceptInstanceId;
+conceptInstanceId : ESCAPED_SYMBOLIC_NAME;
+
+linkedEdge : functionExpr;
+
+elementPatternWhereClause : WHERE_KEYWORD searchCondition;
+searchCondition : logicValueExpression;
+
+//#############################################################################
+// rule 定义部分
+//#############################################################################
+theRule : ruleHead LBRACE ruleExpressionBody RBRACE;
+
+ruleHead : CONSTRAINT_KEYWORD | RULE_KEYWORD;
+
+ruleExpressionBody : ruleExpression*;
+// rule expression
+ruleExpression : projectRuleExpression | logicRuleExpression | expressionSet;
+// project rule
+projectRuleExpression : identifier (DOT propertyName)? explain? EQ expressionSet;
+// logic rule
+logicRuleExpression : identifier explain? COLON expressionSet;
+
+// rule explain
+explain : LPARENTH unbrokenCharacterStringLiteral RPARENTH;
+
+expressionSet : graphGroupOpExpress | listOpExpress | valueExpression;
+// 表达式
+valueExpression : logicValueExpression | projectValueExpression;
+
+// list的聚合语法，支持链式表达风格 {variable}.op(k:do(k))?*
+listOpExpress : valueExpression (DOT listOp?)*;
+
+listOp
+    : listCommonAggExpress
+    | listCommonAggIfExpress
+    | listFilterOpName
+    | listLimitOp
+    | listGetOp
+    | listSliceOp
+    | listStrJoinOp
+    | listHeadEleOp
+    | listTailEleOp
+    | listNodesOp
+    | listEdgesOp
+    | listReduceOp
+    | listConstraintOp
+    | listAccumulateOp
+    ;
+
+
+listCommonAggExpress : listCommonAggName LPARENTH listOpArgs RPARENTH;
+
+listOpArgs : valueExpression;
+
+
+listCommonAggName : SUM_KEYWORD | AVG_KEYWORD | COUNT_KEYWORD | MIN_KEYWORD | MAX_KEYWORD;
+
+listCommonAggIfName : SUMIF_KEYWORD | AVGIF_KEYWORD | COUNTIF_KEYWORD | CONCATAGGIF_KEYWORD | MINIF_KEYWORD | MAXIF_KEYWORD;
+
+orderOpName : DESC_KEYWORD | ASC_KEYWORD;
+
+
+listFilterOpName : IF_KEYWORD LPARENTH listOpArgs RPARENTH;
+
+listCommonAggIfExpress : listCommonAggIfChainExpress | listCommonAggIfOneExpress;
+
+
+listCommonAggIfChainExpress : listFilterOpName DOT listCommonAggExpress;
+
+listCommonAggIfOneExpress : listCommonAggIfName LPARENTH listOpArgs (COMMA listOpArgs)? RPARENTH;
+
+listOrderOp : orderOpName LPARENTH listOpArgs RPARENTH;
+
+
+listLimitOp : listLimitOpAll | listOrderAndLimit;
+
+listLimitOpAll : LIMIT_KEYWORD LPARENTH INTEGER_LITERAL RPARENTH;
+
+listOrderAndLimit : listOrderOp DOT listLimitOpAll;
+
+// 索引参数
+indexParameter : INTEGER_LITERAL;
+
+listGetOp : GET_KEYWORD LPARENTH indexParameter? RPARENTH;
+
+listSliceOp : SLICE_KEYWORD LPARENTH? indexParameter? COMMA? indexParameter? RPARENTH?;
+
+listStrJoinOp : STR_JOIN_KEYWORD LPARENTH characterStringLiteral RPARENTH;
+accumulateSupportOp : PLUS | ASTERISK;
+listAccumulateOp : ACCUMULATE_KEYWORD LPARENTH accumulateSupportOp? RPARENTH;
+
+listHeadEleOp : HEAD_KEYWORD LPARENTH integerLiteralFull? RPARENTH;
+
+listTailEleOp : TAIL_KEYWORD LPARENTH integerLiteralFull? RPARENTH;
+
+integerLiteralFull : MINUS? INTEGER_LITERAL;
+
+listNodesOp : NODES_KEYWORD LPARENTH RPARENTH;
+listEdgesOp : EDGES_KEYWORD LPARENTH RPARENTH;
+
+listReduceOp: REDUCE_KEYWORD LPARENTH lambdaExpr COMMA valueExpression RPARENTH;
+listConstraintOp: CONSTRAINT_KEYWORD LPARENTH lambdaExpr RPARENTH;
+
+//group的聚合风格 group(a,c).op(expr)
+graphGroupOpExpress : GROUP_KEYWORD LPARENTH graphAliasElementList RPARENTH (DOT graphOp)*;
+
+graphOp
+    : graphCommonAggUdfExpress
+    | graphCommonAggLookup
+    | graphCommonAggExpress
+    | graphCommonAggIfExpress
+    | graphOrderAndSliceOp
+    | graphFilterOp
+    ;
+
+// 占位符
+graphCommonAggLookup : functionName LPARENTH? RPARENTH?;
+graphCommonAggUdfExpress : functionName LPARENTH graphAlias (DOT propertyName)? (COMMA functionArgs)? RPARENTH;
+graphCommonAggExpress : graphCommonAggName LPARENTH graphAlias (DOT propertyName)? RPARENTH;
+graphCommonAggName : SUM_KEYWORD | AVG_KEYWORD | COUNT_KEYWORD | MIN_KEYWORD | MAX_KEYWORD;
+
+graphCommonAggIfName : SUMIF_KEYWORD | AVGIF_KEYWORD | COUNTIF_KEYWORD | CONCATAGGIF_KEYWORD | MINIF_KEYWORD | MAXIF_KEYWORD;
+
+graphCommonAggIfExpress : graphCommonAggIfChainExpress | graphCommonAggIfOneExpress;
+
+
+graphCommonAggIfChainExpress : graphFilterOp DOT graphCommonAggExpress;
+
+graphCommonAggIfOneExpress : graphCommonAggIfName LPARENTH valueExpression COMMA graphAlias (DOT propertyName)? RPARENTH;
+
+graphOrderOp : orderOpName LPARENTH graphAlias (DOT propertyName)? RPARENTH;
+graphOrderAndSliceOp : graphOrderOp DOT graphLimitOp;
+graphLimitOp : LIMIT_KEYWORD LPARENTH INTEGER_LITERAL RPARENTH;
+graphFilterOp : IF_KEYWORD LPARENTH valueExpression RPARENTH;
+graphAlias : identifier;
+graphAliasWithProperty : graphAlias (DOT propertyName)?;
+graphAliasElementList : graphAliasWithProperty (COMMA graphAliasWithProperty)*;
+
+
+//#############################################################################
+// graph structure 定义部分
+//#############################################################################
+
+theAction : ACTION_KEYWORD LBRACE actionBody* RBRACE;
+actionBody : addNode | addEdge;
+
+addEdge : ADD_EDGE_KEYWORD LPARENTH addEdgeParam COMMA addEdgeParam COMMA addType COMMA addProps RPARENTH;
+
+addType : identifier EQ labelExpression;
+
+addEdgeParam : identifier EQ identifier;
+
+addProps : identifier EQ complexObjExpr;
+
+addNode : (identifier EQ)? ADD_NODE_KEYWORD LPARENTH addType COMMA addProps RPARENTH;
+
+// rule 表达式
+and : AND_KEYWORD | ANDAND;
+or : OR_KEYWORD | OROR;
+not : NOT_KEYWORD | EXCL;
+xor : XOR_KEYWORD;
+valueExpressionPrimary : parenthesizedValueExpression | nonParenthesizedValueExpressionPrimaryWithProperty;
+parenthesizedValueExpression : LPARENTH valueExpression RPARENTH;
+nonParenthesizedValueExpressionPrimaryWithProperty : nonParenthesizedValueExpressionPrimary (DOT propertyName)*;
+nonParenthesizedValueExpressionPrimary : functionExpr | unsignedValueSpecification | bindingVariable;
+propertyName : identifier;
+
+bindingVariable : bindingVariableName;
+bindingVariableName : identifier;
+
+unsignedValueSpecification : unsignedLiteral | parameterValueSpecification;
+unsignedLiteral : unsignedNumericLiteral | generalLiteral;
+generalLiteral : predefinedTypeLiteral | listLiteral;
+predefinedTypeLiteral : booleanLiteral | characterStringLiteral;
+booleanLiteral : truthValue;
+characterStringLiteral : unbrokenCharacterStringLiteral (separator unbrokenCharacterStringLiteral)*;
+
+parameterValueSpecification : DOLLAR_SYMBOL identifier;
+
+listLiteral : LBRACKET listElementList RBRACKET;
+listElementList : listElement (COMMA listElement)*;
+listElement : valueExpression;
+
+
+// rule operator
+expr : binaryExpr | unaryExpr | functionExpr;
+binaryExpr : projectValueExpression (binaryOp projectValueExpression)?;
+binaryOp : EQ | EQEQ | NE | LT | GT | LE | GE | LIKE_KEYWORD | RLIKE_KEYWORD | IN_KEYWORD;
+unaryExpr : unaryOp LPARENTH valueExpression RPARENTH;
+
+unaryOp : EXIST_KEYWORD | ABS_KEYWORD | FLOOR_KEYWORD | CEIL_KEYWORD;
+
+functionExpr : functionName LPARENTH functionArgs? RPARENTH;
+functionName : identifier | listCommonAggName;
+functionArgs : listElementList;
+
+lambdaExpr : LPARENTH binaryLambdaArgs RPARENTH LAMBDA_ARROW valueExpression;
+binaryLambdaArgs : identifier COMMA identifier;
+
+// 逻辑 计算
+logicValueExpression : logicTerm (or logicTerm)*;
+logicTerm : logicItem (and logicItem)*;
+logicItem : logicFactor (xor logicFactor)*;
+logicFactor : (not)? logicTest;
+logicTest : (spoRule | conceptName | expr) ((IS_KEYWORD NOT_KEYWORD? | EQEQ | NE) truthValue)?;
+truthValue : TRUE_KEYWORD | FALSE_KEYWORD | NULL_KEYWORD;
+
+// 数值计算
+unsignedNumericLiteral : numericLiteral;
+sign : PLUS | MINUS;
+
+complexObjExpr : LBRACE assignmentExpression* RBRACE;
+
+assignmentExpression : identifier EQ expressionSet;
+
+projectValueExpression : term (PLUS term | MINUS term)*;
+term : factor (ASTERISK factor| DIV factor | PERC factor)*;
+factor : ( sign )? projectPrimary;
+projectPrimary : conceptName | valueExpressionPrimary | numericValueFunction;
+
+//数值计算函数
+numericValueFunction : absoluteValueExpression | floorFunction | ceilingFunction;
+
+absoluteValueExpression : ABS_KEYWORD LPARENTH projectValueExpression RPARENTH;
+
+floorFunction : FLOOR_KEYWORD LPARENTH projectValueExpression RPARENTH;
+
+ceilingFunction : CEIL_KEYWORD LPARENTH projectValueExpression RPARENTH;
+
+// ################################################ Simplify DSL ################################################
+
+spoRule: nodePattern MINUS ruleNameDeclaration RIGHT_ARROW nodePattern;
+
+ruleNameDeclaration: LBRACKET elementPatternDeclarationAndFiller RBRACKET;
+
+separator: ( WHITESPACE )+;
+
+// 完整字符串定义
+unbrokenCharacterStringLiteral: STRING_LITERAL;
+
+// 数字类型定义
+numericLiteral : FLOAT_LITERAL | INTEGER_LITERAL;
+
+// 符号变量定义
+identifier : UNESCAPED_SYMBOLIC_NAME | ESCAPED_SYMBOLIC_NAME;
+

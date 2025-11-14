@@ -1,0 +1,117 @@
+{
+    "name": "openspg-concept-rule-antlr4",
+    "description": "OpenSPG Concept-Rule Language Lexer and Parser by official ANTLR4 grammar",
+    "version": "0.0.1",
+    "keywords": [
+        "openspg",
+        "schema",
+        "ast",
+        "parser",
+        "lexer",
+        "antlr4"
+    ],
+    "type": "module",
+    "module": "./dist/index.js",
+    "main": "./dist/index.cjs",
+    "types": "./dist/index.d.ts",
+    "exports": {
+        ".": {
+            "import": "./dist/index.js",
+            "require": "./dist/index.cjs",
+            "types": "./dist/index.d.ts"
+        },
+        "./ast": {
+            "import": "./dist/ast/index.js",
+            "require": "./dist/ast/index.cjs",
+            "types": "./dist/ast/index.d.ts"
+        },
+        "./antlr4": {
+            "import": "./dist/antlr4/index.js",
+            "require": "./dist/antlr4/index.cjs",
+            "types": "./dist/antlr4/index.d.ts"
+        },
+        "./parser": {
+            "import": "./dist/parser/index.js",
+            "require": "./dist/parser/index.cjs",
+            "types": "./dist/parser/index.d.ts"
+        },
+        "./traverse": {
+            "import": "./dist/traverse/index.js",
+            "require": "./dist/traverse/index.cjs",
+            "types": "./dist/traverse/index.d.ts"
+        },
+        "./prettier": {
+            "import": "./dist/prettier/index.js",
+            "require": "./dist/prettier/index.cjs",
+            "types": "./dist/prettier/index.d.ts"
+        },
+        "./generator": {
+            "import": "./dist/generator/index.js",
+            "require": "./dist/generator/index.cjs",
+            "types": "./dist/generator/index.d.ts"
+        }
+    },
+    "files": [
+        "dist",
+        "grammar",
+        "README.md"
+    ],
+    "sideEffects": false,
+    "author": "thundax <thundax@qq.com>",
+    "repository": "git@github.com:thundax-lyp/openspg-concept-rule-antlr4.git",
+    "lint-staged": {
+        "*.ts": "eslint --quiet --fix",
+        "*.{ts}": "prettier --loglevel warn --write"
+    },
+    "peerDependencies": {
+        "prettier": "^3.0.0"
+    },
+    "publishConfig": {
+        "registry": "https://registry.npmjs.org",
+        "access": "public"
+    },
+    "scripts": {
+        "grammar": "antlr4ng -Dlanguage=TypeScript -o src/antlr4/ -message-format vs2005 -visitor -listener -long-messages -Xexact-output-dir grammar/ConceptRuleLexer.g4 grammar/ConceptRuleParser.g4",
+        "ast": "node scripts/init-ast-index.ts ./src/ast",
+        "dev": "unbuild --stub",
+        "build": "unbuild --clean",
+        "docs": "typedoc --tsconfig ./tsconfig.json --skipErrorChecking --plugin typedoc-github-theme src/typedoc.ts",
+        "prepublishOnly": "npm run build",
+        "changeset": "changeset",
+        "release": "changeset version && changeset publish",
+        "test": "vitest",
+        "test:coverage": "vitest --coverage",
+        "test:ui": "vitest --ui",
+        "test:ci": "npm run test:coverage",
+        "lint": "pnpm run \"/^lint:.+/\"",
+        "lint:eslint": "eslint --quiet --fix --ext .ts .",
+        "lint:prettier": "prettier **/*.ts --log-level warn --write",
+        "husky:prepare": "husky install",
+        "husky:pre-commit": "lint-staged"
+    },
+    "dependencies": {
+        "antlr4ng": "^2.0.6",
+        "lodash-es": "^4.17.21",
+        "type-fest": "^4.9.0"
+    },
+    "devDependencies": {
+        "@changesets/changelog-git": "^0.2.0",
+        "@changesets/cli": "^2.27.1",
+        "@types/lodash-es": "^4.17.12",
+        "@types/node": "^24.10.0",
+        "@umijs/fabric": "^4.0.1",
+        "@vitest/coverage-v8": "^1.2.1",
+        "@vitest/ui": "^1.2.1",
+        "antlr4ng-cli": "^1.0.7",
+        "changeset": "^0.2.6",
+        "eslint": "^8.56.0",
+        "husky": "^8.0.3",
+        "lint-staged": "^15.2.0",
+        "prettier": "^3.2.4",
+        "typedoc": "^0.28.14",
+        "typedoc-github-theme": "^0.3.1",
+        "typescript": "~5.1.0",
+        "unbuild": "^2.0.0",
+        "vitest": "^1.2.1"
+    }
+}
