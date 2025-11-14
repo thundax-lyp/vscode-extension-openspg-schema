@@ -1,0 +1,18 @@
+import {BaseNodeString} from '../base';
+import {KnowledgeStructureTypeContext, SchemaParserVisitor} from "../../antlr4";
+
+// standardStructureType : STANDARD_TYPE_KEYWORD DOT DEFINITION_IDENTIFIER ;
+export class StandardStructureType extends BaseNodeString {
+
+    type = 'StandardStructureType' as const;
+
+    constructor(ctx: KnowledgeStructureTypeContext, visitor: SchemaParserVisitor<any>) {
+        super(ctx, visitor);
+        const parts = this.text.split('.')
+        if (parts.length > 1) {
+            parts[0] = 'StandardType'
+        }
+        this.text = parts.join('.')
+    }
+
+}
