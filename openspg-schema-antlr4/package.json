@@ -5,7 +5,6 @@
     "keywords": [
         "openspg",
         "schema",
-        "concept-rule",
         "ast",
         "parser",
         "lexer",
@@ -100,6 +99,7 @@
         "@changesets/cli": "^2.27.1",
         "@types/lodash-es": "^4.17.12",
         "@types/node": "^24.10.0",
+        "@umijs/fabric": "^4.0.1",
         "@vitest/coverage-v8": "^1.2.1",
         "@vitest/ui": "^1.2.1",
         "antlr4ng-cli": "^1.0.7",
