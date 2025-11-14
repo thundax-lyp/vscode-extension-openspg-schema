@@ -77,8 +77,7 @@ export class BasePrinter {
             unGroup?: boolean;
             openTag?: string
             closeTag?: string
-        } = {
-        },
+        } = {},
     ) => {
         const {
             empty = false,
@@ -87,15 +86,20 @@ export class BasePrinter {
             unGroup = false,
             openTag = '',
             closeTag = ''
-        } = options;
+        } = options
         if (empty) {
-            return unGroup ? `${openTag}${closeTag}` : this.builders.group([openTag, closeTag], {id: groupId, shouldBreak});
+            return unGroup ? `${openTag}${closeTag}` : this.builders.group([openTag, closeTag], {id: groupId, shouldBreak})
         }
-        const line = this.options.bracketSpacing ? this.builders.line : this.builders.softline;
-        if (unGroup) return [openTag, line, value, line, closeTag];
+        const line = this.options.bracketSpacing ? this.builders.line : this.builders.softline
+        if (unGroup) {
+            return [openTag, line, value, closeTag.length > 0 ? [line, closeTag] : []]
+        }
+
         const beforeLine = this.builders.indentIfBreak(line, {groupId});
         const content = this.builders.indentIfBreak(value, {groupId});
-        return this.builders.group([openTag, beforeLine, content, line, closeTag], {id: groupId, shouldBreak});
+        return this.builders.group([
+            openTag, beforeLine, content, closeTag.length > 0 ? [line, closeTag] : []
+        ], {id: groupId, shouldBreak});
     };
     // value => (value)
     tuple = (

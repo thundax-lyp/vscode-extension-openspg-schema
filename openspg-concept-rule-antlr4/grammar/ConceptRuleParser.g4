@@ -3,7 +3,7 @@ parser grammar ConceptRuleParser;
 
 options { tokenVocab=ConceptRuleLexer; }
 
-sourceUnit: (namespace | ruleWrapper | theDefineStructure | labelPropertyList)*;
+sourceUnit: (namespace | ruleWrapper | theDefineStructure)*;
 
 namespace: NAMESPACE_KEYWORD namespaceValue;
 namespaceValue: UNESCAPED_SYMBOLIC_NAME | STRING_LITERAL | ESCAPED_SYMBOLIC_NAME;
@@ -135,11 +135,11 @@ searchCondition : logicValueExpression;
 //#############################################################################
 // rule 定义部分
 //#############################################################################
-theRule : ruleHead LBRACE ruleExpressionBody RBRACE;
+theRule : theRuleHead LBRACE theRuleBody RBRACE;
 
-ruleHead : CONSTRAINT_KEYWORD | RULE_KEYWORD;
+theRuleHead : CONSTRAINT_KEYWORD | RULE_KEYWORD;
 
-ruleExpressionBody : ruleExpression*;
+theRuleBody : ruleExpression*;
 // rule expression
 ruleExpression : projectRuleExpression | logicRuleExpression | expressionSet;
 // project rule

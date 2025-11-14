@@ -1,8 +1,0 @@
-*.js
-*.cjs
-*.mjs
-*.md
-src/antlr4/*
-dist/*
-build.config.ts
-vitest.config.ts

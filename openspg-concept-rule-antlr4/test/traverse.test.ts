@@ -97,8 +97,9 @@ test('selector', () => {
         querySelectorAll(ast, createSelector('Namespace')),
     ).toMatchObject([{
         node: {
-            type: 'Namespace',
-            value: 'Sample'
+            type: 'Namespace', value: {
+                text: 'Sample'
+            }
         }
     }]);
     // expect(

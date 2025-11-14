@@ -58,13 +58,11 @@ export class PrinterExpression extends BasePrinter implements Record<`print${ast
     };
 
     // elementPatternDeclarationAndFiller : elementVariableDeclaration? elementLookup? elementPatternWhereClause?;
-    printElementPatternDeclarationAndFiller: PrintFunc<ast.ElementPatternDeclarationAndFiller> = ({node, path, print}) => {
-        return [
-            path.call(print, "variable"),
-            path.call(print, "lookup"),
-            path.call(print, "whereClause"),
-        ]
-    };
+    printElementPatternDeclarationAndFiller: PrintFunc<ast.ElementPatternDeclarationAndFiller> = ({path, print}) => [
+        path.call(print, "variable"),
+        path.call(print, "lookup"),
+        path.call(print, "whereClause"),
+    ]
 
     // elementPatternWhereClause : WHERE_KEYWORD searchCondition;
     printElementPatternWhereClause: PrintFunc<ast.ElementPatternWhereClause> = ({node}) => {
@@ -98,7 +96,7 @@ export class PrinterExpression extends BasePrinter implements Record<`print${ast
     printLogicRuleExpression: PrintFunc<ast.LogicRuleExpression> = ({node, path, print}) => {
         return [
             path.call(print, "identifier"),
-            node.explain === '' ? '' : ['(', node.explain, ')'],
+            node.explain,
             [this.colon, this.space],
             path.call(print, "expressionSet"),
         ]
@@ -164,7 +162,7 @@ export class PrinterExpression extends BasePrinter implements Record<`print${ast
         throw new Error("Unreachable Code")
     };
 
-    printValueExpression: PrintFunc<ast.ValueExpression> = ({node, path, print}) => {
+    printValueExpression: PrintFunc<ast.ValueExpression> = () => {
         return ["printValueExpression", this.builders.hardline]
     };
 

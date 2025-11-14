@@ -8,15 +8,18 @@ export class ConceptRuleASTBuilder extends parser.ConceptRuleParserVisitor<ast.S
     visitSourceUnit = (ctx: parser.SourceUnitContext) => new ast.SourceUnit(ctx, this);
 
     visitNamespace = (ctx: parser.NamespaceContext) => new ast.Namespace(ctx, this);
-    // visitNamespaceValue?: (ctx: parser.NamespaceValueContext) => Result;
+    visitNamespaceValue = (ctx: parser.NamespaceValueContext) => new ast.NamespaceValue(ctx, this);
 
     visitRuleWrapper = (ctx: parser.RuleWrapperContext) => new ast.RuleWrapper(ctx, this);
     visitRuleWrapperHead = (ctx: parser.RuleWrapperHeadContext) => new ast.RuleWrapperHead(ctx, this);
-    // visitRuleWrapperPattern?: (ctx: parser.RuleWrapperPatternContext) => Result;
+    visitRuleWrapperPattern = (ctx: parser.RuleWrapperPatternContext) => new ast.RuleWrapperPattern(ctx, this);
+
     visitRuleWrapperBody = (ctx: parser.RuleWrapperBodyContext) => new ast.RuleWrapperBody(ctx, this);
-    // visitBaseRuleDefine?: (ctx: parser.BaseRuleDefineContext) => Result;
+
+
     visitTheDefineStructure = (ctx: parser.TheDefineStructureContext) => new ast.TheDefineStructure(ctx, this);
-    // visitPredicatedDefine?: (ctx: parser.PredicatedDefineContext) => Result;
+    visitPredicatedDefine = (ctx: parser.PredicatedDefineContext) => new ast.PredicatedDefine(ctx, this);
+    visitBaseRuleDefine = (ctx: parser.BaseRuleDefineContext) => new ast.BaseRuleDefine(ctx, this);
 
     visitTheGraphStructure = (ctx: parser.TheGraphStructureContext) => new ast.TheGraphStructure(ctx, this);
     visitTheGraphStructureHead= (ctx: parser.TheGraphStructureHeadContext)=> new ast.TheGraphStructureHead(ctx, this);
@@ -70,9 +73,10 @@ export class ConceptRuleASTBuilder extends parser.ConceptRuleParserVisitor<ast.S
     // visitLinkedEdge?: (ctx: LinkedEdgeContext) => Result;
     // visitElementPatternWhereClause = (ctx: parser.ElementPatternWhereClauseContext) => new ast.ElementPatternWhereClause(ctx, this);
     // visitSearchCondition?: (ctx: SearchConditionContext) => Result;
+
     visitTheRule = (ctx: parser.TheRuleContext) => new ast.TheRule(ctx, this);
-    // visitRuleHead?: (ctx: RuleHeadContext) => Result;
-    // visitRuleExpressionBody?: (ctx: RuleExpressionBodyContext) => Result;
+    visitTheRuleHead = (ctx: parser.TheRuleHeadContext) => new ast.TheRuleHead(ctx, this);
+    visitTheRuleBody = (ctx: parser.TheRuleBodyContext) => new ast.TheRuleBody(ctx, this);
 
     visitRuleExpression= (ctx: parser.RuleExpressionContext)=> new ast.RuleExpression(ctx, this);
     visitProjectRuleExpression= (ctx: parser.ProjectRuleExpressionContext)=> new ast.ProjectRuleExpression(ctx, this);
@@ -190,9 +194,6 @@ export class ConceptRuleASTBuilder extends parser.ConceptRuleParserVisitor<ast.S
     // visitUnbrokenCharacterStringLiteral?: (ctx: UnbrokenCharacterStringLiteralContext) => Result;
     // visitNumericLiteral?: (ctx: NumericLiteralContext) => Result;
     visitIdentifier = (ctx: parser.IdentifierContext) => new ast.Identifier(ctx, this);
-
-
-
 
 }
 

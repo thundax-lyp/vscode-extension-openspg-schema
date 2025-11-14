@@ -17,13 +17,13 @@ test('namespace', () => {
 });
 
 
-test('ruleWrapperHead', () => {
-    expect(createParse((parser) => parser.ruleWrapperHead())("`TaxOfRiskApp`/`赌博应用` :")).toMatchObject({
-        type: 'RuleWrapperHead',
+test('ruleWrapperPattern', () => {
+    expect(createParse((parser) => parser.ruleWrapperPattern())("`TaxOfRiskApp`/`赌博应用` :")).toMatchObject({
+        type: 'RuleWrapperPattern',
     });
 
-    expect(createParse((parser) => parser.ruleWrapperHead())("`TaxOfRiskApp`/`赌博应用` : `TaxOfRiskApp`/`赌博应用2`")).toMatchObject({
-        type: 'RuleWrapperHead',
+    expect(createParse((parser) => parser.ruleWrapperPattern())("`TaxOfRiskApp`/`赌博应用` : `TaxOfRiskApp`/`赌博应用2`")).toMatchObject({
+        type: 'RuleWrapperPattern',
     });
 });
 

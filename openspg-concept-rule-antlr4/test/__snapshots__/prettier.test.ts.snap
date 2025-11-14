@@ -25,7 +25,7 @@ namespace Sample
 
             // line-comment[6]
             Constraint {
-                R(("30天内浏览")): p.timestamp>-30 // tail-comment[2]
+                R("30天内浏览"): p.timestamp>-30 // tail-comment[2]
                 // line-comment[7]
                 o = group(s).count(u) // tail-comment[3]
             }
@@ -47,6 +47,7 @@ namespace Sample
                     dst = downEvent,
                     type = leadTo, // tail-comment[5]
                     value = {
+
                     } // tail-comment[6]
                 )
             }
@@ -55,8 +56,8 @@ namespace Sample
         // line-comment[11]
         Define (s:\`ProductChain\`)-[p:leadTo]->(o) {
             Structure {
+
             }
         }
-    ]]
-"
+    ]]"
 `;

@@ -91,11 +91,20 @@ export class BasePrinter {
             return unGroup ? `${openTag}${closeTag}` : this.builders.group([openTag, closeTag], {id: groupId, shouldBreak});
         }
         const line = this.options.bracketSpacing ? this.builders.hardline : this.builders.softline;
-        if (unGroup) return [openTag, line, value, line, closeTag];
+        if (unGroup) {
+            return [
+                openTag.length > 0 ? [openTag, line] : [],
+                value,
+                closeTag.length > 0 ? [line, closeTag] : []
+            ];
+        }
         const beforeLine = this.builders.indentIfBreak(line, {groupId});
         const content = this.builders.indentIfBreak(value, {groupId});
-        // return this.builders.group([openTag, beforeLine, content, line, closeTag], {id: groupId, shouldBreak});
-        return this.builders.group([openTag, beforeLine, content, closeTag], {id: groupId, shouldBreak});
+        return this.builders.group([
+            openTag.length > 0 ? [openTag, beforeLine] : [],
+            content,
+            closeTag.length > 0 ? [line, closeTag] : []
+        ], {id: groupId, shouldBreak});
     };
     // value => (value)
     tuple = (

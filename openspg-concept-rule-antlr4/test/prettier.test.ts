@@ -12,5 +12,6 @@ const format = async (code: string) =>
     });
 
 test('comment', async () => {
-    expect(await format(load('comment.concept.rule'))).toMatchSnapshot();
+    expect(await format(load('comment.concept.rule'))).toMatchSnapshot()
 });
+

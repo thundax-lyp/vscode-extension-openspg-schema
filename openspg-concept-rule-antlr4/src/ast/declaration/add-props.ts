@@ -6,6 +6,7 @@ import {AddPropsContext, ConceptRuleParserVisitor} from "../../antlr4";
 // addProps : identifier EQ complexObjExpr;
 // complexObjExpr : LBRACE assignmentExpression* RBRACE;
 export class AddProps extends BaseNode {
+
     type = 'AddProps' as const;
 
     identifier: Identifier
