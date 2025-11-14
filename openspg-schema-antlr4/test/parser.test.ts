@@ -1,0 +1,22 @@
+import {expect, test} from 'vitest';
+import * as prettier from 'prettier/standalone';
+import {parserName, plugin} from '../src';
+import {load} from "./utils.test";
+
+const format = async (code: string) =>
+    prettier.format(code, {
+        parser: parserName,
+        plugins: [plugin],
+        tabWidth: 4,
+        bracketSpacing: false,
+    });
+
+
+
+test('comment', async () => {
+    const formated = await format(load('comment.schema'))
+    console.log('='.repeat(40))
+    console.log(formated)
+    console.log('='.repeat(40))
+    expect(await format(load('comment.schema'))).toMatchSnapshot();
+});
