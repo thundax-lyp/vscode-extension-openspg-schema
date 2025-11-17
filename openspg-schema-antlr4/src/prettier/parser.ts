@@ -13,7 +13,7 @@ export const getCommentTokens = (tokens: SyntaxToken[]) => {
 export class PrettierParser implements Parser<SyntaxNode> {
 
     // @ts-ignore
-    public static name = 'openspg-schema-antlr4-parser';
+    public static name = 'openspg-schema-parser';
 
     public astFormat = PrettierPrinter.name;
     public locStart = (node: SyntaxNode) => node.range[0];

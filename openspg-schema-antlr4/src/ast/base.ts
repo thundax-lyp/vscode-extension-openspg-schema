@@ -71,7 +71,6 @@ export const keysInNode = <T extends BaseNode>(node: T): string[] => {
 };
 
 export abstract class BaseNode {
-    // @ts-ignore
     type: SyntaxNodeType;
     range: [number, number];
     location: Location;

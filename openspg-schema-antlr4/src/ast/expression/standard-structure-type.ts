@@ -1,12 +1,12 @@
 import {BaseNodeString} from '../base';
-import {KnowledgeStructureTypeContext, SchemaParserVisitor} from "../../antlr4";
+import {SchemaParserVisitor, StandardStructureTypeContext} from "../../antlr4";
 
 // standardStructureType : STANDARD_TYPE_KEYWORD DOT DEFINITION_IDENTIFIER ;
 export class StandardStructureType extends BaseNodeString {
 
     type = 'StandardStructureType' as const;
 
-    constructor(ctx: KnowledgeStructureTypeContext, visitor: SchemaParserVisitor<any>) {
+    constructor(ctx: StandardStructureTypeContext, visitor: SchemaParserVisitor<any>) {
         super(ctx, visitor);
         const parts = this.text.split('.')
         if (parts.length > 1) {

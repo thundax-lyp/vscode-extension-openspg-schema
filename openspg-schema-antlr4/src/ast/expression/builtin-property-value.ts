@@ -1,5 +1,5 @@
 import {BaseNodeString} from '../base';
-import {KnowledgeStructureTypeContext, SchemaParserVisitor} from "../../antlr4";
+import {BuiltinPropertyValueContext, SchemaParserVisitor} from "../../antlr4";
 
 // builtinPropertyValue :
 //     | IS_A_KEYWORD | LOCATE_AT_KEYWORD | MANNER_OF_KEYWORD | TEXT_KEYWORD | VECTOR_KEYWORD | TEXT_AND_VECTOR_KEYWORD
@@ -13,7 +13,7 @@ export class BuiltinPropertyValue extends BaseNodeString {
         'sparseVector', 'textAndSparseVector', 'notNull', 'multiValue',
     ]
 
-    constructor(ctx: KnowledgeStructureTypeContext, visitor: SchemaParserVisitor<any>) {
+    constructor(ctx: BuiltinPropertyValueContext, visitor: SchemaParserVisitor<any>) {
         super(ctx, visitor);
         this.text = this.keywords.find(x => x.toLowerCase() === this.text.toLowerCase()) ?? ''
     }

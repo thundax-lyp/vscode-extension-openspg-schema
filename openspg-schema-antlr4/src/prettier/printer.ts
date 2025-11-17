@@ -12,7 +12,7 @@ export type PrintFunc<T extends ast.SyntaxNode = ast.SyntaxNode> = (arg: {
 export class PrettierPrinter implements Printer<any> {
 
     // @ts-ignore
-    public static name = 'openspg-schema-antlr4-printer';
+    public static name = 'openspg-schema-printer';
 
     public print = print;
     public printComment = printComment;
