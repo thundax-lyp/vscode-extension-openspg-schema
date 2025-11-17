@@ -20,7 +20,7 @@ import {PathPattern} from './path-pattern';
 import {PathPatternList} from './path-pattern-list';
 import {ProjectRuleExpression} from './project-rule-expression';
 import {PropertyExpression} from './property-expression';
-import {RuleExpression} from './rule-expression';
+// import {RuleExpression} from './rule-expression';
 import {ValueExpression} from './value-expression';
 
 export {
@@ -46,6 +46,6 @@ export {
 	PathPatternList,
 	ProjectRuleExpression,
 	PropertyExpression,
-	RuleExpression,
+// 	RuleExpression,
 	ValueExpression,
 }

@@ -13,6 +13,11 @@ const listFiles = (root: string): string[] => {
 
 const camelToTitleCase = (x: string): string => x.substring(0, 1).toUpperCase() + x.substring(1)
 
+const isUnionFile = (fileName: string) => {
+    const content = fs.readFileSync(fileName, { encoding: "utf8" })
+    return content.includes('BaseNodeUnion')
+}
+
 const buildModuleIndex = (moduleFolder: string) => {
     console.log(`processing \x1b[34m${moduleFolder}\x1b[0m ...`)
     const filenames = listFiles(moduleFolder)
@@ -27,17 +32,18 @@ const buildModuleIndex = (moduleFolder: string) => {
         .map(x => {
             const baseName = x
             const structureName = camelToTitleCase(camelCase(x))
+            const isUnion = isUnionFile(path.join(moduleFolder, `${x}.ts`))
             return {
-                baseName, structureName,
+                baseName, structureName, isUnion
             }
         })
 
     const saveIndexNodeFile = () => {
         const indexNodeContent = ''
-            + structures.map(({baseName, structureName}) => `import {${structureName}} from './${baseName}';`).join('\n')
+            + structures.map(({baseName, structureName, isUnion}) => `${isUnion ? '// ' : ''}import {${structureName}} from './${baseName}';`).join('\n')
             + '\n\n'
             + 'export {\n'
-            + structures.map(({structureName}) => `\t${structureName},`).join('\n')
+            + structures.map(({structureName, isUnion}) => `${isUnion ? '// ' : ''}\t${structureName},`).join('\n')
             + '\n}\n'
             + ''
         const indexNodeFileName = path.join(moduleFolder, "index.node.ts")
