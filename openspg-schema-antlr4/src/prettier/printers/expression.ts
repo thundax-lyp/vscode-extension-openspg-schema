@@ -1,13 +1,14 @@
-import * as ast from '../../ast';
-import {BasePrinter, PrintFunc} from './base';
-import {Doc} from "prettier";
+import {Doc} from 'prettier'
+import * as ast from '../../ast'
+import {BasePrinter, PrintFunc} from './base'
 
 export class PrinterExpression extends BasePrinter implements Record<`print${ast.ExpressionNodeType}`, PrintFunc<any>> {
 
     // basicPropertyDeclaration : propertyNameDeclaration KV_COLON propertyValueDeclaration? ;
     printBasicPropertyDeclaration: PrintFunc<ast.BasicPropertyDeclaration> = ({node, path, print}): Doc[] => [
-        path.call(print, "name"), this.colon,
-        node.value ? [this.space, path.call(print, "value")] : [],
+        path.call(print, 'name'),
+        this.colon,
+        node.value ? [this.space, path.call(print, 'value')] : [],
     ]
 
     // basicPropertyName : KV_IDENTIFIER ;
@@ -18,9 +19,9 @@ export class PrinterExpression extends BasePrinter implements Record<`print${ast
 
     // basicStructureDeclaration : structureNameDeclaration LPARENTH structureAliasDeclaration RPARENTH structureTypeDeclaration ;
     printBasicStructureDeclaration: PrintFunc<ast.BasicStructureDeclaration> = ({path, print}) => [
-        path.call(print, "name"),
-        ["(", path.call(print, "alias"), ")"],
-        path.call(print, "structureType"),
+        path.call(print, 'name'),
+        ['(', path.call(print, 'alias'), ')'],
+        path.call(print, 'structureType'),
     ]
 
     // basicStructureType : (BASIC_TYPE_KEYWORD DOT)? (INTEGER_KEYWORD | FLOAT_KEYWORD | TEXT_KEYWORD) ;
@@ -28,13 +29,8 @@ export class PrinterExpression extends BasePrinter implements Record<`print${ast
 
     // basicStructureTypeDeclaration : COLON basicStructureTypeVariable ;
     printBasicStructureTypeDeclaration: PrintFunc<ast.BasicStructureTypeDeclaration> = ({path, print}) => [
-        this.colon, this.space, path.call(print, "variable")
+        this.colon, this.space, path.call(print, 'variable')
     ]
-
-    // basicStructureTypeVariable : knowledgeStructureType | basicStructureType | standardStructureType | variableStructureType ;
-    printBasicStructureTypeVariable: PrintFunc<ast.BasicStructureTypeVariable> = () => {
-        throw new Error("Unreachable Code")
-    }
 
     // blockPropertyValue: OPEN_BLOCK (PLAIN_TEXT | PLAIN_TEXT_PATCH) CLOSE_BLOCK ;
     printBlockPropertyValue: PrintFunc<ast.BlockPropertyValue> = ({node}) => node.text
@@ -53,78 +49,34 @@ export class PrinterExpression extends BasePrinter implements Record<`print${ast
 
     // inheritedStructureTypeDeclaration : RIGHT_ARROW (inheritedStructureTypeVariable COMMA)* inheritedStructureTypeVariable COLON ;
     printInheritedStructureTypeDeclaration: PrintFunc<ast.InheritedStructureTypeDeclaration> = ({path, print}) => [
-        "->", this.space,
+        '->', this.space,
         this.builders.join(
-            [this.comma, this.space], path.map(print, "variables")
+            [this.comma, this.space], path.map(print, 'variables')
         ),
         this.colon
     ]
 
-    // inheritedStructureTypeVariable : knowledgeStructureType | standardStructureType | variableStructureType ;
-    printInheritedStructureTypeVariable: PrintFunc<ast.InheritedStructureTypeVariable> = () => {
-        throw new Error("Unreachable Code")
-    }
-
     // knowledgeStructureType  : ENTITY_TYPE_KEYWORD | CONCEPT_TYPE_KEYWORD | EVENT_TYPE_KEYWORD | INDEX_TYPE_KEYWORD ;
-    printKnowledgeStructureType: PrintFunc<ast.KnowledgeStructureType> = ({node, path, print}) => node.text
-
-    // propertyNameDeclaration : propertyNameVariable ;
-    printPropertyNameDeclaration: PrintFunc<ast.PropertyNameDeclaration> = () => {
-        throw new Error("Unreachable Code")
-    }
-
-    // propertyNameVariable : builtinPropertyName | basicPropertyName ;
-    printPropertyNameVariable: PrintFunc<ast.PropertyNameVariable> = () => {
-        throw new Error("Unreachable Code")
-    }
-
-    // propertyValueDeclaration: propertyValueVariable;
-    printPropertyValueDeclaration: PrintFunc<ast.PropertyValueDeclaration> = () => {
-        throw new Error("Unreachable Code")
-    }
-
-    // propertyValueVariable : builtinPropertyValue | blockPropertyValue | basicPropertyValue;
-    printPropertyValueVariable: PrintFunc<ast.PropertyValueVariable> = () => {
-        throw new Error("Unreachable Code")
-    }
+    printKnowledgeStructureType: PrintFunc<ast.KnowledgeStructureType> = ({node}) => node.text
 
     // standardStructureType : STANDARD_TYPE_KEYWORD DOT DEFINITION_IDENTIFIER ;
-    printStandardStructureType: PrintFunc<ast.StandardStructureType> = ({node, path, print}) => node.text
+    printStandardStructureType: PrintFunc<ast.StandardStructureType> = ({node}) => node.text
 
     // structureAlias : (DEFINITION_IDENTIFIER | DEFINITION_STRING_LITERAL)+ ;
     printStructureAlias: PrintFunc<ast.StructureAlias> = ({node}) => node.text
 
-    // structureAliasDeclaration : structureAlias ;
-    printStructureAliasDeclaration: PrintFunc<ast.StructureAliasDeclaration> = () => {
-        throw new Error("Unreachable Code")
-    }
-
     // structureName : (structureSemanticName HASH)* structureRealName ;
-    printStructureName: PrintFunc<ast.StructureName> = ({node, path, print}) => [
+    printStructureName: PrintFunc<ast.StructureName> = ({path, print}) => [
         this.builders.join('#', [
-            ...path.map(print, "semanticNames"),
-            path.call(print, "realName"),
+            ...path.map(print, 'semanticNames'),
+            path.call(print, 'realName'),
         ])
     ]
 
-    // structureNameDeclaration: structureName ;
-    printStructureNameDeclaration: PrintFunc<ast.StructureNameDeclaration> = () => {
-        throw new Error("Unreachable Code")
-    }
-
     // structureRealName : DEFINITION_IDENTIFIER ;
-    printStructureRealName: PrintFunc<ast.StructureRealName> = ({node, path, print}) => node.text
+    printStructureRealName: PrintFunc<ast.StructureRealName> = ({node}) => node.text
 
     // structureSemanticName : DEFINITION_IDENTIFIER ;
-    printStructureSemanticName: PrintFunc<ast.StructureSemanticName> = ({node, path, print}) => node.text
+    printStructureSemanticName: PrintFunc<ast.StructureSemanticName> = ({node}) => node.text
 
-    // structureTypeDeclaration : basicStructureTypeDeclaration | inheritedStructureTypeDeclaration ;
-    printStructureTypeDeclaration: PrintFunc<ast.StructureTypeDeclaration> = () => {
-        throw new Error("Unreachable Code")
-    }
-
-    // variableStructureType : structureName ;
-    printVariableStructureType: PrintFunc<ast.VariableStructureType> = () => {
-        throw new Error("Unreachable Code")
-    }
 }

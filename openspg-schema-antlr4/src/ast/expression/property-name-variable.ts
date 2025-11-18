@@ -3,6 +3,10 @@ import {PropertyNameVariableContext, SchemaParserVisitor} from '../../antlr4';
 import {BuiltinPropertyName} from "./builtin-property-name";
 import {BasicPropertyName} from "./basic-property-name";
 
+export type PropertyNameVariableNode =
+    | BuiltinPropertyName
+    | BasicPropertyName
+
 // propertyNameVariable    : builtinPropertyName | basicPropertyName ;
 export class PropertyNameVariable extends BaseNodeUnion<
     | BuiltinPropertyName

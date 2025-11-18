@@ -1,10 +1,13 @@
 import {BaseNodeUnion} from '../base';
 import {PropertyNameDeclarationContext, SchemaParserVisitor} from '../../antlr4';
-import {PropertyNameVariable} from "./property-name-variable";
+import {PropertyNameVariableNode} from "./property-name-variable";
+
+export type PropertyNameDeclarationNode =
+    | PropertyNameVariableNode
 
 // propertyNameDeclaration : propertyNameVariable ;
 export class PropertyNameDeclaration extends BaseNodeUnion<
-    | PropertyNameVariable
+    | PropertyNameVariableNode
 > {
 
     constructor(ctx: PropertyNameDeclarationContext, visitor: SchemaParserVisitor<any>) {

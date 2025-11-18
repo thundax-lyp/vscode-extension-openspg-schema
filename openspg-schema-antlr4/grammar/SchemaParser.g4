@@ -3,13 +3,13 @@ parser grammar SchemaParser;
 
 options { tokenVocab=SchemaLexer; }
 
-sourceUnit : (namespace | entity)* ;
+sourceUnit : (namespaceDeclaration | entityDeclaration)* ;
 
 /**
  * Namespace declaration
  */
-namespace : NAMESPACE_KEY namespaceValue ;
-namespaceValue : NAMESPACE_IDENTIFIER | NAMESPACE_STRING_LITERAL ;
+namespaceDeclaration : NAMESPACE_KEY namespaceVariable ;
+namespaceVariable : NAMESPACE_IDENTIFIER | NAMESPACE_STRING_LITERAL ;
 
 /**
  * Basic Element declaration
@@ -78,9 +78,9 @@ blockPropertyValue: OPEN_BLOCK (PLAIN_TEXT | PLAIN_TEXT_PATCH) CLOSE_BLOCK ;
  * Chunk(文本块): EntityType
  * Chunk(文本块)->EntityType, ConceptType:
  */
-entity : entityHead entityBody? ;
+entityDeclaration : entityHead entityBody? ;
 entityHead : basicStructureDeclaration ;
-entityBody : entityMeta+ ;
+entityBody : entityMetaDeclaration+ ;
 
 
 /**
@@ -89,9 +89,9 @@ entityBody : entityMeta+ ;
  * Chunk(文本块): EntityType
  *     desc: 文本块
  */
-entityMeta : entityMetaHead entityMetaBody? ;
+entityMetaDeclaration : entityMetaHead entityMetaBody? ;
 entityMetaHead : INDENT_META+ basicPropertyDeclaration ;
-entityMetaBody : property+ ;
+entityMetaBody : propertyDeclaration+ ;
 
 /**
  * Property
@@ -100,9 +100,9 @@ entityMetaBody : property+ ;
  *     properties :
  *         belongTo(属于) : Story
  */
-property : propertyHead propertyBody? ;
+propertyDeclaration : propertyHead propertyBody? ;
 propertyHead : INDENT_PROP+ basicStructureDeclaration ;
-propertyBody : propertyMeta+ ;
+propertyBody : propertyMetaDeclaration+ ;
 
 /**
  * PropertyMeta
@@ -112,9 +112,9 @@ propertyBody : propertyMeta+ ;
  *         belongTo(属于) : Story
  *             desc: 属于
  */
-propertyMeta : propertyMetaHead propertyMetaBody? ;
+propertyMetaDeclaration : propertyMetaHead propertyMetaBody? ;
 propertyMetaHead : INDENT_PROP_META+ basicPropertyDeclaration ;
-propertyMetaBody : subProperty+ ;
+propertyMetaBody : subPropertyDeclaration+ ;
 
 /**
  * SubProperty
@@ -125,9 +125,9 @@ propertyMetaBody : subProperty+ ;
  *             properties:
  *                 desc(描述): Text
  */
-subProperty : subPropertyHead subPropertyBody? ;
+subPropertyDeclaration : subPropertyHead subPropertyBody? ;
 subPropertyHead : INDENT_SUBPROP+ basicStructureDeclaration ;
-subPropertyBody : subPropertyMeta+ ;
+subPropertyBody : subPropertyMetaDeclaration+ ;
 
 /**
  * SubPropertyMeta
@@ -139,5 +139,5 @@ subPropertyBody : subPropertyMeta+ ;
  *                 desc(描述): Text
  *                     index: Text
  */
-subPropertyMeta : INDENT_SUBPROP_META+ basicPropertyDeclaration ;
+subPropertyMetaDeclaration : INDENT_SUBPROP_META+ basicPropertyDeclaration ;
 

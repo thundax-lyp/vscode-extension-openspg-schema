@@ -6,11 +6,12 @@ export type DeclarationNodeType = UnionSyntaxNodeType<typeof nodeMap>;
 
 export const declarationNodeTypes = Object.keys(nodeMap) as DeclarationNodeType[];
 
-export * from './entity';
-export * from './entity-meta';
-export * from './namespace';
-export * from './property';
-export * from './property-meta';
-export * from './sub-property';
-export * from './sub-property-meta';
+export * from './entity-declaration';
+export * from './entity-meta-declaration';
+export * from './namespace-declaration';
+export * from './namespace-variable';
+export * from './property-declaration';
+export * from './property-meta-declaration';
+export * from './sub-property-declaration';
+export * from './sub-property-meta-declaration';
 

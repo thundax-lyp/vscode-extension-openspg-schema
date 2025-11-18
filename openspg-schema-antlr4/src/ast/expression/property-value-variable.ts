@@ -4,6 +4,11 @@ import {BuiltinPropertyValue} from "./builtin-property-value";
 import {BasicPropertyValue} from "./basic-property-value";
 import {BlockPropertyValue} from "./block-property-value";
 
+export type PropertyValueVariableNode =
+    | BuiltinPropertyValue
+    | BlockPropertyValue
+    | BasicPropertyValue
+
 // propertyValueVariable   : builtinPropertyValue | blockPropertyValue | basicPropertyValue;
 export class PropertyValueVariable extends BaseNodeUnion<
     | BuiltinPropertyValue

@@ -7,7 +7,9 @@ export class SchemaASTBuilder extends parser.SchemaParserVisitor<ast.SyntaxNode 
 
     visitSourceUnit = (ctx: parser.SourceUnitContext) => new ast.SourceUnit(ctx, this);
 
-    visitNamespace = (ctx: parser.NamespaceContext) => new ast.Namespace(ctx, this);
+    visitNamespaceDeclaration = (ctx: parser.NamespaceDeclarationContext) => new ast.NamespaceDeclaration(ctx, this);
+
+    visitNamespaceVariable = (ctx: parser.NamespaceVariableContext) => new ast.NamespaceVariable(ctx, this);
 
     visitBasicStructureDeclaration = (ctx: parser.BasicStructureDeclarationContext) => new ast.BasicStructureDeclaration(ctx, this);
 
@@ -61,17 +63,17 @@ export class SchemaASTBuilder extends parser.SchemaParserVisitor<ast.SyntaxNode 
 
     visitBlockPropertyValue = (ctx: parser.BlockPropertyValueContext) => new ast.BlockPropertyValue(ctx, this);
 
-    visitEntity = (ctx: parser.EntityContext) => new ast.Entity(ctx, this);
+    visitEntityDeclaration = (ctx: parser.EntityDeclarationContext) => new ast.EntityDeclaration(ctx, this);
 
-    visitEntityMeta = (ctx: parser.EntityMetaContext) => new ast.EntityMeta(ctx, this);
+    visitEntityMetaDeclaration = (ctx: parser.EntityMetaDeclarationContext) => new ast.EntityMetaDeclaration(ctx, this);
 
-    visitProperty = (ctx: parser.PropertyContext) => new ast.Property(ctx, this);
+    visitPropertyDeclaration = (ctx: parser.PropertyDeclarationContext) => new ast.PropertyDeclaration(ctx, this);
 
-    visitPropertyMeta = (ctx: parser.PropertyMetaContext) => new ast.PropertyMeta(ctx, this);
+    visitPropertyMetaDeclaration = (ctx: parser.PropertyMetaDeclarationContext) => new ast.PropertyMetaDeclaration(ctx, this);
 
-    visitSubProperty = (ctx: parser.SubPropertyContext) => new ast.SubProperty(ctx, this);
+    visitSubPropertyDeclaration = (ctx: parser.SubPropertyDeclarationContext) => new ast.SubPropertyDeclaration(ctx, this);
 
-    visitSubPropertyMeta = (ctx: parser.SubPropertyMetaContext) => new ast.SubPropertyMeta(ctx, this);
+    visitSubPropertyMetaDeclaration = (ctx: parser.SubPropertyMetaDeclarationContext) => new ast.SubPropertyMetaDeclaration(ctx, this);
 
 }
 

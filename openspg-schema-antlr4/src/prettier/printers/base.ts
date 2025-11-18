@@ -1,6 +1,6 @@
-import * as ast from '../../ast';
 import type {AstPath, Doc, ParserOptions} from 'prettier';
 import * as doc from 'prettier/doc';
+import * as ast from '../../ast';
 import {SyntaxToken, SyntaxTokenType} from '../../parser';
 import {printComment} from './comment';
 

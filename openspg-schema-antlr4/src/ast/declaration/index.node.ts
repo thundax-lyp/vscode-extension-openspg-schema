@@ -1,17 +1,19 @@
-import {Entity} from './entity';
-import {EntityMeta} from './entity-meta';
-import {Namespace} from './namespace';
-import {Property} from './property';
-import {PropertyMeta} from './property-meta';
-import {SubProperty} from './sub-property';
-import {SubPropertyMeta} from './sub-property-meta';
+import {EntityDeclaration} from './entity-declaration';
+import {EntityMetaDeclaration} from './entity-meta-declaration';
+import {NamespaceDeclaration} from './namespace-declaration';
+import {NamespaceVariable} from './namespace-variable';
+import {PropertyDeclaration} from './property-declaration';
+import {PropertyMetaDeclaration} from './property-meta-declaration';
+import {SubPropertyDeclaration} from './sub-property-declaration';
+import {SubPropertyMetaDeclaration} from './sub-property-meta-declaration';
 
 export {
-	Entity,
-	EntityMeta,
-	Namespace,
-	Property,
-	PropertyMeta,
-	SubProperty,
-	SubPropertyMeta,
+	EntityDeclaration,
+	EntityMetaDeclaration,
+	NamespaceDeclaration,
+	NamespaceVariable,
+	PropertyDeclaration,
+	PropertyMetaDeclaration,
+	SubPropertyDeclaration,
+	SubPropertyMetaDeclaration,
 }

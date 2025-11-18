@@ -2,26 +2,26 @@ import {expect, test} from 'vitest';
 import {createParse} from "../utils.test";
 
 test('namespace', () => {
-    expect(createParse((parser) => parser.namespace())(`namespace Sample`)).toMatchObject({
-        type: 'Namespace', value: 'Sample'
+    expect(createParse((parser) => parser.namespaceDeclaration())(`namespace Sample`)).toMatchObject({
+        type: 'NamespaceDeclaration', variable: 'Sample'
     });
 
-    expect(createParse((parser) => parser.namespace())(`namespace 'Sample'`)).toMatchObject({
-        type: 'Namespace', value: '\'Sample\''
+    expect(createParse((parser) => parser.namespaceDeclaration())(`namespace 'Sample'`)).toMatchObject({
+        type: 'NamespaceDeclaration', variable: '\'Sample\''
     });
 
-    expect(createParse((parser) => parser.namespace())(`namespace "Sample"`)).toMatchObject({
-        type: 'Namespace', value: '"Sample"'
+    expect(createParse((parser) => parser.namespaceDeclaration())(`namespace "Sample"`)).toMatchObject({
+        type: 'NamespaceDeclaration', variable: '"Sample"'
     });
 
-    expect(createParse((parser) => parser.namespace())(`namespace \`Sample\``)).toMatchObject({
-        type: 'Namespace', value: '`Sample`'
+    expect(createParse((parser) => parser.namespaceDeclaration())(`namespace \`Sample\``)).toMatchObject({
+        type: 'NamespaceDeclaration', variable: '`Sample`'
     });
 });
 
 test('entity - basic', () => {
-    expect(createParse((parser) => parser.entity())(`Person(人物): EntityType`)).toMatchObject({
-        type: 'Entity', declaration: {
+    expect(createParse((parser) => parser.entityDeclaration())(`Person(人物): EntityType`)).toMatchObject({
+        type: 'EntityDeclaration', declaration: {
             name: {
                 realName: 'Person'
             },
@@ -34,8 +34,8 @@ test('entity - basic', () => {
 })
 
 test('entity - alias', () => {
-    expect(createParse((parser) => parser.entity())(`Person('alias literal'): EntityType`)).toMatchObject({
-        type: 'Entity', declaration: {
+    expect(createParse((parser) => parser.entityDeclaration())(`Person('alias literal'): EntityType`)).toMatchObject({
+        type: 'EntityDeclaration', declaration: {
             name: {
                 realName: 'Person'
             },
@@ -46,8 +46,8 @@ test('entity - alias', () => {
         }
     });
 
-    expect(createParse((parser) => parser.entity())(`Person(alias  with  double  blank): EntityType`)).toMatchObject({
-        type: 'Entity', declaration: {
+    expect(createParse((parser) => parser.entityDeclaration())(`Person(alias  with  double  blank): EntityType`)).toMatchObject({
+        type: 'EntityDeclaration', declaration: {
             name: {
                 realName: 'Person'
             },
@@ -61,8 +61,8 @@ test('entity - alias', () => {
 })
 
 test('entity - inherited', () => {
-    expect(createParse((parser) => parser.entity())(`Person(人物) -> PersonType, LeaderType:`)).toMatchObject({
-        type: 'Entity', declaration: {
+    expect(createParse((parser) => parser.entityDeclaration())(`Person(人物) -> PersonType, LeaderType:`)).toMatchObject({
+        type: 'EntityDeclaration', declaration: {
             name: {
                 realName: 'Person'
             },
@@ -81,34 +81,34 @@ test('entity - inherited', () => {
 });
 
 test('entityMeta', () => {
-    expect(createParse((parser) => parser.entity())(`
+    expect(createParse((parser) => parser.entityDeclaration())(`
 Person('人物'): EntityType
     desc: description
     `)).toMatchObject({
-        type: 'Entity', children: [{
-            type: 'EntityMeta', declaration: {
+        type: 'EntityDeclaration', children: [{
+            type: 'EntityMetaDeclaration', declaration: {
                 name: 'desc', value: 'description',
             }
         }]
     });
 
-    expect(createParse((parser) => parser.entity())(`
+    expect(createParse((parser) => parser.entityDeclaration())(`
 Person('人物'): EntityType
     desc: description  with  blank
     `)).toMatchObject({
-        type: 'Entity', children: [{
-            type: 'EntityMeta', declaration: {
+        type: 'EntityDeclaration', children: [{
+            type: 'EntityMetaDeclaration', declaration: {
                 name: 'desc', value: 'description with blank',
             }
         }]
     });
 
-    expect(createParse((parser) => parser.entity())(`
+    expect(createParse((parser) => parser.entityDeclaration())(`
 Person('人物'): EntityType
     desc: [[  good  ]]
     `)).toMatchObject({
-        type: 'Entity', children: [{
-            type: 'EntityMeta', declaration: {
+        type: 'EntityDeclaration', children: [{
+            type: 'EntityMetaDeclaration', declaration: {
                 name: 'desc', value: '[[  good  ]]',
             }
         }]

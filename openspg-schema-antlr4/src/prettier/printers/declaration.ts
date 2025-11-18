@@ -1,14 +1,16 @@
+import {Doc} from "prettier";
 import * as ast from '../../ast';
 import {BasePrinter, PrintFunc} from './base';
-import {Doc} from "prettier";
 
 export class PrinterDeclaration extends BasePrinter implements Record<`print${ast.DeclarationNodeType}`, PrintFunc<any>> {
 
-    printNamespace: PrintFunc<ast.Namespace> = ({node}): Doc[] => [
-        "namespace", this.space, node.value
+    printNamespaceDeclaration: PrintFunc<ast.NamespaceDeclaration> = ({path, print}): Doc[] => [
+        "namespace", this.space, path.call(print, 'variable')
     ]
 
-    printEntity: PrintFunc<ast.Entity> = ({node, path, print}) => [
+    printNamespaceVariable: PrintFunc<ast.NamespaceVariable> = ({node}) => node.text
+
+    printEntityDeclaration: PrintFunc<ast.EntityDeclaration> = ({node, path, print}) => [
         path.call(print, 'declaration'),
         node.children.length > 0
             ? this.block(
@@ -17,7 +19,7 @@ export class PrinterDeclaration extends BasePrinter implements Record<`print${as
             : []
     ]
 
-    printEntityMeta: PrintFunc<ast.EntityMeta> = ({node, path, print}) => [
+    printEntityMetaDeclaration: PrintFunc<ast.EntityMetaDeclaration> = ({node, path, print}) => [
         path.call(print, 'declaration'),
         node.children.length > 0
             ? this.block(
@@ -26,7 +28,7 @@ export class PrinterDeclaration extends BasePrinter implements Record<`print${as
             : []
     ]
 
-    printProperty: PrintFunc<ast.Property> = ({node, path, print}) => [
+    printPropertyDeclaration: PrintFunc<ast.PropertyDeclaration> = ({node, path, print}) => [
         path.call(print, 'declaration'),
         node.children.length > 0
             ? this.block(
@@ -35,7 +37,7 @@ export class PrinterDeclaration extends BasePrinter implements Record<`print${as
             : []
     ]
 
-    printPropertyMeta: PrintFunc<ast.PropertyMeta> = ({node, path, print}) => [
+    printPropertyMetaDeclaration: PrintFunc<ast.PropertyMetaDeclaration> = ({node, path, print}) => [
         path.call(print, 'declaration'),
         node.children.length > 0
             ? this.block(
@@ -44,7 +46,7 @@ export class PrinterDeclaration extends BasePrinter implements Record<`print${as
             : []
     ]
 
-    printSubProperty: PrintFunc<ast.SubProperty> = ({node, path, print}) => [
+    printSubPropertyDeclaration: PrintFunc<ast.SubPropertyDeclaration> = ({node, path, print}) => [
         path.call(print, 'declaration'),
         node.children.length > 0
             ? this.block(
@@ -53,7 +55,7 @@ export class PrinterDeclaration extends BasePrinter implements Record<`print${as
             : []
     ]
 
-    printSubPropertyMeta: PrintFunc<ast.SubPropertyMeta> = ({path, print}) => [
+    printSubPropertyMetaDeclaration: PrintFunc<ast.SubPropertyMetaDeclaration> = ({path, print}) => [
         path.call(print, 'declaration')
     ]
 

@@ -3,14 +3,21 @@ import {BasicStructureTypeVariableContext, SchemaParserVisitor} from '../../antl
 import {KnowledgeStructureType} from "./knowledge-structure-type";
 import {BasicStructureType} from "./basic-structure-type";
 import {StandardStructureType} from "./standard-structure-type";
-import {VariableStructureType} from "./variable-structure-type";
+import {VariableStructureTypeNode} from "./variable-structure-type";
+
+export type BasicStructureTypeVariableNode =
+    | KnowledgeStructureType
+    | BasicStructureType
+    | StandardStructureType
+    | VariableStructureTypeNode
+
 
 // basicStructureTypeVariable      : knowledgeStructureType | basicStructureType | standardStructureType | variableStructureType ;
 export class BasicStructureTypeVariable extends BaseNodeUnion<
     | KnowledgeStructureType
     | BasicStructureType
     | StandardStructureType
-    | VariableStructureType
+    | VariableStructureTypeNode
 > {
 
     constructor(ctx: BasicStructureTypeVariableContext, visitor: SchemaParserVisitor<any>) {
