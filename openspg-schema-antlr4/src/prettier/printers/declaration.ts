@@ -13,45 +13,60 @@ export class PrinterDeclaration extends BasePrinter implements Record<`print${as
     printEntityDeclaration: PrintFunc<ast.EntityDeclaration> = ({node, path, print}) => [
         path.call(print, 'declaration'),
         node.children.length > 0
-            ? this.block(
-                this.builders.join(this.builders.hardline, path.map(print, 'children'))
-            )
+            ? [
+                this.builders.hardline,
+                this.block(
+                    this.builders.join(this.builders.hardline, path.map(print, 'children'))
+                )
+            ]
             : []
     ]
 
     printEntityMetaDeclaration: PrintFunc<ast.EntityMetaDeclaration> = ({node, path, print}) => [
         path.call(print, 'declaration'),
         node.children.length > 0
-            ? this.block(
-                this.builders.join(this.builders.hardline, path.map(print, 'children'))
-            )
+            ? [
+                this.builders.hardline,
+                this.block(
+                    this.builders.join(this.builders.hardline, path.map(print, 'children'))
+                )
+            ]
             : []
     ]
 
     printPropertyDeclaration: PrintFunc<ast.PropertyDeclaration> = ({node, path, print}) => [
         path.call(print, 'declaration'),
         node.children.length > 0
-            ? this.block(
-                this.builders.join(this.builders.hardline, path.map(print, 'children'))
-            )
+            ? [
+                this.builders.hardline,
+                this.block(
+                    this.builders.join(this.builders.hardline, path.map(print, 'children'))
+                )
+            ]
             : []
     ]
 
     printPropertyMetaDeclaration: PrintFunc<ast.PropertyMetaDeclaration> = ({node, path, print}) => [
         path.call(print, 'declaration'),
         node.children.length > 0
-            ? this.block(
-                this.builders.join(this.builders.hardline, path.map(print, 'children'))
-            )
+            ? [
+                this.builders.hardline,
+                this.block(
+                    this.builders.join(this.builders.hardline, path.map(print, 'children'))
+                )
+            ]
             : []
     ]
 
     printSubPropertyDeclaration: PrintFunc<ast.SubPropertyDeclaration> = ({node, path, print}) => [
         path.call(print, 'declaration'),
         node.children.length > 0
-            ? this.block(
-                this.builders.join(this.builders.hardline, path.map(print, 'children'))
-            )
+            ? [
+                this.builders.hardline,
+                this.block(
+                    this.builders.join(this.builders.hardline, path.map(print, 'children'))
+                )
+            ]
             : []
     ]
 

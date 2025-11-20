@@ -15,22 +15,23 @@ Person(人物): EntityType
     const enterNames: string[] = [];
 
     traverse.visit(ast, {
-        enter: ({ node }) => {
+        enter: ({node}) => {
             enterNames.push(node.type);
         },
     });
 
     expect(enterNames).toEqual([
         'SourceUnit',
-        'Namespace',
-        'Entity',
+        'NamespaceDeclaration',
+        'NamespaceVariable',
+        'EntityDeclaration',
         'BasicStructureDeclaration',
         'StructureName',
         'StructureRealName',
         'StructureAlias',
         'BasicStructureTypeDeclaration',
         'KnowledgeStructureType',
-        'EntityMeta',
+        'EntityMetaDeclaration',
         'BasicPropertyDeclaration',
         'BuiltinPropertyName',
         'BasicPropertyValue',

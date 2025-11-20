@@ -23,9 +23,9 @@ Person(人物): EntityType # 2nd tail comment
     desc2: description2 # 4th tail comment
     `)).toMatchObject({
         type: 'SourceUnit', nodes: [{
-            type: 'Namespace', value: 'Sample',
+            type: 'NamespaceDeclaration', variable: 'Sample',
         }, {
-            type: 'Entity', declaration: {
+            type: 'EntityDeclaration', declaration: {
                 name: {
                     realName: 'Person'
                 },
@@ -35,11 +35,11 @@ Person(人物): EntityType # 2nd tail comment
                 }
             },
             children: [{
-                type: 'EntityMeta', declaration: {
+                type: 'EntityMetaDeclaration', declaration: {
                     name: 'desc', value: 'description',
                 }
             }, {
-                type: 'EntityMeta', declaration: {
+                type: 'EntityMetaDeclaration', declaration: {
                     name: 'desc2', value: 'description2',
                 }
             }]

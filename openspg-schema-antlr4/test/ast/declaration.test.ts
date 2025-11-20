@@ -80,6 +80,7 @@ test('entity - inherited', () => {
 
 });
 
+
 test('entityMeta', () => {
     expect(createParse((parser) => parser.entityDeclaration())(`
 Person('人物'): EntityType

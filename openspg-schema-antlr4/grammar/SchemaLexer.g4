@@ -64,7 +64,14 @@ tokens { INDENT, INDENT_META, INDENT_PROP, INDENT_PROP_META, INDENT_SUBPROP, IND
     }
 
     private pushBack() {
-        this.inputStream.seek(this.inputStream.index - this.text.length)
+        const currentText = this.text
+        this.inputStream.seek(this.inputStream.index - currentText.length)
+        this.interpreter.line -= currentText.split('').filter(x => x === '\n').length
+        if (this.interpreter.column < currentText.length) {
+            this.interpreter.column = 0
+        } else {
+            this.interpreter.column -= currentText.length
+        }
     }
 }
 
@@ -279,4 +286,3 @@ mode BLOCK_VALUE_STATE ;
     CLOSE_BLOCK: ']]' -> popMode ;
     PLAIN_TEXT: ~[\]]+ ;
     PLAIN_TEXT_PATCH: ']' ;
-
