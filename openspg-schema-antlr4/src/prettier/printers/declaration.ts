@@ -14,7 +14,6 @@ export class PrinterDeclaration extends BasePrinter implements Record<`print${as
         path.call(print, 'declaration'),
         node.children.length > 0
             ? [
-                this.builders.hardline,
                 this.block(
                     this.builders.join(this.builders.hardline, path.map(print, 'children'))
                 )
@@ -26,7 +25,6 @@ export class PrinterDeclaration extends BasePrinter implements Record<`print${as
         path.call(print, 'declaration'),
         node.children.length > 0
             ? [
-                this.builders.hardline,
                 this.block(
                     this.builders.join(this.builders.hardline, path.map(print, 'children'))
                 )
@@ -38,7 +36,6 @@ export class PrinterDeclaration extends BasePrinter implements Record<`print${as
         path.call(print, 'declaration'),
         node.children.length > 0
             ? [
-                this.builders.hardline,
                 this.block(
                     this.builders.join(this.builders.hardline, path.map(print, 'children'))
                 )
@@ -50,7 +47,6 @@ export class PrinterDeclaration extends BasePrinter implements Record<`print${as
         path.call(print, 'declaration'),
         node.children.length > 0
             ? [
-                this.builders.hardline,
                 this.block(
                     this.builders.join(this.builders.hardline, path.map(print, 'children'))
                 )
@@ -62,7 +58,6 @@ export class PrinterDeclaration extends BasePrinter implements Record<`print${as
         path.call(print, 'declaration'),
         node.children.length > 0
             ? [
-                this.builders.hardline,
                 this.block(
                     this.builders.join(this.builders.hardline, path.map(print, 'children'))
                 )
