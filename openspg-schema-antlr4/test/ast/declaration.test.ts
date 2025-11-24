@@ -23,7 +23,9 @@ test('entity - basic', () => {
     expect(createParse((parser) => parser.entityDeclaration())(`Person(人物): EntityType`)).toMatchObject({
         type: 'EntityDeclaration', declaration: {
             name: {
-                realName: 'Person'
+                name: {
+                    realName: 'Person'
+                }
             },
             alias: '人物',
             structureType: {
@@ -37,7 +39,9 @@ test('entity - alias', () => {
     expect(createParse((parser) => parser.entityDeclaration())(`Person('alias literal'): EntityType`)).toMatchObject({
         type: 'EntityDeclaration', declaration: {
             name: {
-                realName: 'Person'
+                name: {
+                    realName: 'Person'
+                }
             },
             alias: '\'alias literal\'',
             structureType: {
@@ -49,7 +53,9 @@ test('entity - alias', () => {
     expect(createParse((parser) => parser.entityDeclaration())(`Person(alias  with  double  blank): EntityType`)).toMatchObject({
         type: 'EntityDeclaration', declaration: {
             name: {
-                realName: 'Person'
+                name: {
+                    realName: 'Person'
+                }
             },
             alias: 'alias with double blank',
             structureType: {
@@ -64,7 +70,9 @@ test('entity - inherited', () => {
     expect(createParse((parser) => parser.entityDeclaration())(`Person(人物) -> PersonType, LeaderType:`)).toMatchObject({
         type: 'EntityDeclaration', declaration: {
             name: {
-                realName: 'Person'
+                name: {
+                    realName: 'Person'
+                }
             },
             alias: '人物',
             structureType: {

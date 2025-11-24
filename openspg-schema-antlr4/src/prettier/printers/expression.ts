@@ -24,6 +24,11 @@ export class PrinterExpression extends BasePrinter implements Record<`print${ast
         path.call(print, 'structureType'),
     ]
 
+    // structureNameDeclaration: structureName ;
+    printStructureNameDeclaration: PrintFunc<ast.StructureNameDeclaration> = ({path, print}) => [
+        path.call(print, 'name'),
+    ]
+
     // basicStructureType : (BASIC_TYPE_KEYWORD DOT)? (INTEGER_KEYWORD | FLOAT_KEYWORD | TEXT_KEYWORD) ;
     printBasicStructureType: PrintFunc<ast.BasicStructureType> = ({node}) => node.text
 

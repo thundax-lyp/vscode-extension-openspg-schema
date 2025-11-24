@@ -19,7 +19,7 @@ import {StandardStructureType} from './standard-structure-type';
 import {StructureAlias} from './structure-alias';
 // import {StructureAliasDeclaration} from './structure-alias-declaration';
 import {StructureName} from './structure-name';
-// import {StructureNameDeclaration} from './structure-name-declaration';
+import {StructureNameDeclaration} from './structure-name-declaration';
 import {StructureRealName} from './structure-real-name';
 import {StructureSemanticName} from './structure-semantic-name';
 // import {StructureTypeDeclaration} from './structure-type-declaration';
@@ -47,7 +47,7 @@ export {
 	StructureAlias,
 // 	StructureAliasDeclaration,
 	StructureName,
-// 	StructureNameDeclaration,
+	StructureNameDeclaration,
 	StructureRealName,
 	StructureSemanticName,
 // 	StructureTypeDeclaration,

@@ -10,6 +10,8 @@ export class StructureAliasDeclaration extends BaseNodeUnion<
     | StructureAlias
 > {
 
+    structureAlias: StructureAlias
+
     constructor(ctx: StructureAliasDeclarationContext, visitor: SchemaParserVisitor<any>) {
         super(ctx, [
             ctx.structureAlias()

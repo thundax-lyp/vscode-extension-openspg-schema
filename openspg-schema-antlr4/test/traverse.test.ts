@@ -26,6 +26,7 @@ Person(人物): EntityType
         'NamespaceVariable',
         'EntityDeclaration',
         'BasicStructureDeclaration',
+        'StructureNameDeclaration',
         'StructureName',
         'StructureRealName',
         'StructureAlias',

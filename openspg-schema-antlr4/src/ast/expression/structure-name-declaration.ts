@@ -1,19 +1,17 @@
-import {BaseNodeUnion} from '../base';
+import {BaseNode} from '../base';
 import {SchemaParserVisitor, StructureNameDeclarationContext} from '../../antlr4';
 import {StructureName} from "./structure-name";
 
-export type StructureNameDeclarationNode =
-    | StructureName
-
 // structureNameDeclaration: structureName ;
-export class StructureNameDeclaration extends BaseNodeUnion<
-    | StructureName
-> {
+export class StructureNameDeclaration extends BaseNode {
+
+    type = 'StructureNameDeclaration' as const;
+
+    name: StructureName
 
     constructor(ctx: StructureNameDeclarationContext, visitor: SchemaParserVisitor<any>) {
-        super(ctx, [
-            ctx.structureName()
-        ], visitor);
+        super(ctx, visitor);
+        this.name = ctx.structureName().accept(visitor);
     }
 
 }

@@ -1,15 +1,15 @@
 import {BaseNode} from '../base';
 import {BasicStructureDeclarationContext, SchemaParserVisitor} from '../../antlr4';
 import {StructureTypeDeclarationNode} from "./structure-type-declaration";
-import {StructureNameDeclarationNode} from "./structure-name-declaration";
 import {StructureAliasDeclarationNode} from "./structure-alias-declaration";
+import {StructureNameDeclaration} from "./structure-name-declaration";
 
 // basicStructureDeclaration : structureNameDeclaration LPARENTH structureAliasDeclaration RPARENTH structureTypeDeclaration ;
 export class BasicStructureDeclaration extends BaseNode {
 
     type = 'BasicStructureDeclaration' as const;
 
-    name: StructureNameDeclarationNode
+    name: StructureNameDeclaration
     alias: StructureAliasDeclarationNode
     structureType: StructureTypeDeclarationNode
 

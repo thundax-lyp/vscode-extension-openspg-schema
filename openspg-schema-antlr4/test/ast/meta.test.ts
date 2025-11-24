@@ -27,7 +27,9 @@ Person(人物): EntityType # 2nd tail comment
         }, {
             type: 'EntityDeclaration', declaration: {
                 name: {
-                    realName: 'Person'
+                    name: {
+                        realName: 'Person'
+                    }
                 },
                 alias: '人物',
                 structureType: {
