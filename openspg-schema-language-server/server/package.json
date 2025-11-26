@@ -1,0 +1,30 @@
+{
+    "name": "openspg-schema-language-server",
+    "version": "0.0.1",
+    "description": "Language Server Protocol implementation for OpenSPG Schema",
+    "keywords": [
+        "openspg",
+        "language-server",
+        "lsp",
+        "vscode",
+        "extension"
+    ],
+    "license": "Apache-2.0",
+    "author": "Thundax <thundax@qq.com>",
+    "homepage": "https://github.com/thundax-lyp/vscode-extension-openspg-schema/openspg-schema-language-server",
+    "engines": {
+        "vscode": "^1.100.0"
+    },
+    "dependencies": {
+        "openspg-schema-antlr4": "file:../openspg-schema-antlr4-0.0.1-dev-0.tgz",
+        "prettier": "^3.6.2",
+        "type-fest": "^5.2.0",
+        "vscode-languageclient": "^9.0.1",
+        "vscode-languageserver": "^9.0.1",
+        "vscode-languageserver-textdocument": "^1.0.12",
+        "vscode-uri": "^3.1.0"
+    },
+    "devDependencies": {
+        "@types/vscode": "^1.100.0"
+    }
+}
