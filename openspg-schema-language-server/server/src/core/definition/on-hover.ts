@@ -3,9 +3,9 @@ import {OnHover} from '../context';
 import {
     BasicStructureDeclaration,
     BasicStructureType,
-    BasicStructureTypeDeclaration,
+    BasicStructureTypeExpression,
     EntityDeclaration,
-    InheritedStructureTypeDeclaration,
+    InheritedStructureTypeExpression,
     KnowledgeStructureType,
     StandardStructureType,
     StructureName,
@@ -40,13 +40,13 @@ export const onHover: OnHover = (ctx) => async (params) => {
 
 const handleStructureName = (document: SchemaTextDocument, selectedPath: TraversePath<StructureName>) => {
     const selectedParts = selectedPath.path.split('.');
-    if (!selectedParts.includes('BasicStructureTypeDeclaration') && !selectedParts.includes('InheritedStructureTypeDeclaration')) {
+    if (!selectedParts.includes('BasicStructureTypeExpression') && !selectedParts.includes('InheritedStructureTypeExpression')) {
         return null;
     }
 
     const targetNode = document.ast?.nodes
         .filter(node => node.type === 'EntityDeclaration')
-        .find(node => node.declaration.name.name.realName.text === selectedPath.node.realName.text);
+        .find(node => node.declaration.name.variable.realName.text === selectedPath.node.realName.text);
     if (!targetNode) {
         return null;
     }
@@ -69,7 +69,7 @@ class Printer implements Record<string, PrintFunc<any>> {
 
     printEntityDeclaration: PrintFunc<EntityDeclaration> = (node) => {
         const title = format(node.declaration, this)
-        const properties = (node.children.filter(x => x.declaration.name.text === 'properties')?.[0]?.children || [])
+        const properties = (node.children.filter(x => x.declaration.name.variable.text === 'properties')?.[0]?.children || [])
             .map(x => format(x.declaration, this))
             .map(x => `- ${x}`)
 
@@ -83,8 +83,8 @@ class Printer implements Record<string, PrintFunc<any>> {
     }
 
     printBasicStructureDeclaration: PrintFunc<BasicStructureDeclaration> = (node) => [
-        format(node.name.name, this),
-        this.italic(node.alias.text),
+        format(node.name.variable, this),
+        this.italic(node.alias.variable.text),
         format(node.structureType, this),
     ].join(' ')
 
@@ -93,7 +93,7 @@ class Printer implements Record<string, PrintFunc<any>> {
         node.realName.text
     ].map(x => this.bold(x)).join('#')
 
-    printBasicStructureTypeDeclaration: PrintFunc<BasicStructureTypeDeclaration> = (node) => this.italic(format(node.variable, this));
+    printBasicStructureTypeExpression: PrintFunc<BasicStructureTypeExpression> = (node) => this.italic(format(node.variable, this));
 
     printKnowledgeStructureType: PrintFunc<KnowledgeStructureType> = (node) => this.bold(node.text);
 
@@ -101,6 +101,6 @@ class Printer implements Record<string, PrintFunc<any>> {
 
     printStandardStructureType: PrintFunc<StandardStructureType> = (node) => this.bold(node.text);
 
-    printInheritedStructureTypeDeclaration: PrintFunc<InheritedStructureTypeDeclaration> = (node) => node.variables.map(x => this.italic(format(x, this))).join(',');
+    printInheritedStructureTypeExpression: PrintFunc<InheritedStructureTypeExpression> = (node) => node.variables.map(x => this.italic(format(x, this))).join(',');
 
 }

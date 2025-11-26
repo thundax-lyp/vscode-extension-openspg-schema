@@ -19,7 +19,6 @@ import {
     EntityDeclaration,
 } from './parser';
 import {documents} from './text-documents';
-import {EVENT_TEXT_DOCUMENTS_READ_CONTENT} from './constants';
 
 export interface SchemaExportItem {
     name: string    // Foo, Foo.Bar, Foo.Bar.baz etc.
@@ -165,8 +164,8 @@ export class SchemaTextDocument implements TextDocument {
                     result.push({
                         node, uri,
                         name: [
-                            ...node.declaration.name.name.semanticNames.map(({text}) => text),
-                            node.declaration.name.name.realName.text
+                            ...node.declaration.name.variable.semanticNames.map(({text}) => text),
+                            node.declaration.name.variable.realName.text
                         ].join('#')
                     });
                     break;

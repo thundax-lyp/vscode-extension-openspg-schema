@@ -68,3 +68,16 @@ export const findKeywordRange = (document: vscode.TextDocument, keyword: string,
     return new vscode.Range(start, start.translate(0, keyword.length))
 }
 
+export const createTicker = (interval = 100) => {
+    let fired = false
+    return {
+        fireTick: () => {
+            fired = true
+        },
+        waitingForTick: async () => {
+            while (!fired) {
+                await sleep(interval)
+            }
+        }
+    }
+}

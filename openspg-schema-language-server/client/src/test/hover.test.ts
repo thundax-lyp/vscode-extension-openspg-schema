@@ -1,14 +1,21 @@
 import * as vscode from 'vscode';
 import * as assert from 'assert';
-import {getDocUri, activate, doc, findKeywordRange, center} from './helper';
+import {getDocUri, activate, doc, findKeywordRange, center, createTicker} from './helper';
 import {MarkdownString} from "vscode";
 
 suite('Hover', () => {
-    const docUri = getDocUri('hover.schema');
+    const fileName = 'hover.schema';
+    const docUri = getDocUri(fileName);
 
-    test('EntityType Hover', async () => {
+    const {fireTick, waitingForTick} = createTicker()
+
+    test(`Open [${fileName}]`, async () => {
         await activate(docUri);
+        fireTick()
+    });
 
+    test('EntityType Hover [Keyword]', async () => {
+        await waitingForTick()
         await testHover(docUri, center(findKeywordRange(doc, 'Keyword', 1)), [
             new vscode.Hover(
                 new vscode.MarkdownString(
@@ -20,7 +27,10 @@ suite('Hover', () => {
                 findKeywordRange(doc, 'Keyword', 2)
             )
         ]);
+    });
 
+    test('EntityType Hover [Date]', async () => {
+        await waitingForTick()
         await testHover(docUri, center(findKeywordRange(doc, 'Date', 2)), [
             new vscode.Hover(
                 new vscode.MarkdownString(
@@ -32,7 +42,10 @@ suite('Hover', () => {
                 findKeywordRange(doc, 'Date', 1)
             )
         ]);
+    });
 
+    test('EntityType Hover [Chunk]', async () => {
+        await waitingForTick()
         await testHover(docUri, center(findKeywordRange(doc, 'Chunk', 2)), [
             new vscode.Hover(
                 new vscode.MarkdownString(
@@ -44,7 +57,10 @@ suite('Hover', () => {
                 findKeywordRange(doc, 'Chunk', 1)
             )
         ]);
+    });
 
+    test('EntityType Hover [GeographicLocation]', async () => {
+        await waitingForTick()
         await testHover(docUri, center(findKeywordRange(doc, 'GeographicLocation', 2)), [
             new vscode.Hover(
                 new vscode.MarkdownString(
@@ -56,7 +72,10 @@ suite('Hover', () => {
                 findKeywordRange(doc, 'GeographicLocation', 1)
             )
         ]);
+    });
 
+    test('EntityType Hover [Person]', async () => {
+        await waitingForTick()
         await testHover(docUri, center(findKeywordRange(doc, 'Person', 2)), [
             new vscode.Hover(
                 new vscode.MarkdownString(
@@ -69,7 +88,6 @@ suite('Hover', () => {
                 findKeywordRange(doc, 'Person', 1)
             )
         ]);
-
     });
 
 });
@@ -81,7 +99,7 @@ const getHoverContent = (hover: vscode.Hover) =>
 const testHover = async (docUri: vscode.Uri, position: vscode.Position, expectedHovers: vscode.Hover[]) => {
     const actualHovers = await vscode.commands.executeCommand<vscode.Hover[]>('vscode.executeHoverProvider', docUri, position);
 
-    assert(actualHovers.length === expectedHovers.length);
+    assert.equal(actualHovers.length, expectedHovers.length);
 
     expectedHovers.forEach((expectedHover, i) => {
         const actualHover = actualHovers[i];
