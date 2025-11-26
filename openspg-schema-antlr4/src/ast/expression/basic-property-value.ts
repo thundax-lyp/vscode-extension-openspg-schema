@@ -1,7 +1,12 @@
 import {BaseNodeString} from '../base';
 import {BasicPropertyValueContext, SchemaParserVisitor} from "../../antlr4";
 
-// basicPropertyValue      : KV_IDENTIFIER+;
+/**
+ * ### Grammar:
+ * ```
+ * basicPropertyValue : identifier+ ;
+ * ```
+ */
 export class BasicPropertyValue extends BaseNodeString {
 
     type = 'BasicPropertyValue' as const;

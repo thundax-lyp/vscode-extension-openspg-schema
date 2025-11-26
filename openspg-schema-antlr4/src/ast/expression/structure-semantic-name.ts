@@ -1,6 +1,11 @@
 import {BaseNodeString} from '../base';
 
-// structureSemanticName : DEFINITION_IDENTIFIER ;
+/**
+ * ### Grammar:
+ * ```
+ * structureSemanticName : identifier ;
+ * ```
+ */
 export class StructureSemanticName extends BaseNodeString {
 
     type = 'StructureSemanticName' as const;

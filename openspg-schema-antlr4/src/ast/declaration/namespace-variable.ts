@@ -1,6 +1,11 @@
 import {BaseNodeString} from '../base';
 
-// namespaceVariable : NAMESPACE_IDENTIFIER | NAMESPACE_STRING_LITERAL ;
+/**
+ * ### Grammar:
+ * ```
+ * namespaceVariable : identifier | string_literal ;
+ * ```
+ **/
 export class NamespaceVariable extends BaseNodeString {
 
     type = 'NamespaceVariable' as const;

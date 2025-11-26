@@ -1,7 +1,12 @@
 import {BaseNodeString} from '../base';
 import {KnowledgeStructureTypeContext, SchemaParserVisitor} from "../../antlr4";
 
-// knowledgeStructureType  : ENTITY_TYPE_KEYWORD | CONCEPT_TYPE_KEYWORD | EVENT_TYPE_KEYWORD | INDEX_TYPE_KEYWORD ;
+/**
+ * ### Grammar:
+ * ```
+ * knowledgeStructureType : 'EntityType' | 'ConceptType' | 'EventType' | 'IndexType' ;
+ * ```
+ */
 export class KnowledgeStructureType extends BaseNodeString {
 
     type = 'KnowledgeStructureType' as const;

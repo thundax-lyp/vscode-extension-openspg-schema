@@ -2,7 +2,7 @@ import {expect, test} from 'vitest';
 import {createParse} from "../utils.test";
 
 
-test('comment', () => {
+test('meta', () => {
     expect(createParse((parser) => parser.sourceUnit())(`
 /**
  * top comment
@@ -27,22 +27,34 @@ Person(人物): EntityType # 2nd tail comment
         }, {
             type: 'EntityDeclaration', declaration: {
                 name: {
-                    name: {
+                    type: 'StructureNameExpression', variable: {
                         realName: 'Person'
                     }
                 },
-                alias: '人物',
+                alias: {
+                    type: 'StructureAliasExpression', variable: '人物'
+                },
                 structureType: {
-                    type: 'BasicStructureTypeDeclaration', variable: 'EntityType',
+                    type: 'BasicStructureTypeExpression', variable: 'EntityType',
                 }
             },
             children: [{
                 type: 'EntityMetaDeclaration', declaration: {
-                    name: 'desc', value: 'description',
+                    name: {
+                        variable: 'desc'
+                    },
+                    value: {
+                        variable: 'description'
+                    },
                 }
             }, {
                 type: 'EntityMetaDeclaration', declaration: {
-                    name: 'desc2', value: 'description2',
+                    name: {
+                        variable: 'desc2'
+                    },
+                    value: {
+                        variable: 'description2'
+                    },
                 }
             }]
         }],

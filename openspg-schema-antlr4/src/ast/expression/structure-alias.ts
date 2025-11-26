@@ -1,7 +1,12 @@
 import {BaseNodeString} from '../base';
 import {SchemaParserVisitor, StructureAliasContext} from "../../antlr4";
 
-// structureAlias : (DEFINITION_IDENTIFIER | DEFINITION_STRING_LITERAL)+ ;
+/**
+ * ### Grammar:
+ * ```
+ * structureAlias : STRING_LITERAL+ ;
+ * ```
+ */
 export class StructureAlias extends BaseNodeString {
 
     type = 'StructureAlias' as const;

@@ -20,24 +20,24 @@ namespaceVariable : NAMESPACE_IDENTIFIER | NAMESPACE_STRING_LITERAL ;
 // BigChunk("大文本块"): StandardType.Text
 // MultiChunk("多个文本块") -> Chunk, BigChunk
 // IND#belongTo(属于): TaxOfRiskApp
-basicStructureDeclaration : structureNameDeclaration LPARENTH structureAliasDeclaration RPARENTH structureTypeDeclaration ;
+basicStructureDeclaration : structureNameExpression LPARENTH structureAliasExpression RPARENTH structureTypeExpression ;
 
-structureNameDeclaration: structureName ;
+structureNameExpression : structureName ;
 structureName           : (structureSemanticName HASH)* structureRealName ;
 structureSemanticName   : DEFINITION_IDENTIFIER ;
 structureRealName       : DEFINITION_IDENTIFIER ;
 
-structureAliasDeclaration   : structureAlias ;
+structureAliasExpression    : structureAlias ;
 structureAlias              : (DEFINITION_IDENTIFIER | DEFINITION_STRING_LITERAL)+ ;
 
 // : EntityType
 // -> EntityType, ConceptType, MyType:
-structureTypeDeclaration : basicStructureTypeDeclaration | inheritedStructureTypeDeclaration ;
+structureTypeExpression : basicStructureTypeExpression | inheritedStructureTypeExpression ;
 
-basicStructureTypeDeclaration   : COLON basicStructureTypeVariable ;
+basicStructureTypeExpression    : COLON basicStructureTypeVariable ;
 basicStructureTypeVariable      : knowledgeStructureType | basicStructureType | standardStructureType | variableStructureType ;
 
-inheritedStructureTypeDeclaration : RIGHT_ARROW (inheritedStructureTypeVariable COMMA)* inheritedStructureTypeVariable COLON ;
+inheritedStructureTypeExpression: RIGHT_ARROW (inheritedStructureTypeVariable COMMA)* inheritedStructureTypeVariable COLON ;
 inheritedStructureTypeVariable  : knowledgeStructureType | standardStructureType | variableStructureType ;
 
 knowledgeStructureType  : ENTITY_TYPE_KEYWORD | CONCEPT_TYPE_KEYWORD | EVENT_TYPE_KEYWORD | INDEX_TYPE_KEYWORD ;
@@ -52,16 +52,16 @@ variableStructureType   : structureName ;
  * desc: 文本块
  * desc: [[ plain text... ]]
  */
-basicPropertyDeclaration : propertyNameDeclaration KV_COLON propertyValueDeclaration? ;
+basicPropertyDeclaration : propertyNameExpression KV_COLON propertyValueExpression? ;
 
-propertyNameDeclaration : propertyNameVariable;
+propertyNameExpression  : propertyNameVariable;
 propertyNameVariable    : builtinPropertyName | basicPropertyName ;
 basicPropertyName       : KV_IDENTIFIER ;
 builtinPropertyName     : DESC_KEYWORD | PROPERTIES_KEYWORD | RELATIONS_KEYWORD | HYPERNYMP_PREDICATE_KEYWORD | REGULAR_KEYWORD
                         | SPREADABLE_KEYWORD | AUTORELATE_KEYWORD | CONSTRAINT_KEYWORD | RULE_KEYWORD | INDEX_KEYWORD
                         ;
 
-propertyValueDeclaration: propertyValueVariable;
+propertyValueExpression : propertyValueVariable;
 propertyValueVariable   : builtinPropertyValue | blockPropertyValue | basicPropertyValue;
 basicPropertyValue      : (KVV_TEXT | KVV_STRING_LITERAL)+;
 builtinPropertyValue    : IS_A_KEYWORD | LOCATE_AT_KEYWORD | MANNER_OF_KEYWORD | KV_TEXT_KEYWORD | VECTOR_KEYWORD

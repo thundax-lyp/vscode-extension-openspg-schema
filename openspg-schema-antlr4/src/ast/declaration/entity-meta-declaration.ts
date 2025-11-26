@@ -3,6 +3,16 @@ import {EntityMetaDeclarationContext, SchemaParserVisitor} from '../../antlr4';
 import {BasicPropertyDeclaration} from "../expression";
 import {PropertyDeclaration} from "./property-declaration";
 
+/**
+ * ### Grammar:
+ * ```
+ * entityMetaDeclaration : entityMetaHead entityMetaBody? ;
+ *
+ * entityMetaHead : basicStructureDeclaration ;
+ *
+ * entityMetaBody : entityMetaDeclaration+ ;
+ * ```
+ **/
 export class EntityMetaDeclaration extends BaseNode {
 
     type = 'EntityMetaDeclaration' as const;

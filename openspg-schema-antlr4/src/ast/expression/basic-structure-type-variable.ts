@@ -12,7 +12,12 @@ export type BasicStructureTypeVariableNode =
     | VariableStructureTypeNode
 
 
-// basicStructureTypeVariable      : knowledgeStructureType | basicStructureType | standardStructureType | variableStructureType ;
+/**
+ * ### Grammar:
+ * ```
+ * basicStructureTypeVariable : knowledgeStructureType | basicStructureType | standardStructureType | variableStructureType ;
+ * ```
+ */
 export class BasicStructureTypeVariable extends BaseNodeUnion<
     | KnowledgeStructureType
     | BasicStructureType

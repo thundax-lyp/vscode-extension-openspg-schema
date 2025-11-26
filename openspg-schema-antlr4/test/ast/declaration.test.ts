@@ -23,13 +23,15 @@ test('entity - basic', () => {
     expect(createParse((parser) => parser.entityDeclaration())(`Person(人物): EntityType`)).toMatchObject({
         type: 'EntityDeclaration', declaration: {
             name: {
-                name: {
+                variable: {
                     realName: 'Person'
                 }
             },
-            alias: '人物',
+            alias: {
+                variable: '人物'
+            },
             structureType: {
-                type: 'BasicStructureTypeDeclaration', variable: 'EntityType',
+                type: 'BasicStructureTypeExpression', variable: 'EntityType',
             }
         }
     });
@@ -39,13 +41,15 @@ test('entity - alias', () => {
     expect(createParse((parser) => parser.entityDeclaration())(`Person('alias literal'): EntityType`)).toMatchObject({
         type: 'EntityDeclaration', declaration: {
             name: {
-                name: {
+                variable: {
                     realName: 'Person'
                 }
             },
-            alias: '\'alias literal\'',
+            alias: {
+                variable: '\'alias literal\''
+            },
             structureType: {
-                type: 'BasicStructureTypeDeclaration', variable: 'EntityType',
+                type: 'BasicStructureTypeExpression', variable: 'EntityType',
             }
         }
     });
@@ -53,13 +57,15 @@ test('entity - alias', () => {
     expect(createParse((parser) => parser.entityDeclaration())(`Person(alias  with  double  blank): EntityType`)).toMatchObject({
         type: 'EntityDeclaration', declaration: {
             name: {
-                name: {
+                variable: {
                     realName: 'Person'
                 }
             },
-            alias: 'alias with double blank',
+            alias: {
+                variable: 'alias with double blank'
+            },
             structureType: {
-                type: 'BasicStructureTypeDeclaration', variable: 'EntityType',
+                type: 'BasicStructureTypeExpression', variable: 'EntityType',
             }
         }
     });
@@ -70,13 +76,15 @@ test('entity - inherited', () => {
     expect(createParse((parser) => parser.entityDeclaration())(`Person(人物) -> PersonType, LeaderType:`)).toMatchObject({
         type: 'EntityDeclaration', declaration: {
             name: {
-                name: {
+                variable: {
                     realName: 'Person'
                 }
             },
-            alias: '人物',
+            alias: {
+                variable: '人物'
+            },
             structureType: {
-                type: 'InheritedStructureTypeDeclaration', variables: [{
+                type: 'InheritedStructureTypeExpression', variables: [{
                     type: 'StructureName', realName: 'PersonType'
                 }, {
                     type: 'StructureName', realName: 'LeaderType'
@@ -96,7 +104,11 @@ Person('人物'): EntityType
     `)).toMatchObject({
         type: 'EntityDeclaration', children: [{
             type: 'EntityMetaDeclaration', declaration: {
-                name: 'desc', value: 'description',
+                name: {
+                    variable: 'desc'
+                }, value: {
+                    variable: 'description'
+                },
             }
         }]
     });
@@ -107,7 +119,12 @@ Person('人物'): EntityType
     `)).toMatchObject({
         type: 'EntityDeclaration', children: [{
             type: 'EntityMetaDeclaration', declaration: {
-                name: 'desc', value: 'description with blank',
+                name: {
+                    variable: 'desc'
+                },
+                value: {
+                    variable: 'description with blank'
+                },
             }
         }]
     });
@@ -118,7 +135,12 @@ Person('人物'): EntityType
     `)).toMatchObject({
         type: 'EntityDeclaration', children: [{
             type: 'EntityMetaDeclaration', declaration: {
-                name: 'desc', value: '[[  good  ]]',
+                name: {
+                    variable: 'desc'
+                },
+                value: {
+                    variable: '[[  good  ]]'
+                },
             }
         }]
     });

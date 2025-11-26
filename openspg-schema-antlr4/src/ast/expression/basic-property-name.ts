@@ -1,6 +1,11 @@
 import {BaseNodeString} from '../base';
 
-// basicPropertyName       : KV_IDENTIFIER ;
+/**
+ * ### Grammar:
+ * ```
+ * basicPropertyName : identifier ;
+ * ```
+ */
 export class BasicPropertyName extends BaseNodeString {
 
     type = 'BasicPropertyName' as const;

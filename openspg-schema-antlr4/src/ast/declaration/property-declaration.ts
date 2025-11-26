@@ -3,6 +3,16 @@ import {PropertyDeclarationContext, SchemaParserVisitor} from '../../antlr4';
 import {BasicStructureDeclaration} from "../expression";
 import {PropertyMetaDeclaration} from "./property-meta-declaration";
 
+/**
+ * ### Grammar:
+ * ```
+ * propertyDeclaration : propertyHead propertyBody? ;
+ *
+ * propertyHead : basicStructureDeclaration ;
+ *
+ * propertyBody : propertyMetaDeclaration+ ;
+ * ```
+ **/
 export class PropertyDeclaration extends BaseNode {
 
     type = 'PropertyDeclaration' as const;

@@ -1,23 +1,43 @@
 import {BaseNode} from '../base';
 import {BasicStructureDeclarationContext, SchemaParserVisitor} from '../../antlr4';
-import {StructureTypeDeclarationNode} from "./structure-type-declaration";
-import {StructureAliasDeclarationNode} from "./structure-alias-declaration";
-import {StructureNameDeclaration} from "./structure-name-declaration";
+import {StructureNameExpression} from "./structure-name-expression";
+import {StructureAliasExpression} from "./structure-alias-expression";
+import {StructureTypeExpressionNode} from "./structure-type-expression";
 
-// basicStructureDeclaration : structureNameDeclaration LPARENTH structureAliasDeclaration RPARENTH structureTypeDeclaration ;
+/**
+ * ### Grammar:
+ * ```
+ * basicStructureDeclaration : structureNameDeclaration '(' structureAliasDeclaration ')' structureTypeDeclaration ;
+ * ```
+ * ### Example:
+ * ```
+ * Person(人物): EntityType
+ * ```
+ */
 export class BasicStructureDeclaration extends BaseNode {
 
     type = 'BasicStructureDeclaration' as const;
 
-    name: StructureNameDeclaration
-    alias: StructureAliasDeclarationNode
-    structureType: StructureTypeDeclarationNode
+    name: StructureNameExpression
+    alias: StructureAliasExpression
+
+    /**
+     * ```typescript
+     * export type StructureTypeExpressionNode =
+     *     | BasicStructureTypeExpression
+     *     | InheritedStructureTypeExpression
+     * ```
+     * > **Links**:
+     * > - {@link BasicStructureTypeExpression}
+     * > - {@link InheritedStructureTypeExpression}
+     */
+    structureType: StructureTypeExpressionNode
 
     constructor(ctx: BasicStructureDeclarationContext, visitor: SchemaParserVisitor<any>) {
         super(ctx, visitor);
-        this.name = ctx.structureNameDeclaration().accept(visitor)
-        this.alias = ctx.structureAliasDeclaration().accept(visitor)
-        this.structureType = ctx.structureTypeDeclaration().accept(visitor)
+        this.name = ctx.structureNameExpression().accept(visitor)
+        this.alias = ctx.structureAliasExpression().accept(visitor)
+        this.structureType = ctx.structureTypeExpression().accept(visitor)
     }
 
 }

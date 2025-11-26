@@ -1,7 +1,20 @@
 import {BaseNodeString} from '../base';
 import {BasicStructureTypeContext, SchemaParserVisitor} from "../../antlr4";
 
-// basicStructureType : (BASIC_TYPE_KEYWORD DOT)? (INTEGER_KEYWORD | FLOAT_KEYWORD | TEXT_KEYWORD) ;
+/**
+ * ### Grammar:
+ * ```
+ * basicStructureType : ('BasicType.')? ('Integer' | 'Float' | 'Text') ;
+ * ```
+ * ### Example:
+ * ```
+ * BasicType.Integer
+ * ```
+ * ### Example:
+ * ```
+ * Text
+ * ```
+ */
 export class BasicStructureType extends BaseNodeString {
 
     type = 'BasicStructureType' as const;

@@ -13,7 +13,7 @@ export class SchemaASTBuilder extends parser.SchemaParserVisitor<ast.SyntaxNode 
 
     visitBasicStructureDeclaration = (ctx: parser.BasicStructureDeclarationContext) => new ast.BasicStructureDeclaration(ctx, this);
 
-    visitStructureNameDeclaration = (ctx: parser.StructureNameDeclarationContext) => new ast.StructureNameDeclaration(ctx, this);
+    visitStructureNameExpression = (ctx: parser.StructureNameExpressionContext) => new ast.StructureNameExpression(ctx, this);
 
     visitStructureName = (ctx: parser.StructureNameContext) => new ast.StructureName(ctx, this);
 
@@ -21,17 +21,17 @@ export class SchemaASTBuilder extends parser.SchemaParserVisitor<ast.SyntaxNode 
 
     visitStructureRealName = (ctx: parser.StructureRealNameContext) => new ast.StructureRealName(ctx, this);
 
-    visitStructureAliasDeclaration = (ctx: parser.StructureAliasDeclarationContext) => new ast.StructureAliasDeclaration(ctx, this);
+    visitStructureAliasExpression = (ctx: parser.StructureAliasExpressionContext) => new ast.StructureAliasExpression(ctx, this);
 
     visitStructureAlias = (ctx: parser.StructureAliasContext) => new ast.StructureAlias(ctx, this);
 
-    visitStructureTypeDeclaration = (ctx: parser.StructureTypeDeclarationContext) => new ast.StructureTypeDeclaration(ctx, this);
+    visitStructureTypeExpression = (ctx: parser.StructureTypeExpressionContext) => new ast.StructureTypeExpression(ctx, this);
 
-    visitBasicStructureTypeDeclaration = (ctx: parser.BasicStructureTypeDeclarationContext) => new ast.BasicStructureTypeDeclaration(ctx, this);
+    visitBasicStructureTypeExpression = (ctx: parser.BasicStructureTypeExpressionContext) => new ast.BasicStructureTypeExpression(ctx, this);
 
     visitBasicStructureTypeVariable = (ctx: parser.BasicStructureTypeVariableContext) => new ast.BasicStructureTypeVariable(ctx, this);
 
-    visitInheritedStructureTypeDeclaration = (ctx: parser.InheritedStructureTypeDeclarationContext) => new ast.InheritedStructureTypeDeclaration(ctx, this);
+    visitInheritedStructureTypeExpression = (ctx: parser.InheritedStructureTypeExpressionContext) => new ast.InheritedStructureTypeExpression(ctx, this);
 
     visitInheritedStructureTypeVariable = (ctx: parser.InheritedStructureTypeVariableContext) => new ast.InheritedStructureTypeVariable(ctx, this);
 
@@ -45,7 +45,7 @@ export class SchemaASTBuilder extends parser.SchemaParserVisitor<ast.SyntaxNode 
 
     visitBasicPropertyDeclaration = (ctx: parser.BasicPropertyDeclarationContext) => new ast.BasicPropertyDeclaration(ctx, this);
 
-    visitPropertyNameDeclaration = (ctx: parser.PropertyNameDeclarationContext) => new ast.PropertyNameDeclaration(ctx, this);
+    visitPropertyNameExpression = (ctx: parser.PropertyNameExpressionContext) => new ast.PropertyNameExpression(ctx, this);
 
     visitPropertyNameVariable = (ctx: parser.PropertyNameVariableContext) => new ast.PropertyNameVariable(ctx, this);
 
@@ -53,7 +53,7 @@ export class SchemaASTBuilder extends parser.SchemaParserVisitor<ast.SyntaxNode 
 
     visitBuiltinPropertyName = (ctx: parser.BuiltinPropertyNameContext) => new ast.BuiltinPropertyName(ctx, this);
 
-    visitPropertyValueDeclaration = (ctx: parser.PropertyValueDeclarationContext) => new ast.PropertyValueDeclaration(ctx, this);
+    visitPropertyValueExpression = (ctx: parser.PropertyValueExpressionContext) => new ast.PropertyValueExpression(ctx, this);
 
     visitPropertyValueVariable = (ctx: parser.PropertyValueVariableContext) => new ast.PropertyValueVariable(ctx, this);
 

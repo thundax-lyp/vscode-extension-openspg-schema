@@ -3,26 +3,26 @@ import {BasicPropertyName} from './basic-property-name';
 import {BasicPropertyValue} from './basic-property-value';
 import {BasicStructureDeclaration} from './basic-structure-declaration';
 import {BasicStructureType} from './basic-structure-type';
-import {BasicStructureTypeDeclaration} from './basic-structure-type-declaration';
+import {BasicStructureTypeExpression} from './basic-structure-type-expression';
 // import {BasicStructureTypeVariable} from './basic-structure-type-variable';
 import {BlockPropertyValue} from './block-property-value';
 import {BuiltinPropertyName} from './builtin-property-name';
 import {BuiltinPropertyValue} from './builtin-property-value';
-import {InheritedStructureTypeDeclaration} from './inherited-structure-type-declaration';
+import {InheritedStructureTypeExpression} from './inherited-structure-type-expression';
 // import {InheritedStructureTypeVariable} from './inherited-structure-type-variable';
 import {KnowledgeStructureType} from './knowledge-structure-type';
-// import {PropertyNameDeclaration} from './property-name-declaration';
+import {PropertyNameExpression} from './property-name-expression';
 // import {PropertyNameVariable} from './property-name-variable';
-// import {PropertyValueDeclaration} from './property-value-declaration';
+import {PropertyValueExpression} from './property-value-expression';
 // import {PropertyValueVariable} from './property-value-variable';
 import {StandardStructureType} from './standard-structure-type';
 import {StructureAlias} from './structure-alias';
-// import {StructureAliasDeclaration} from './structure-alias-declaration';
+import {StructureAliasExpression} from './structure-alias-expression';
 import {StructureName} from './structure-name';
-import {StructureNameDeclaration} from './structure-name-declaration';
+import {StructureNameExpression} from './structure-name-expression';
 import {StructureRealName} from './structure-real-name';
 import {StructureSemanticName} from './structure-semantic-name';
-// import {StructureTypeDeclaration} from './structure-type-declaration';
+// import {StructureTypeExpression} from './structure-type-expression';
 // import {VariableStructureType} from './variable-structure-type';
 
 export {
@@ -31,25 +31,25 @@ export {
 	BasicPropertyValue,
 	BasicStructureDeclaration,
 	BasicStructureType,
-	BasicStructureTypeDeclaration,
+	BasicStructureTypeExpression,
 // 	BasicStructureTypeVariable,
 	BlockPropertyValue,
 	BuiltinPropertyName,
 	BuiltinPropertyValue,
-	InheritedStructureTypeDeclaration,
+	InheritedStructureTypeExpression,
 // 	InheritedStructureTypeVariable,
 	KnowledgeStructureType,
-// 	PropertyNameDeclaration,
+	PropertyNameExpression,
 // 	PropertyNameVariable,
-// 	PropertyValueDeclaration,
+	PropertyValueExpression,
 // 	PropertyValueVariable,
 	StandardStructureType,
 	StructureAlias,
-// 	StructureAliasDeclaration,
+	StructureAliasExpression,
 	StructureName,
-	StructureNameDeclaration,
+	StructureNameExpression,
 	StructureRealName,
 	StructureSemanticName,
-// 	StructureTypeDeclaration,
+// 	StructureTypeExpression,
 // 	VariableStructureType,
 }

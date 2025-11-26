@@ -4,7 +4,7 @@ import {BasePrinter, PrintFunc} from './base'
 
 export class PrinterExpression extends BasePrinter implements Record<`print${ast.ExpressionNodeType}`, PrintFunc<any>> {
 
-    // basicPropertyDeclaration : propertyNameDeclaration KV_COLON propertyValueDeclaration? ;
+    // basicPropertyDeclaration : propertyNameExpression KV_COLON propertyValueExpression? ;
     printBasicPropertyDeclaration: PrintFunc<ast.BasicPropertyDeclaration> = ({node, path, print}): Doc[] => [
         path.call(print, 'name'),
         this.colon,
@@ -24,16 +24,11 @@ export class PrinterExpression extends BasePrinter implements Record<`print${ast
         path.call(print, 'structureType'),
     ]
 
-    // structureNameDeclaration: structureName ;
-    printStructureNameDeclaration: PrintFunc<ast.StructureNameDeclaration> = ({path, print}) => [
-        path.call(print, 'name'),
-    ]
-
     // basicStructureType : (BASIC_TYPE_KEYWORD DOT)? (INTEGER_KEYWORD | FLOAT_KEYWORD | TEXT_KEYWORD) ;
     printBasicStructureType: PrintFunc<ast.BasicStructureType> = ({node}) => node.text
 
-    // basicStructureTypeDeclaration : COLON basicStructureTypeVariable ;
-    printBasicStructureTypeDeclaration: PrintFunc<ast.BasicStructureTypeDeclaration> = ({path, print}) => [
+    // basicStructureTypeExpression : COLON basicStructureTypeVariable ;
+    printBasicStructureTypeExpression: PrintFunc<ast.BasicStructureTypeExpression> = ({path, print}) => [
         this.colon, this.space, path.call(print, 'variable')
     ]
 
@@ -52,8 +47,8 @@ export class PrinterExpression extends BasePrinter implements Record<`print${ast
     // ;
     printBuiltinPropertyValue: PrintFunc<ast.BuiltinPropertyValue> = ({node}) => node.text
 
-    // inheritedStructureTypeDeclaration : RIGHT_ARROW (inheritedStructureTypeVariable COMMA)* inheritedStructureTypeVariable COLON ;
-    printInheritedStructureTypeDeclaration: PrintFunc<ast.InheritedStructureTypeDeclaration> = ({path, print}) => [
+    // inheritedStructureTypeExpression : RIGHT_ARROW (inheritedStructureTypeVariable COMMA)* inheritedStructureTypeVariable COLON ;
+    printInheritedStructureTypeExpression: PrintFunc<ast.InheritedStructureTypeExpression> = ({path, print}) => [
         '->', this.space,
         this.builders.join(
             [this.comma, this.space], path.map(print, 'variables')
@@ -64,11 +59,23 @@ export class PrinterExpression extends BasePrinter implements Record<`print${ast
     // knowledgeStructureType  : ENTITY_TYPE_KEYWORD | CONCEPT_TYPE_KEYWORD | EVENT_TYPE_KEYWORD | INDEX_TYPE_KEYWORD ;
     printKnowledgeStructureType: PrintFunc<ast.KnowledgeStructureType> = ({node}) => node.text
 
+    printPropertyNameExpression: PrintFunc<ast.PropertyNameExpression> = ({path, print}): Doc[] => [
+        path.call(print, 'variable'),
+    ]
+
+    printPropertyValueExpression: PrintFunc<ast.PropertyValueExpression> = ({path, print}): Doc[] => [
+        path.call(print, 'variable'),
+    ]
+
     // standardStructureType : STANDARD_TYPE_KEYWORD DOT DEFINITION_IDENTIFIER ;
     printStandardStructureType: PrintFunc<ast.StandardStructureType> = ({node}) => node.text
 
     // structureAlias : (DEFINITION_IDENTIFIER | DEFINITION_STRING_LITERAL)+ ;
     printStructureAlias: PrintFunc<ast.StructureAlias> = ({node}) => node.text
+
+    printStructureAliasExpression: PrintFunc<ast.StructureAliasExpression> = ({path, print}) => [
+        path.call(print, 'variable'),
+    ]
 
     // structureName : (structureSemanticName HASH)* structureRealName ;
     printStructureName: PrintFunc<ast.StructureName> = ({path, print}) => [
@@ -76,6 +83,11 @@ export class PrinterExpression extends BasePrinter implements Record<`print${ast
             ...path.map(print, 'semanticNames'),
             path.call(print, 'realName'),
         ])
+    ]
+
+    // structureNameExpression: structureName ;
+    printStructureNameExpression: PrintFunc<ast.StructureNameExpression> = ({path, print}) => [
+        path.call(print, 'variable'),
     ]
 
     // structureRealName : DEFINITION_IDENTIFIER ;

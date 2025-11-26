@@ -3,7 +3,18 @@ import {SchemaParserVisitor, StructureNameContext} from '../../antlr4';
 import {StructureSemanticName} from "./structure-semantic-name";
 import {StructureRealName} from "./structure-real-name";
 
-// structureName           : (structureSemanticName HASH)* structureRealName ;
+/**
+ * ### Grammar:
+ * ```
+ * structureName : (structureSemanticName '#')* structureRealName ;
+ * ```
+ * ### Example:
+ * ```
+ * 上海#浦东新区
+ *
+ * 浦东新区
+ * ```
+ */
 export class StructureName extends BaseNode {
 
     type = 'StructureName' as const;

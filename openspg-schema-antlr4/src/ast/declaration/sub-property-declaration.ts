@@ -3,6 +3,16 @@ import {SchemaParserVisitor, SubPropertyDeclarationContext} from '../../antlr4';
 import {BasicStructureDeclaration} from "../expression";
 import {SubPropertyMetaDeclaration} from "./sub-property-meta-declaration";
 
+/**
+ * ### Grammar:
+ * ```
+ * subPropertyDeclaration : subPropertyHead subPropertyBody? ;
+ *
+ * subPropertyHead : basicStructureDeclaration ;
+ *
+ * subPropertyBody : subPropertyMetaDeclaration+ ;
+ * ```
+ **/
 export class SubPropertyDeclaration extends BaseNode {
 
     type = 'SubPropertyDeclaration' as const;

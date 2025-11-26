@@ -1,7 +1,12 @@
 import {BaseNodeString} from '../base';
 import {SchemaParserVisitor, StandardStructureTypeContext} from "../../antlr4";
 
-// standardStructureType : STANDARD_TYPE_KEYWORD DOT DEFINITION_IDENTIFIER ;
+/**
+ * ### Grammar:
+ * ```
+ * standardStructureType : 'StandardType.' identifier ;
+ * ```
+ */
 export class StandardStructureType extends BaseNodeString {
 
     type = 'StandardStructureType' as const;

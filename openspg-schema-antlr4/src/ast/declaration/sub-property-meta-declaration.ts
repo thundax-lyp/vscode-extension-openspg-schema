@@ -2,7 +2,12 @@ import {BaseNode} from '../base';
 import {SchemaParserVisitor, SubPropertyMetaDeclarationContext} from '../../antlr4';
 import {BasicPropertyDeclaration} from "../expression";
 
-// subPropertyMeta : INDENT_SUBPROP_META basicPropertyDeclaration ;
+/**
+ * ### Grammar:
+ * ```
+ * subPropertyMetaDeclaration : basicPropertyDeclaration ;
+ * ```
+ **/
 export class SubPropertyMetaDeclaration extends BaseNode {
 
     type = 'SubPropertyMetaDeclaration' as const;

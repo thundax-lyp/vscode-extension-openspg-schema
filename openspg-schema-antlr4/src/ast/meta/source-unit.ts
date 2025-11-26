@@ -2,16 +2,28 @@ import {BaseNode} from '../base';
 import {SchemaParserVisitor, SourceUnitContext} from '../../antlr4';
 import {EntityDeclaration, NamespaceDeclaration} from '../declaration';
 
-type SourceUnitNode =
+export type SourceUnitNode =
     | NamespaceDeclaration
     | EntityDeclaration
     ;
 
+/**
+ * AST Root Element
+ */
 export class SourceUnit extends BaseNode {
 
     type = 'SourceUnit' as const;
 
-    // 子节点
+    /**
+     * ```typescript
+     * type SourceUnitNode =
+     *     | NamespaceDeclaration
+     *     | EntityDeclaration
+     * ```
+     * > **Links**:
+     * > - {@link NamespaceDeclaration}
+     * > - {@link EntityDeclaration}
+     */
     nodes: SourceUnitNode[] = [];
 
     constructor(ctx: SourceUnitContext, visitor: SchemaParserVisitor<any>) {

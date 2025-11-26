@@ -2,7 +2,14 @@ import {BaseNode} from '../base';
 import {NamespaceDeclarationContext, SchemaParserVisitor} from '../../antlr4';
 import {NamespaceVariable} from "./namespace-variable";
 
-// namespaceDeclaration : NAMESPACE_KEY namespaceVariable ;
+/**
+ * ### Grammar:
+ * ```
+ * namespaceDeclaration : 'namespace' namespaceVariable? ;
+ *
+ * namespaceVariable : identifier | string_literal ;
+ * ```
+ **/
 export class NamespaceDeclaration extends BaseNode {
 
     type = 'NamespaceDeclaration' as const;
