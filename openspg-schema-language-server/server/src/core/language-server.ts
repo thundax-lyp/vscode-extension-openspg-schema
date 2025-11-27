@@ -4,8 +4,9 @@ import {TextDocuments} from "./common/text-documents";
 import {Context} from "./context";
 import {onExit, onInitialize, onInitialized} from "./initialize";
 import {onDocumentSymbol} from "./symbol";
-import {onDocumentFormatting, onDocumentOnTypeFormatting, onDocumentRangeFormatting} from "./format";
-import {onDefinition, onDocumentLinkResolve, onDocumentLinks, onHover, onReferences} from "./definition";
+import {onDocumentFormatting} from "./format";
+import {onDefinition, onHover, onReferences} from "./definition";
+import {onDocumentHighlight} from "./highlight";
 
 const initDocuments = (connection: Connection): TextDocuments<SchemaTextDocument> => {
     const documents = new TextDocuments(SchemaTextDocument);
@@ -45,14 +46,16 @@ export const listen = (connection: Connection) => {
     // connection.onWillSaveTextDocumentWaitUntil
     // connection.sendDiagnostics
 
-    // Command hooks
-
-    // definition
-
     connection.onHover(onHover(context));
 
     // connection.onCompletion(onCompletion(context));
     // connection.onCompletionResolve(onCompletion(context));
+
+    /**
+     * 函数签名提示
+     * 触发时机：用户输入函数调用时（如输入"("），VSCode会自动请求签名信息。
+     * 返回内容：包含函数参数、返回值等帮助信息，通过SignatureHelp对象传递
+     */
     // connection.onSignatureHelp(onSignatureHelp(context));
 
     // connection.onDeclaration(onSignatureHelp(context));
@@ -60,7 +63,7 @@ export const listen = (connection: Connection) => {
     // connection.onTypeDefinition(onSignatureHelp(context));
     // connection.onImplementation(onImplementation(serverState));
     connection.onReferences(onReferences(context));
-    // connection.onDocumentHighlight(onSignatureHelp(context));
+    connection.onDocumentHighlight(onDocumentHighlight(context));
     connection.onDocumentSymbol(onDocumentSymbol(context));
 
     // connection.onWorkspaceSymbol(onSignatureHelp(context));
@@ -73,20 +76,19 @@ export const listen = (connection: Connection) => {
     // connection.onCodeLensResolve(onCodeAction(serverState));
 
     connection.onDocumentFormatting(onDocumentFormatting(context));
-    connection.onDocumentRangeFormatting(onDocumentRangeFormatting(context));
-    connection.onDocumentOnTypeFormatting(onDocumentOnTypeFormatting(context));
+    // connection.onDocumentRangeFormatting(onDocumentRangeFormatting(context));
+    // connection.onDocumentOnTypeFormatting(onDocumentOnTypeFormatting(context));
 
     // connection.onRenameRequest(onRename(serverState));
 
-    connection.onDocumentLinks(onDocumentLinks(context));
-    connection.onDocumentLinkResolve(onDocumentLinkResolve(context));
+    // connection.onDocumentLinks(onDocumentLinks(context));
+    // connection.onDocumentLinkResolve(onDocumentLinkResolve(context));
 
     // connection.onDocumentColor(onDocumentLinkResolve(context));
     // connection.onColorPresentation(onDocumentLinkResolve(context));
     // connection.onFoldingRanges(onDocumentLinkResolve(context));
     // connection.onSelectionRanges(onDocumentLinkResolve(context));
     // connection.onExecuteCommand(onDocumentLinkResolve(context));
-
 
 
     documents.listen(connection)

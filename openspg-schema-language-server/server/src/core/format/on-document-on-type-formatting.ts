@@ -4,7 +4,7 @@ import * as schemaSyntax from 'openspg-schema-antlr4'
 import {Context, OnDocumentOnTypeFormatting} from '../context';
 import {Options} from "prettier";
 
-export const onDocumentOnTypeFormatting = ({connection, documents}: Context): OnDocumentOnTypeFormatting => async ({textDocument}) => {
+export const onDocumentOnTypeFormatting: OnDocumentOnTypeFormatting = ({connection, documents}: Context) => async ({textDocument}) => {
     const document = documents.get(textDocument.uri);
     if (!document) {
         return null;

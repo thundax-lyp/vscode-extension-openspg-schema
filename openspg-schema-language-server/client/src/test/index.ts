@@ -15,9 +15,10 @@ export function run(): Promise<void> {
 
     return glob.glob('**.test.js', {cwd: testsRoot}).then(async files => {
         console.log(`find ${files.length} test files`)
+        console.log(files);
         // Add files to the test suite
         files
-            .filter(x => x.includes('hover'))
+            .filter(x => x.includes('highlight'))
             .forEach(x => mocha.addFile(path.resolve(testsRoot, x)));
 
         try {

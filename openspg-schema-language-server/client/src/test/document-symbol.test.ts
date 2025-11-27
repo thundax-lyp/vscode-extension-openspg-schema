@@ -1,19 +1,32 @@
 import * as vscode from 'vscode';
-import {getDocUri, activate} from './helper';
-import {DocumentSymbol} from "vscode";
+import {DocumentSymbol, SymbolKind} from 'vscode';
+import {activate, createTicker, getDocUri, toRange} from './helper';
+import assert = require("node:assert");
 
 suite('Document Symbols', () => {
-    const docUri = getDocUri('document-symbol.schema');
+    const fileName = 'document-symbol.schema';
+    const docUri = getDocUri(fileName);
 
-    test('Document symbol texts', async () => {
+    const {fireTick, waitingForTick} = createTicker()
+
+    test(`Open [${fileName}]`, async () => {
+        await activate(docUri);
+        fireTick()
+    });
+
+    test('Find Symbols', async () => {
+        await waitingForTick()
         await testDocumentSymbol(docUri, [
-            // { message: 'ANY is all uppercase.', range: toRange(0, 0, 0, 3), severity: vscode.DiagnosticSeverity.Warning, source: 'ex' },
-            // { message: 'ANY is all uppercase.', range: toRange(0, 14, 0, 17), severity: vscode.DiagnosticSeverity.Warning, source: 'ex' },
-            // { message: 'OS is all uppercase.', range: toRange(0, 18, 0, 20), severity: vscode.DiagnosticSeverity.Warning, source: 'ex' }
+            toSymbol('DocumentSymbol', SymbolKind.Namespace, toRange(0, 0, 0, 24)),
+            toSymbol('Person', SymbolKind.Class, toRange(2, 0, 6, 23)),
+            toSymbol('Works', SymbolKind.Class, toRange(8, 0, 11, 26)),
         ]);
     });
 });
 
+const toSymbol = (name: string, kind: vscode.SymbolKind, range: vscode.Range): vscode.DocumentSymbol => ({
+    name, kind, range, selectionRange: range, detail: '', children: [],
+})
 
 async function testDocumentSymbol(docUri: vscode.Uri, expectedSymbols: vscode.DocumentSymbol[]) {
     console.log('URI: ' + docUri.toString(false));
@@ -22,22 +35,12 @@ async function testDocumentSymbol(docUri: vscode.Uri, expectedSymbols: vscode.Do
 
     let actualSymbols = await vscode.commands.executeCommand<DocumentSymbol[]>('vscode.executeDocumentSymbolProvider', docUri);
 
-    (actualSymbols || []).forEach(x => {
-        console.log(x.name, x.kind)
-    })
-    console.log('-'.repeat(40))
+    assert.equal(actualSymbols.length, expectedSymbols.length);
 
-    // console.log('test symbols >>>');
-    // const symbols: [] = await vscode.commands.executeCommand('vscode.executeDocumentSymbolProvider', docUri);
-    // console.log(symbols);
-    // console.log('test symbols <<<');
-
-    // assert.equal(actualDiagnostics.length, expectedDiagnostics.length);
-    //
-    // expectedDiagnostics.forEach((expectedDiagnostic, i) => {
-    //     const actualDiagnostic = actualDiagnostics[i];
-    //     assert.equal(actualDiagnostic.message, expectedDiagnostic.message);
-    //     assert.deepEqual(actualDiagnostic.range, expectedDiagnostic.range);
-    //     assert.equal(actualDiagnostic.severity, expectedDiagnostic.severity);
-    // });
+    expectedSymbols.forEach((expectedSymbol, i) => {
+        const actualSymbol = actualSymbols[i];
+        assert.equal(actualSymbol.name, expectedSymbol.name);
+        assert.equal(actualSymbol.kind, expectedSymbol.kind);
+        assert.deepEqual(actualSymbol.range, expectedSymbol.range);
+    });
 }

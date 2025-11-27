@@ -6,7 +6,7 @@ export type MixinPrinter = Record<string, PrintFunc<any>>;
 
 export const format = (node: SyntaxNode, mixin: MixinPrinter): string => {
 
-    const doFormat = (n: SyntaxNode, path: SyntaxNodeType[]) => {
+    const formatInner = (n: SyntaxNode, path: SyntaxNodeType[]) => {
         const printerName = `print${node.type}`;
         const printer = mixin[printerName];
         if (!printer) {
@@ -17,5 +17,5 @@ export const format = (node: SyntaxNode, mixin: MixinPrinter): string => {
         return typeof result === "string" ? result : result.join('');
     }
 
-    return doFormat(node, [])
+    return formatInner(node, [])
 }

@@ -1,10 +1,10 @@
 import {Range, TextEdit} from 'vscode-languageserver';
 import * as prettier from 'prettier/standalone';
 import * as schemaSyntax from 'openspg-schema-antlr4'
-import {Context, OnDocumentFormatting} from '../context';
+import {Context, OnDocumentRangeFormatting} from '../context';
 import {Options} from "prettier";
 
-export const onDocumentRangeFormatting = ({connection, documents}: Context): OnDocumentFormatting => async ({textDocument}) => {
+export const onDocumentRangeFormatting: OnDocumentRangeFormatting = ({connection, documents}: Context) => async ({textDocument}) => {
     const document = documents.get(textDocument.uri);
     if (!document) {
         return null;

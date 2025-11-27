@@ -8,17 +8,17 @@ export const onDocumentSymbol: OnDocumentSymbol = (ctx) => async ({textDocument}
         return null;
     }
 
-    const createNamespaceDeclarationSymbol = (ast: NamespaceDeclaration): DocumentSymbol | null => {
+    const handleNamespaceDeclaration = (ast: NamespaceDeclaration): DocumentSymbol | null => {
         const range = document.getNodeRange(ast);
         return {
             name: ast.variable.text,
-            kind: SymbolKind.Module,
+            kind: SymbolKind.Namespace,
             range,
             selectionRange: range,
         };
     };
 
-    const createEntityDeclarationSymbol = (ast: EntityDeclaration): DocumentSymbol | null => {
+    const handleEntityDeclaration = (ast: EntityDeclaration): DocumentSymbol | null => {
         const range = document.getNodeRange(ast);
         return {
             name: [...ast.declaration.name.variable.semanticNames, ast.declaration.name.variable.realName].map(x => x.text).join('#'),
@@ -28,16 +28,14 @@ export const onDocumentSymbol: OnDocumentSymbol = (ctx) => async ({textDocument}
         };
     };
 
-    return document.ast.nodes
-        .map((sourceUnitNode) => {
-            switch (sourceUnitNode.type) {
-                case 'NamespaceDeclaration':
-                    return createNamespaceDeclarationSymbol(sourceUnitNode);
-                case 'EntityDeclaration':
-                    return createEntityDeclarationSymbol(sourceUnitNode);
-                default:
-                    return null;
-            }
-        })
-        .filter(Boolean) as DocumentSymbol[];
+    return document.ast.nodes.map(node => {
+        switch (node.type) {
+            case 'NamespaceDeclaration':
+                return handleNamespaceDeclaration(node);
+            case 'EntityDeclaration':
+                return handleEntityDeclaration(node);
+            default:
+                return null;
+        }
+    }).filter(Boolean) as DocumentSymbol[];
 }
