@@ -1,5 +1,5 @@
 {
-    "name": "openspg-schema-language",
+    "name": "openspg-schema-language-server",
     "version": "0.0.1",
     "description": "Language Server Protocol implementation for OpenSPG Schema",
     "keywords": [
@@ -14,13 +14,17 @@
     "homepage": "https://github.com/thundax-lyp/vscode-extension-openspg-schema/openspg-schema-language-server",
     "categories": [],
     "publisher": "thundax-lyp",
+    "files": [
+        "server/dist",
+        "README.md"
+    ],
     "engines": {
         "vscode": "^1.100.0"
     },
     "activationEvents": [
         "onLanguage:plaintext"
     ],
-    "main": "./client/out/extension",
+    "main": "./client/dist/extension",
     "contributes": {
         "languages": [{
             "id": "schema",
