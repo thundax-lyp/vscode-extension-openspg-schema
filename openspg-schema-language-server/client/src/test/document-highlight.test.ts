@@ -54,6 +54,6 @@ const testHighlight = async (docUri: vscode.Uri, position: vscode.Position, expe
 
     expectedHighlights.forEach((expectedHighlight, i) => {
         const actualHighlight = actualHighlights[i];
-        // assert.deepEqual(actualLocation.range, expectedLocation.range);
+        assert.deepEqual(actualHighlight.range, actualHighlight.range);
     });
 }
