@@ -1,11 +1,20 @@
 import * as vscode from 'vscode';
 import * as assert from 'assert';
-import {getDocUri, activate, toRange} from './helper';
+import {getDocUri, activate, toRange, createTicker} from './helper';
 
 suite('Document Formatting', () => {
-    const docUri = getDocUri('document-formatting.schema');
+    const fileName = 'document-formatting.schema';
+    const docUri = getDocUri(fileName);
+
+    const {fireTick, waitingForTick} = createTicker()
+
+    test(`Open [${fileName}]`, async () => {
+        await activate(docUri);
+        fireTick()
+    });
 
     test('document-formatting.schema', async () => {
+        await waitingForTick()
         await testDocumentFormatting(docUri, [
             {newText: '', range: toRange(0, 0, 1, 0)},
             {newText: '', range: toRange(3, 11, 3, 12)},

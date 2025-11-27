@@ -49,7 +49,7 @@ let client: LanguageClient;
 export const activate = (context: ExtensionContext) => {
     // The server is implemented in node
     const serverModule = context.asAbsolutePath(
-        path.join('server', 'out', 'server.js')
+        path.join('server', 'dist', 'server.js')
     );
 
     console.log('-'.repeat(40) + 'extensionPath: ' +  context.extensionPath)

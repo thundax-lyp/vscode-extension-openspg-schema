@@ -1,7 +1,7 @@
 import * as vscode from 'vscode';
 import * as assert from 'assert';
 import {getDocUri, activate, doc, findKeywordRange, center, createTicker} from './helper';
-import {MarkdownString} from "vscode";
+
 
 suite('Hover', () => {
     const fileName = 'hover.schema';
@@ -93,7 +93,7 @@ suite('Hover', () => {
 });
 
 const getHoverContent = (hover: vscode.Hover) =>
-    hover.contents.map(x => x instanceof MarkdownString ? x.value : '').join('')
+    hover.contents.map(x => x instanceof vscode.MarkdownString ? x.value : '').join('')
 
 
 const testHover = async (docUri: vscode.Uri, position: vscode.Position, expectedHovers: vscode.Hover[]) => {

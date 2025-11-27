@@ -18,7 +18,7 @@ export function run(): Promise<void> {
         console.log(files);
         // Add files to the test suite
         files
-            .filter(x => x.includes('highlight'))
+            .filter(x => x.includes('formatting'))
             .forEach(x => mocha.addFile(path.resolve(testsRoot, x)));
 
         try {

@@ -1,4 +1,4 @@
-namespace DefinitionTest
+namespace HoverSample
 
 Chunk(文本块): EntityType
     desc: A chunk refers to a segment of text.

@@ -1,7 +1,7 @@
 import * as vscode from 'vscode';
+import * as assert from 'assert';
 import {DocumentSymbol, SymbolKind} from 'vscode';
 import {activate, createTicker, getDocUri, toRange} from './helper';
-import assert = require("node:assert");
 
 suite('Document Symbols', () => {
     const fileName = 'document-symbol.schema';
