@@ -1,6 +1,6 @@
 {
     "name": "openspg-schema-language-server",
-    "version": "0.0.1",
+    "version": "0.0.1-dev-0",
     "description": "Language Server Protocol implementation for OpenSPG Schema",
     "keywords": [
         "openspg",
@@ -12,7 +12,9 @@
     "license": "Apache-2.0",
     "author": "Thundax <thundax@qq.com>",
     "homepage": "https://github.com/thundax-lyp/vscode-extension-openspg-schema/openspg-schema-language-server",
-    "categories": [],
+    "categories": [
+        "Programming Languages"
+    ],
     "publisher": "thundax-lyp",
     "files": [
         "server/dist",
@@ -60,9 +62,8 @@
         "compile": "tsc -b",
         "watch": "tsc -b -w",
         "lint": "eslint",
-        "postinstall": "cd client && npm install && cd ../server && npm install && cd ..",
         "test": "sh ./scripts/e2e.sh",
-        "dev": "\"./.vscode-test/vscode-darwin-1.106.2/Visual Studio Code.app/Contents/MacOS/Electron\" --no-sandbox --disable-gpu-sandbox --disable-updates --skip-welcome --skip-release-notes --disable-workspace-trust --extensionDevelopmentPath=/Volumes/storage/workspace/vscode-extension-openspg-schema/openspg-schema-language-server"
+        "dev": "\"./.vscode-test/vscode-darwin-1.106.3/Visual Studio Code.app/Contents/MacOS/Electron\" --no-sandbox --disable-gpu-sandbox --disable-updates --skip-welcome --skip-release-notes --disable-workspace-trust --extensionDevelopmentPath=/Volumes/storage/workspace/vscode-extension-openspg-schema/openspg-schema-language-server"
     },
     "devDependencies": {
         "@eslint/js": "^9.13.0",

@@ -11,7 +11,7 @@
 	],
 	"license": "Apache-2.0",
 	"author": "Thundax <thundax@qq.com>",
-	"homepage": "https://github.com/thundax-lyp/vscode-extension-openspg-schema/openspg-schema-language-server",
+	"homepage": "https://github.com/thundax-lyp/vscode-extension-openspg-schema/",
 	"engines": {
 		"vscode": "^1.100.0"
 	},

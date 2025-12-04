@@ -7,7 +7,7 @@ export let documentEol: string;
 export let platformEol: string;
 
 /**
- * Activates the vscode.lsp-sample extension
+ * Activates extension
  */
 export async function activate(docUri: vscode.Uri) {
     // The extensionId is `publisher.name` from package.json
