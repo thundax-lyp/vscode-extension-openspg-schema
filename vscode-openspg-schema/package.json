@@ -1,0 +1,88 @@
+{
+    "name": "vscode-openspg-schema",
+    "version": "0.0.1-dev-0",
+    "description": "VSCode Extension for OpenSPG Schema",
+    "keywords": [
+        "openspg",
+        "lsp",
+        "vscode",
+        "extension"
+    ],
+    "license": "Apache-2.0",
+    "author": "Thundax <thundax@qq.com>",
+    "homepage": "https://github.com/thundax-lyp/vscode-extension-openspg-schema/",
+    "categories": [
+        "Programming Languages"
+    ],
+    "publisher": "thundax-lyp",
+    "engines": {
+        "vscode": "^1.100.0"
+    },
+    "activationEvents": [],
+    "main": "./dist/extension",
+    "contributes": {
+        "languages": [
+            {
+                "id": "schema",
+                "aliases": [
+                    "OpenSPG Schema",
+                    "schema"
+                ],
+                "extensions": [
+                    ".schema"
+                ],
+                "configuration": "./schema.configuration.json"
+            }
+        ],
+        "grammars": [
+            {
+                "language": "schema",
+                "scopeName": "source.schema",
+                "path": "./syntaxes/schema.tmLanguage.json"
+            }
+        ]
+    },
+    "scripts": {
+        "vscode:prepublish": "npm run compile",
+        "package": "vsce package",
+        "prepublishOnly": "tsc --noEmit && npm run build:cli",
+        "build:cli": "tsup src/server.ts -d dist/cli && node scripts/add_shebang.js dist/cli/server.js && node scripts/add_cmd_wrapper.js",
+        "compile": "tsc -b",
+        "watch": "tsc -b -w",
+        "test": "vscode-test"
+    },
+    "nyc": {
+        "extension": [
+            ".ts"
+        ],
+        "include": [
+            "src/**/*.ts"
+        ],
+        "exclude": [
+            "**/*.d.ts",
+            "out",
+            "dist"
+        ],
+        "all": true
+    },
+    "dependencies": {
+        "glob": "11.1.0",
+        "openspg-schema-antlr4": "file:../openspg-schema-antlr4-0.0.1-dev-1.tgz",
+        "prettier": "3.7.0",
+        "type-fest": "5.2.0",
+        "vscode-languageclient": "9.0.1",
+        "vscode-languageserver": "9.0.1",
+        "vscode-languageserver-textdocument": "1.0.12",
+        "vscode-uri": "3.1.0"
+    },
+    "devDependencies": {
+        "@types/mocha": "10.0.10",
+        "@types/node": "22.19.1",
+        "@types/vscode": "1.106.1",
+        "@vscode/test-cli": "0.0.12",
+        "@vscode/test-electron": "2.5.2",
+        "colors": "1.4.0",
+        "mocha": "10.8.2",
+        "typescript": "5.9.3"
+    }
+}
