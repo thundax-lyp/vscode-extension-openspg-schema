@@ -57,7 +57,7 @@ tokens { INDENT, INDENT_META, INDENT_PROP, INDENT_PROP_META, INDENT_SUBPROP, IND
         this.emitToken(new antlr.CommonToken(
             [this, this.inputStream],
             SchemaLexer.indentToken[indentLevel],
-            SchemaLexer.DEFAULT_MODE,
+            SchemaLexer.DEFAULT_TOKEN_CHANNEL,
             this.getCharIndex() - this.text.length,
             this.getCharIndex() - 1,
         ))
