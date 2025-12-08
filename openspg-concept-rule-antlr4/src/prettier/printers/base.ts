@@ -91,7 +91,7 @@ export class BasePrinter {
         } = options;
 
         if (empty) {
-            return this.builders.group([openTag, closeTag], {id: groupId, shouldBreak});
+            return unGroup ? `${openTag}${closeTag}` : this.builders.group([openTag, closeTag], {id: groupId, shouldBreak});
         }
         // const line = this.options.bracketSpacing ? this.builders.hardline : this.builders.softline;
         const line = this.builders.hardline;

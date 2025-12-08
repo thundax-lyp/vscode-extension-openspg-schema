@@ -4,10 +4,12 @@ import {BasePrinter, PrintFunc} from './base';
 
 export class PrinterDeclaration extends BasePrinter implements Record<`print${ast.DeclarationNodeType}`, PrintFunc<any>> {
 
+    // namespaceDeclaration: NAMESPACE_KEYWORD namespaceVariable ;
     printNamespaceDeclaration: PrintFunc<ast.NamespaceDeclaration> = ({path, print}): Doc[] => [
         "namespace", this.space, path.call(print, 'variable')
     ]
 
+    // namespaceVariable: UNESCAPED_SYMBOLIC_NAME | STRING_LITERAL | ESCAPED_SYMBOLIC_NAME ;
     printNamespaceVariable: PrintFunc<ast.NamespaceVariable> = ({node}) => node.text
 
     printEntityDeclaration: PrintFunc<ast.EntityDeclaration> = ({node, path, print}) => [
