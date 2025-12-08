@@ -5,11 +5,7 @@ import {ConceptRuleParserVisitor, RuleWrapperRuleHeadContext} from '../../antlr4
 /**
  * ### Grammar:
  * ```
- * ruleWrapperDeclaration : ruleWrapperHead ruleWrapperBody ;
- *
- * ruleWrapperHead : labelExpression (COLON labelExpression)+ | labelExpression COLON ;
- *
- * ruleWrapperBody : ruleWrapperRuleDeclaration* ;
+ * ruleWrapperRuleHead : 'rule' ;
  * ```
  **/
 export class RuleWrapperRuleHead extends BaseNodeString {

@@ -6,7 +6,11 @@ import {RuleWrapperRuleDeclaration} from "./rule-wrapper-rule-declaration";
 /**
  * ### Grammar:
  * ```
- * ruleWrapperRuleHead : 'rule' ;
+ * ruleWrapperDeclaration : ruleWrapperHead ruleWrapperBody ;
+ *
+ * ruleWrapperHead : labelExpression (COLON labelExpression)+ | labelExpression COLON ;
+ *
+ * ruleWrapperBody : ruleWrapperRuleDeclaration* ;
  * ```
  **/
 export class RuleWrapperDeclaration extends BaseNode {

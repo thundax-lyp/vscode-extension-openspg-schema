@@ -4,10 +4,16 @@ import {TheActionHead} from "./the-action-head";
 import {TheActionExpressionNode} from "../expression";
 
 
-// theActionDeclaration : theActionHead LBRACE theActionBody RBRACE ;
-// theActionHead : ACTION_KEYWORD ;
-// theActionBody : theActionExpression* ;
-// theActionExpression: addNodeFunction | addEdgeFunction ;
+/**
+ * ### Grammar:
+ * ```
+ * theActionDeclaration : theActionHead '{' theActionBody '}' ;
+ *
+ * theActionHead : 'Action' ;
+ *
+ * theActionBody : theActionExpression*
+ * ```
+ **/
 export class TheActionDeclaration extends BaseNode {
     type = 'TheActionDeclaration' as const;
 

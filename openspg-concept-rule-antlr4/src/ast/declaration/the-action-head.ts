@@ -1,7 +1,12 @@
 import {BaseNodeString} from "../base";
 import {ConceptRuleParserVisitor, ParserRuleContext} from "../../antlr4";
 
-// theActionHead : ACTION_KEYWORD ;
+/**
+ * ### Grammar:
+ * ```
+ * theActionHead : 'Action' ;
+ * ```
+ **/
 export class TheActionHead extends BaseNodeString {
 
     type = 'TheActionHead' as const;

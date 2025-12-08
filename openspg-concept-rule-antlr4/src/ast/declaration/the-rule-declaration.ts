@@ -4,9 +4,16 @@ import {TheRuleHead} from "./the-rule-head";
 import {TheRuleExpressionNode} from "../expression";
 
 
-// theRuleDeclaration : theRuleHead LBRACE theRuleBody RBRACE;
-// theRuleHead : CONSTRAINT_KEYWORD | RULE_KEYWORD;
-// theRuleBody : theRuleExpression*;
+/**
+ * ### Grammar:
+ * ```
+ * theRuleDeclaration : theRuleHead '{' theRuleBody '}' ;
+ *
+ * theRuleHead : 'Constraint' | 'Rule' ;
+ *
+ * theRuleBody : theRuleExpression* ;
+ * ```
+ **/
 export class TheRuleDeclaration extends BaseNode {
 
     type = 'TheRuleDeclaration' as const;

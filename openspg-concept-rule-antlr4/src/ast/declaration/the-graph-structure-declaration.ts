@@ -4,9 +4,16 @@ import {PathPattern} from "../expression";
 import {GraphStructureNode} from "./graph-structure";
 import {TheGraphStructureHead} from "./the-graph-structure-head";
 
-// theGraphStructureDeclaration : theGraphStructureHead LBRACE theGraphStructureBody? RBRACE ;
-// theGraphStructureHead: GRAPH_STRUCTURE_KEYWORD | STRUCTURE_KEYWORD ;
-// theGraphStructureBody : graphStructureList | pathPatternList ;
+/**
+ * ### Grammar:
+ * ```
+ * theGraphStructureDeclaration : theGraphStructureHead '{' theGraphStructureBody? '}' ;
+ *
+ * theGraphStructureHead : 'Graph' | 'GraphStructure' ;
+ *
+ * theGraphStructureBody : graphStructureList | pathPatternList ;
+ * ```
+ **/
 export class TheGraphStructureDeclaration extends BaseNode {
 
     type = 'TheGraphStructureDeclaration' as const;

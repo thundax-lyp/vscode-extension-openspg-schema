@@ -9,8 +9,11 @@ type SourceUnitNode =
     ;
 
 /**
- * AST Root Element
- */
+ * ### Grammar:
+ * ```
+ * sourceUnit : (namespaceDeclaration | ruleWrapperDeclaration | conceptRuleDeclaration)* ;
+ * ```
+ **/
 export class SourceUnit extends BaseNode {
 
     type = 'SourceUnit' as const;

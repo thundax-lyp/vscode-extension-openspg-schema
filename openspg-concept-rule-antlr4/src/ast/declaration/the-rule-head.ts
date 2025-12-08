@@ -2,7 +2,12 @@ import {BaseNodeString} from "../base";
 import {ConceptRuleParserVisitor, TheRuleHeadContext} from "../../antlr4";
 
 
-// theRuleHead : CONSTRAINT_KEYWORD | RULE_KEYWORD;
+/**
+ * ### Grammar:
+ * ```
+ * theRuleHead : 'Constraint' | 'Rule' ;
+ * ```
+ **/
 export class TheRuleHead extends BaseNodeString {
 
     type = 'TheRuleHead' as const;

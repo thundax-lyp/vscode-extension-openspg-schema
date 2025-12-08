@@ -3,7 +3,7 @@ parser grammar ConceptRuleParser;
 
 options { tokenVocab=ConceptRuleLexer; }
 
-sourceUnit: (namespaceDeclaration | ruleWrapperDeclaration | conceptRuleDeclaration)* ;
+sourceUnit : (namespaceDeclaration | ruleWrapperDeclaration | conceptRuleDeclaration)* ;
 
 namespaceDeclaration: NAMESPACE_KEYWORD namespaceVariable ;
 namespaceVariable: UNESCAPED_SYMBOLIC_NAME | STRING_LITERAL | ESCAPED_SYMBOLIC_NAME ;
