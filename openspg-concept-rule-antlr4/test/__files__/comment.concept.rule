@@ -8,9 +8,9 @@ namespace Sample
  *   block-comment[2]
  */
 /* one-line-block-comment[1] */
-`TaxOfRiskUser`/`赌博App开发者-with-action`: // tail-comment[1]
+`TaxOfRiskUser`/`赌博App开发者`: // tail-comment[1]
     // line-comment[2]
-    rule: [[ /** one-line-block-comment[2] **/
+    rule: [[
         // line-comment[3]
         Define (s: `ProductChain`.`TaxonomyOfCompanyAccident`/`周期性行业头部上市公司停产事故`)-[p: leadTo]->(o: `ProductChain`.`TaxonomyOfIndustryInfluence`/`成本上升`) {
             // line-comment[4]

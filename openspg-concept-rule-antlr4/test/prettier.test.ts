@@ -17,10 +17,8 @@ test('comment', async () => {
     expect(await format(load(testFileName))).toBe(load(expectedFileName))
 });
 
-// test('no comment', async () => {
-//     const testFileName = `prettier.no-comment.concept.rule`
-//     const expectedFileName = `${testFileName}.expected`
-//     expect(await format(load(testFileName))).toBe(load(expectedFileName))
-// })
-
-
+test('no comment', async () => {
+    const testFileName = `prettier.no-comment.concept.rule`
+    const expectedFileName = `${testFileName}.expected`
+    expect(await format(load(testFileName))).toBe(load(expectedFileName))
+})
