@@ -2,7 +2,16 @@ import {BaseNodeString} from '../base';
 import {ConceptRuleParserVisitor, RuleWrapperRuleHeadContext} from '../../antlr4';
 
 
-// ruleWrapperHead : labelExpression (COLON labelExpression)+ | labelExpression COLON ;
+/**
+ * ### Grammar:
+ * ```
+ * ruleWrapperDeclaration : ruleWrapperHead ruleWrapperBody ;
+ *
+ * ruleWrapperHead : labelExpression (COLON labelExpression)+ | labelExpression COLON ;
+ *
+ * ruleWrapperBody : ruleWrapperRuleDeclaration* ;
+ * ```
+ **/
 export class RuleWrapperRuleHead extends BaseNodeString {
 
     type = 'RuleWrapperRuleHead' as const;

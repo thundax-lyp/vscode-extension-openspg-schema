@@ -5,8 +5,14 @@ import {ConceptRuleHead} from "./concept-rule-head";
 import {TheRuleDeclaration} from "./the-rule-declaration";
 import {TheActionDeclaration} from "./the-action-declaration";
 
-// conceptRuleDeclaration : DEFINE_KEYWORD conceptRuleExpression LBRACE conceptRuleBody RBRACE;
-// conceptRuleBody : theGraphStructureDeclaration theRuleDeclaration? theActionDeclaration?;
+/**
+ * ### Grammar:
+ * ```
+ * conceptRuleDeclaration : 'Define' conceptRuleExpression '{' conceptRuleBody '}' ;
+ *
+ * conceptRuleBody : theGraphStructureDeclaration theRuleDeclaration? theActionDeclaration? ;
+ * ```
+ **/
 export class ConceptRuleDeclaration extends BaseNode {
 
     type = 'ConceptRuleDeclaration' as const;

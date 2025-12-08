@@ -3,7 +3,12 @@ import {ConceptRuleHeadContext, ConceptRuleParserVisitor} from "../../antlr4";
 import {NodePattern} from "../expression";
 
 
-// conceptRuleHead : DEFINE_KEYWORD nodePattern fullEdgePointingRight nodePattern ;
+/**
+ * ### Grammar:
+ * ```
+ * conceptRuleHead : 'Define' nodePattern fullEdgePointingRight nodePattern ;
+ * ```
+ **/
 export class ConceptRuleHead extends BaseNode {
 
     type = 'ConceptRuleHead' as const;

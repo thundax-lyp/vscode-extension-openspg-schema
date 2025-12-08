@@ -3,7 +3,12 @@ import {ConceptRuleParserVisitor, RuleWrapperHeadContext} from '../../antlr4';
 import {LabelExpression} from "../expression";
 
 
-// ruleWrapperHead : labelExpression (COLON labelExpression)+ | labelExpression COLON ;
+/**
+ * ### Grammar:
+ * ```
+ * ruleWrapperHead : labelExpression (COLON labelExpression)+ | labelExpression COLON ;
+ * ```
+ **/
 export class RuleWrapperHead extends BaseNode {
 
     type = 'RuleWrapperHead' as const;

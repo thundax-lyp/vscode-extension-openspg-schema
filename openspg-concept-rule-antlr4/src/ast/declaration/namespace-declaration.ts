@@ -3,7 +3,12 @@ import {ConceptRuleParserVisitor, NamespaceDeclarationContext} from '../../antlr
 import {NamespaceVariable} from "./namespace-variable";
 
 
-// namespaceDeclaration: NAMESPACE_KEYWORD namespaceVariable;
+/**
+ * ### Grammar:
+ * ```
+ * namespaceDeclaration : 'namespace' namespaceVariable ;
+ * ```
+ **/
 export class NamespaceDeclaration extends BaseNode {
 
     type = 'NamespaceDeclaration' as const;

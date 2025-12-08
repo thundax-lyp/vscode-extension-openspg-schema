@@ -3,10 +3,12 @@ import {ConceptRuleParserVisitor, RuleWrapperDeclarationContext} from '../../ant
 import {RuleWrapperHead} from "./rule-wrapper-head";
 import {RuleWrapperRuleDeclaration} from "./rule-wrapper-rule-declaration";
 
-
-// ruleWrapperDeclaration : ruleWrapperHead (ruleWrapperBody)?;
-// ruleWrapperHead : ruleWrapperExpression;
-// ruleWrapperBody : WRAPPER_RULE_KEYWORD COLON OPEN_RULE_BLOCK conceptRuleDeclaration* CLOSE_RULE_BLOCK;
+/**
+ * ### Grammar:
+ * ```
+ * ruleWrapperRuleHead : 'rule' ;
+ * ```
+ **/
 export class RuleWrapperDeclaration extends BaseNode {
 
     type = 'RuleWrapperDeclaration' as const;

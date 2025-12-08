@@ -4,9 +4,16 @@ import {ConceptRuleDeclaration} from "./concept-rule-declaration";
 import {RuleWrapperHead} from "./rule-wrapper-head";
 
 
-// ruleWrapperDeclaration : ruleWrapperHead (ruleWrapperBody)?;
-// ruleWrapperHead : ruleWrapperExpression;
-// ruleWrapperBody : WRAPPER_RULE_KEYWORD COLON OPEN_RULE_BLOCK conceptRuleDeclaration* CLOSE_RULE_BLOCK;
+/**
+ * ### Grammar:
+ * ```
+ * ruleWrapperRuleDeclaration : ruleWrapperRuleHead ':' '[[' ruleWrapperRuleBody ']]' ;
+ *
+ * ruleWrapperRuleHead : 'rule' ;
+ *
+ * ruleWrapperRuleBody : conceptRuleDeclaration* ;
+ * ```
+ **/
 export class RuleWrapperRuleDeclaration extends BaseNode {
 
     type = 'RuleWrapperRuleDeclaration' as const;
