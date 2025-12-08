@@ -4,15 +4,16 @@ import {createParse} from '../utils.test';
 test('assignmentExpression', () => {
     expect(createParse((parser) => parser.assignmentExpression())("name=value")).toMatchObject({
         type: 'AssignmentExpression',
-        identifier: "name",
+        variable: "name",
         expressionSet: "value",
     });
     expect(createParse((parser) => parser.assignmentExpression())("name=`value value2`")).toMatchObject({
         type: 'AssignmentExpression',
-        identifier: "name",
+        variable: "name",
         expressionSet: "`value value2`",
     });
 });
+
 
 test('conceptName', () => {
     expect(createParse((parser) => parser.conceptName())("concept/`instanceId`")).toMatchObject({

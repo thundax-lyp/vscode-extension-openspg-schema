@@ -1,18 +1,22 @@
 import {BaseNodeUnion} from "../base";
 import {ConceptRuleParserVisitor, GraphStructureContext} from "../../antlr4";
-import {DefineEdge} from "./define-edge";
-import {DefineVertex} from "./define-vertex";
+import {EdgeExpression, VertexExpression} from "../expression";
+
+export type GraphStructureNode =
+    | EdgeExpression
+    | VertexExpression
+    ;
 
 // graphStructure : defineEdge | defineVertex;
 export class GraphStructure extends BaseNodeUnion<
-    | DefineEdge
-    | DefineVertex
+    | EdgeExpression
+    | VertexExpression
 > {
     constructor(ctx: GraphStructureContext, visitor: ConceptRuleParserVisitor<any>) {
         super(ctx, [
-            ctx.defineEdge(),
-            ctx.defineVertex(),
-        ],visitor);
+            ctx.edgeExpression(),
+            ctx.vertexExpression(),
+        ], visitor);
     }
 }
 

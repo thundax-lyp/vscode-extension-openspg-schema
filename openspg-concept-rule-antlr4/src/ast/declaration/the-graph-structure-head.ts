@@ -1,7 +1,7 @@
 import {BaseNodeString} from "../base";
 import {ConceptRuleParserVisitor, ParserRuleContext} from "../../antlr4";
 
-// theGraphStructureHead : GRAPH_STRUCTURE_KEYWORD | STRUCTURE_KEYWORD;
+// theGraphStructureHead: GRAPH_STRUCTURE_KEYWORD | STRUCTURE_KEYWORD ;
 export class TheGraphStructureHead extends BaseNodeString {
 
     type = 'TheGraphStructureHead' as const;

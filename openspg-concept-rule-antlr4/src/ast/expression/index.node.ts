@@ -1,6 +1,9 @@
+import {AddEdgeFunction} from './add-edge-function';
+import {AddNodeFunction} from './add-node-function';
 import {AssignmentExpression} from './assignment-expression';
 import {ConceptName} from './concept-name';
 import {ConceptType} from './concept-type';
+import {EdgeExpression} from './edge-expression';
 import {EdgePattern} from './edge-pattern';
 import {ElementLookup} from './element-lookup';
 import {ElementPattern} from './element-pattern';
@@ -15,18 +18,26 @@ import {LabelName} from './label-name';
 import {LabelNameList} from './label-name-list';
 import {LabelPropertyList} from './label-property-list';
 import {LogicRuleExpression} from './logic-rule-expression';
+import {NodeFunctionParam} from './node-function-param';
 import {NodePattern} from './node-pattern';
+import {ObjectFunctionParam} from './object-function-param';
 import {PathPattern} from './path-pattern';
 import {PathPatternList} from './path-pattern-list';
 import {ProjectRuleExpression} from './project-rule-expression';
 import {PropertyExpression} from './property-expression';
-// import {RuleExpression} from './rule-expression';
+// import {TheActionExpression} from './the-action-expression';
+// import {TheRuleExpression} from './the-rule-expression';
+import {TypeFunctionParam} from './type-function-param';
 import {ValueExpression} from './value-expression';
+import {VertexExpression} from './vertex-expression';
 
 export {
+	AddEdgeFunction,
+	AddNodeFunction,
 	AssignmentExpression,
 	ConceptName,
 	ConceptType,
+	EdgeExpression,
 	EdgePattern,
 	ElementLookup,
 	ElementPattern,
@@ -41,11 +52,16 @@ export {
 	LabelNameList,
 	LabelPropertyList,
 	LogicRuleExpression,
+	NodeFunctionParam,
 	NodePattern,
+	ObjectFunctionParam,
 	PathPattern,
 	PathPatternList,
 	ProjectRuleExpression,
 	PropertyExpression,
-// 	RuleExpression,
+// 	TheActionExpression,
+// 	TheRuleExpression,
+	TypeFunctionParam,
 	ValueExpression,
+	VertexExpression,
 }

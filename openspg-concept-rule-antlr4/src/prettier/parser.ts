@@ -7,13 +7,14 @@ import {comments, WithComments} from './printers/base';
 export const getCommentTokens = (tokens: SyntaxToken[]) => {
     return tokens
         .filter((token) => comments.includes(token.type))
-        .map((c) => ({...c, value: c.text}));
+        .map((x) => ({...x, value: x.text}))
+        ;
 };
 
 export class PrettierParser implements Parser<SyntaxNode> {
 
     // @ts-ignore
-    public static name = 'openspg-concept-rule-antlr4-parser';
+    public static name = 'openspg-concept-rule-prettier-parser';
 
     public astFormat = PrettierPrinter.name;
     public locStart = (node: SyntaxNode) => node.range[0];
@@ -21,7 +22,9 @@ export class PrettierParser implements Parser<SyntaxNode> {
     public parse = (text: string, _options: ParserOptions<SyntaxNode>) => {
         const ast = parse(text, {tolerant: true}) as WithComments<SyntaxNode>;
         const tokens = tokenizer(text, {tolerant: true});
-        if (ast) (<any>ast).comments = getCommentTokens(tokens);
+        if (ast) {
+            (<any>ast).comments = getCommentTokens(tokens);
+        }
         return ast;
     };
 }

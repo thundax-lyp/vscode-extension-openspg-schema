@@ -4,6 +4,7 @@ import {ConceptName} from "./concept-name";
 import {ConceptType} from "./concept-type";
 
 
+// labelName : (conceptName (PLUS conceptName)*) | conceptType;
 export class LabelName extends BaseNode {
 
     type = 'LabelName' as const;

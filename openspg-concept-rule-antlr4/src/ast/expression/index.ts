@@ -6,9 +6,12 @@ export type ExpressionNodeType = UnionSyntaxNodeType<typeof nodeMap>;
 
 export const expressionNodeTypes = Object.keys(nodeMap) as ExpressionNodeType[];
 
+export * from './add-edge-function';
+export * from './add-node-function';
 export * from './assignment-expression';
 export * from './concept-name';
 export * from './concept-type';
+export * from './edge-expression';
 export * from './edge-pattern';
 export * from './element-lookup';
 export * from './element-pattern';
@@ -23,11 +26,16 @@ export * from './label-name';
 export * from './label-name-list';
 export * from './label-property-list';
 export * from './logic-rule-expression';
+export * from './node-function-param';
 export * from './node-pattern';
+export * from './object-function-param';
 export * from './path-pattern';
 export * from './path-pattern-list';
 export * from './project-rule-expression';
 export * from './property-expression';
-export * from './rule-expression';
+export * from './the-action-expression';
+export * from './the-rule-expression';
+export * from './type-function-param';
 export * from './value-expression';
+export * from './vertex-expression';
 

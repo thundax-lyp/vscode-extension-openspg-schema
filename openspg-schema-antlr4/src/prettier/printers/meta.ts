@@ -9,7 +9,7 @@ export class PrinterMeta extends BasePrinter implements Record<`print${ast.MetaN
                 [this.builders.hardline, this.builders.line], path.map(print, "nodes")
             ),
             this.builders.hardline
-        ]
+        ];
     }
 
 }

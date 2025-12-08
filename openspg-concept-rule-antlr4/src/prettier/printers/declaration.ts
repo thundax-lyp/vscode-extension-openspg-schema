@@ -1,220 +1,116 @@
+import {Doc} from "prettier";
 import * as ast from '../../ast';
 import {BasePrinter, PrintFunc} from './base';
-import {Doc} from "prettier";
 
 export class PrinterDeclaration extends BasePrinter implements Record<`print${ast.DeclarationNodeType}`, PrintFunc<any>> {
 
-    // addEdge : ADD_EDGE_KEYWORD LPARENTH addEdgeParam COMMA addEdgeParam COMMA addType COMMA addProps RPARENTH;
-    printAddEdge: PrintFunc<ast.AddEdge> = ({path, print}) => {
-        return [
-            "createEdgeInstance",
-            this.block(
-                this.builders.join(
-                    [this.comma, this.builders.hardline],
-                    [
-                        path.call(print, "sourceEdgeParam"),
-                        path.call(print, "targetEdgeParam"),
-                        path.call(print, "addType"),
-                        path.call(print, "addProps")
-                    ]
-                ), {
-                    openTag: '(', closeTag: ')'
-                }
-            )
-        ]
-    }
-
-    // addEdgeParam : identifier EQ identifier;
-    printAddEdgeParam: PrintFunc<ast.AddEdgeParam> = ({path, print}) => {
-        return [path.call(print, "left"), this.space, this.eq, this.space, path.call(print, "right")]
-    }
-
-    // addNode : (identifier EQ)? ADD_NODE_KEYWORD LPARENTH addType COMMA addProps RPARENTH;
-    printAddNode: PrintFunc<ast.AddNode> = ({node, path, print}) => {
-        return [
-            node.identifier ? [path.call(print, "identifier"), this.space, this.eq, this.space] : "",
-            "createNodeInstance",
-            this.block([
-                path.call(print, "addType"),
-                this.comma, this.builders.hardline,
-                path.call(print, "addProps")
-            ], {
-                openTag: '(', closeTag: ')'
-            })
-        ]
-    }
-
-    // addProps : identifier EQ complexObjExpr;
-    // complexObjExpr : LBRACE assignmentExpression* RBRACE;
-    printAddProps: PrintFunc<ast.AddProps> = ({path, print}) => [
-        this.builders.join(this.space, [
-            path.call(print, "identifier"),
-            this.eq,
-            this.block(
-                this.builders.join(this.builders.hardline, path.map(print, "assignmentExpressions")), {
-                    openTag: '{', closeTag: '}'
-                }
-            )
-        ])
+    // namespaceDeclaration: NAMESPACE_KEYWORD namespaceVariable ;
+    printNamespaceDeclaration: PrintFunc<ast.NamespaceDeclaration> = ({path, print}): Doc[] => [
+        "namespace", this.space, path.call(print, 'variable')
     ]
 
-    // addType : identifier EQ labelExpression;
-    printAddType: PrintFunc<ast.AddType> = ({path, print}) => {
-        return [
-            path.call(print, "identifier"), this.space, this.eq, this.space, path.call(print, "labelExpression")
-        ]
-    }
+    // namespaceVariable: UNESCAPED_SYMBOLIC_NAME | STRING_LITERAL | ESCAPED_SYMBOLIC_NAME ;
+    printNamespaceVariable: PrintFunc<ast.NamespaceVariable> = ({node}) => node.text
 
-    // defineEdge: vertexFrom edgeDirection vertexTo (LBRACKET labelPropertyList RBRACKET)? (REPEAT_KEYWORD repeatTime)? (AS_KEYWORD edgeName)?;
-    printDefineEdge: PrintFunc<ast.DefineEdge> = ({node, path, print}) => {
-        const parts: Doc[] = []
-        parts.push([
-            path.call(print, "vertexFrom"),
-            node.direction,
-            path.call(print, "vertexTo")
-        ])
-
-        if (node.labelPropertyList) {
-            parts.push(["[", path.call(print, "labelPropertyList"), "]"])
-        }
-
-        if (node.repeatTime) {
-            parts.push(["repeat", this.space, node.repeatTime])
-        }
-
-        if (node.alias) {
-            parts.push(["as", this.space, node.alias])
-        }
-        return this.builders.join(this.space, parts)
-    }
-
-    // defineVertex : vertexName (COMMA vertexName)* (LBRACKET labelPropertyList RBRACKET)?;
-    printDefineVertex: PrintFunc<ast.DefineVertex> = ({node, path, print}) => {
-        const parts = [
-            this.builders.join([this.comma, this.space], path.map(print, "vertexNames"))
-        ]
-
-        if (node.labelPropertyList) {
-            parts.push(["[", path.call(print, "labelPropertyList"), "]"])
-        }
-        return this.builders.join(this.space, parts)
-    }
-
-    // graphStructure : defineEdge | defineVertex;
-    printGraphStructure: PrintFunc<ast.GraphStructure> = (): Doc[] => {
-        throw new Error("Unreachable Code")
-    }
-
-    // graphStructureList : graphStructure+;
-    printGraphStructureList: PrintFunc<ast.GraphStructureList> = ({path, print}) => this.builders.join(
-        this.builders.hardline, path.map(print, "graphStructures")
-    )
-
-    // namespace: NAMESPACE_KEYWORD namespaceValue;
-    printNamespace: PrintFunc<ast.Namespace> = ({path, print}) =>
-        ["namespace", this.space, path.call(print, 'value')]
-
-    // namespaceValue: UNESCAPED_SYMBOLIC_NAME | STRING_LITERAL | ESCAPED_SYMBOLIC_NAME;
-    printNamespaceValue: PrintFunc<ast.NamespaceValue> = ({node}) => node.text
-
-    // ruleWrapper : ruleWrapperHead (ruleWrapperBody)?;
-    printRuleWrapper: PrintFunc<ast.RuleWrapper> = ({node, path, print}) => [
+    // ruleWrapperDeclaration : ruleWrapperHead ruleWrapperBody ;
+    // ruleWrapperHead : labelExpression (COLON labelExpression)+ | labelExpression COLON ;
+    // ruleWrapperBody : ruleWrapperRuleDeclaration* ;
+    printRuleWrapperDeclaration: PrintFunc<ast.RuleWrapperDeclaration> = ({path, print}) => [
         path.call(print, 'head'),
-        node.body ? this.block([path.call(print, 'body')]) : []
+        this.block([
+            this.builders.join(
+                [this.builders.hardline, this.builders.hardline],
+                path.map(print, "rules")
+            )
+        ])
     ]
 
-    // ruleWrapperHead : ruleWrapperPattern;
-    printRuleWrapperHead: PrintFunc<ast.RuleWrapperHead> = () => {
-        throw new Error("Unreachable Code")
-    }
+    // ruleWrapperHead : labelExpression (COLON labelExpression)+ | labelExpression COLON ;
+    printRuleWrapperHead: PrintFunc<ast.RuleWrapperHead> = ({node, path, print}) => [
+        this.builders.join(this.colon, path.map(print, 'labelExpressions')),
+        node.labelExpressions.length === 1 ? this.colon : [],
+    ]
 
-    // ruleWrapperPattern :  labelExpression (COLON labelExpression)+ | labelExpression COLON;
-    printRuleWrapperPattern: PrintFunc<ast.RuleWrapperPattern> = ({node, path, print}) => {
-        return [
-            this.builders.join(this.colon, path.map(print, 'labelExpressions')),
-            node.labelExpressions.length === 1 ? this.colon : [],
-        ]
-    }
-
-    // ruleWrapperBody : WRAPPER_RULE_KEYWORD COLON OPEN_RULE_BLOCK theDefineStructure* CLOSE_RULE_BLOCK;
-    printRuleWrapperBody: PrintFunc<ast.RuleWrapperBody> = ({path, print}) => {
-        return [
-            ["rule", this.colon, this.space],
-            this.block(
-                this.builders.join(
-                    [this.builders.hardline, this.builders.hardline],
-                    path.map(print, "theDefineStructures")
-                ), {
-                    openTag: '[[', closeTag: ']]'
-                }
-            ),
-        ]
-    }
-
-    printTheAction: PrintFunc<ast.TheAction> = ({path, print}) => [
-        ["Action", this.space],
+    printRuleWrapperRuleDeclaration: PrintFunc<ast.RuleWrapperRuleDeclaration> = ({node, path, print}) => [
+        [path.call(print, 'head'), this.colon, this.space],
         this.block(
-            this.builders.join([this.builders.hardline], path.map(print, "nodes")), {
-                openTag: '{', closeTag: '}'
+            this.builders.join(
+                [this.builders.hardline, this.builders.hardline],
+                path.map(print, "conceptRules")
+            ), {
+                empty: node.conceptRules.length === 0,
+                openTag: "[[",
+                closeTag: "]]"
             }
         )
     ]
 
-    // theDefineStructure : DEFINE_KEYWORD predicatedDefine LBRACE baseRuleDefine RBRACE;
-    printTheDefineStructure: PrintFunc<ast.TheDefineStructure> = ({path, print}) => [
-        ["Define", this.space, path.call(print, 'predicatedDefine'), this.space],
-        this.block(path.call(print, 'baseRuleDefine'), {
-            openTag: '{', closeTag: '}'
+    printRuleWrapperRuleHead: PrintFunc<ast.RuleWrapperRuleHead> = ({node}) => node.text;
+
+    // conceptRuleDeclaration : conceptRuleHead LBRACE conceptRuleBody RBRACE ;
+    // conceptRuleBody : theGraphStructureDeclaration theRuleDeclaration? theActionDeclaration? ;
+    printConceptRuleDeclaration: PrintFunc<ast.ConceptRuleDeclaration> = ({node, path, print}) => [
+        [path.call(print, 'head'), this.space],
+        this.block([
+            this.builders.join([this.builders.hardline, this.builders.hardline], [
+                path.call(print, 'theGraph'),
+                ...(node.theRule ? [path.call(print, "theRule")] : []),
+                ...(node.theAction ? [path.call(print, "theAction")] : []),
+            ])
+        ], {
+            openTag: "{", closeTag: "}"
         })
     ]
 
-    // predicatedDefine : nodePattern fullEdgePointingRight nodePattern;
-    printPredicatedDefine: PrintFunc<ast.PredicatedDefine> = ({node}) => node.text
-
-    // baseRuleDefine : theGraphStructure theRule? theAction?;
-    printBaseRuleDefine: PrintFunc<ast.BaseRuleDefine> = ({node, path, print}) => [
-        this.builders.join([this.builders.hardline, this.builders.hardline], [
-            path.call(print, "theGraphStructure"),
-            ...(node.theRule ? [path.call(print, "theRule")] : []),
-            ...(node.theAction ? [path.call(print, "theAction")] : []),
-        ])
+    // conceptRuleHead : DEFINE_KEYWORD nodePattern fullEdgePointingRight nodePattern ;
+    printConceptRuleHead: PrintFunc<ast.ConceptRuleHead> = ({node, path, print}) => [
+        ["Define", this.space], path.call(print, 'left'), node.operator, path.call(print, 'right'),
     ]
 
+    // theActionDeclaration : theActionHead LBRACE theActionBody RBRACE ;
+    // theActionHead : ACTION_KEYWORD ;
+    // theActionBody : theActionExpression* ;
+    // theActionExpression: addNodeFunction | addEdgeFunction ;
+    printTheActionDeclaration: PrintFunc<ast.TheActionDeclaration> = ({node, path, print}) => [
+        [path.call(print, 'head'), this.space],
+        this.block(
+            this.builders.join([this.builders.hardline], path.map(print, "expressions")), {
+                openTag: "{", closeTag: "}", empty: node.expressions.length === 0,
+            }
+        )
+    ]
 
-    // theGraphStructure : graphStructureHead LBRACE graphStructureDefine? RBRACE;
-    printTheGraphStructure: PrintFunc<ast.TheGraphStructure> = ({node, path, print}) => {
-        return [
-            [path.call(print, "head"), this.space],
-            this.block(node.body ? [path.call(print, "body")] : [], {
-                openTag: '{', closeTag: '}'
-            }),
-        ]
-    }
+    // theActionHead : ACTION_KEYWORD ;
+    printTheActionHead: PrintFunc<ast.TheActionHead> = ({node}) => node.text;
 
-    // theGraphStructureHead : GRAPH_STRUCTURE_KEYWORD | STRUCTURE_KEYWORD;
-    printTheGraphStructureHead: PrintFunc<ast.TheGraphStructureHead> = ({node}) => node.text
+    // theGraphStructureDeclaration : theGraphStructureHead LBRACE theGraphStructureBody? RBRACE ;
+    // theGraphStructureHead: GRAPH_STRUCTURE_KEYWORD | STRUCTURE_KEYWORD ;
+    // theGraphStructureBody : graphStructureList | pathPatternList ;
+    printTheGraphStructureDeclaration: PrintFunc<ast.TheGraphStructureDeclaration> = ({node, path, print}) => [
+        [path.call(print, "head"), this.space],
+        this.block([
+            this.builders.join(this.builders.hardline, path.map(print, "graphStructures")),
+            this.builders.join(this.builders.hardline, path.map(print, "pathPatterns")),
+        ], {
+            openTag: "{", closeTag: "}", empty: node.graphStructures.length === 0 && node.pathPatterns.length === 0
+        })
+    ]
 
-    // theGraphStructureBody : graphStructureList | pathPatternList;
-    printTheGraphStructureBody: PrintFunc<ast.TheGraphStructureBody> = () => {
-        throw new Error("Unreachable Code")
-    }
+    printTheGraphStructureHead: PrintFunc<ast.TheActionHead> = ({node}) => node.text;
 
-    // theRule : theRuleHead LBRACE theRuleBody RBRACE;
-    printTheRule: PrintFunc<ast.TheRule> = ({path, print}) => {
-        return [
-            [path.call(print, 'head'), this.space],
-            this.block(
-                path.call(print, "body"), {
-                    openTag: '{', closeTag: '}'
-                }
-            ),
-        ]
-    }
+
+    // theRuleDeclaration : theRuleHead LBRACE theRuleBody RBRACE;
+    // theRuleHead : CONSTRAINT_KEYWORD | RULE_KEYWORD;
+    // theRuleBody : theRuleExpression*;
+    printTheRuleDeclaration: PrintFunc<ast.TheRuleDeclaration> = ({node, path, print}) => [
+        [path.call(print, 'head'), this.space],
+        this.block(
+            this.builders.join(this.builders.hardline, path.map(print, "expressions")), {
+                openTag: "{", closeTag: "}", empty: node.expressions.length === 0
+            }
+        )
+    ]
 
     printTheRuleHead: PrintFunc<ast.TheRuleHead> = ({node}) => node.text
-
-    printTheRuleBody: PrintFunc<ast.TheRuleBody> = ({path, print}) => [
-        this.builders.join(this.builders.hardline, path.map(print, "expressions"))
-    ]
 
 }

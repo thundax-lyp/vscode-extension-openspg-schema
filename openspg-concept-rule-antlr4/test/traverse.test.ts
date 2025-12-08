@@ -54,19 +54,19 @@ test('traverse', () => {
 
     visit(ast, {
         enter: ({node}) => {
-            if (node.type === 'Namespace' || node.type === 'RuleWrapper') {
+            if (node.type === 'NamespaceDeclaration' || node.type === 'RuleWrapperDeclaration') {
                 enterNames.push(node.type);
             }
         },
         exit: ({node}) => {
-            if (node.type === 'Namespace' || node.type === 'RuleWrapper') {
+            if (node.type === 'NamespaceDeclaration' || node.type === 'RuleWrapperDeclaration') {
                 exitNames.push(node.type);
             }
         },
     });
 
-    expect(enterNames).toEqual(['Namespace', 'RuleWrapper', 'RuleWrapper', 'RuleWrapper']);
-    expect(exitNames).toEqual(['Namespace', 'RuleWrapper', 'RuleWrapper', 'RuleWrapper']);
+    expect(enterNames).toEqual(['NamespaceDeclaration', 'RuleWrapperDeclaration', 'RuleWrapperDeclaration', 'RuleWrapperDeclaration']);
+    expect(exitNames).toEqual(['NamespaceDeclaration', 'RuleWrapperDeclaration', 'RuleWrapperDeclaration', 'RuleWrapperDeclaration']);
 
     // @ts-expect-error
     expect(serialize(ast, (p) => ({...p.node, _flag: true}))._flag).toEqual(true);
@@ -78,7 +78,7 @@ test('traverse', () => {
     });
 
     traverse(ast, (path) => {
-        if (path.node.type === 'RuleWrapper') {
+        if (path.node.type === 'RuleWrapperDeclaration') {
             expect(path.getFlattenParents().length).toBe(1);
             expect(path.getFlattenParents(1).length).toBe(1);
         }
@@ -91,30 +91,15 @@ test('selector', () => {
     const ast = parse(code);
 
     expect(querySelector(ast, createSelector('*'))!.node).toMatchObject({type: 'SourceUnit'});
-    expect(querySelectorAll(ast, createSelector('RuleWrapper')).length).toBe(3);
+    expect(querySelectorAll(ast, createSelector('RuleWrapperDeclaration')).length).toBe(3);
 
     expect(
-        querySelectorAll(ast, createSelector('Namespace')),
+        querySelectorAll(ast, createSelector('NamespaceDeclaration')),
     ).toMatchObject([{
         node: {
-            type: 'Namespace', value: {
+            type: 'NamespaceDeclaration', variable: {
                 text: 'Sample'
             }
         }
     }]);
-    // expect(
-    //     querySelectorAll(ast, createSelector('ContractDefinition').inside('Identifier')),
-    // ).toMatchObject([
-    //     {node: {type: 'Identifier', name: 'HelloWorld'}},
-    //     {node: {type: 'Identifier', name: 'greet'}},
-    // ]);
-    // expect(
-    //     query(ast, createSelector('ContractDefinition').inside('Identifier'), {
-    //         queryAll: true,
-    //         order: 'desc',
-    //     }),
-    // ).toMatchObject([
-    //     {node: {type: 'Identifier', name: 'greet'}},
-    //     {node: {type: 'Identifier', name: 'HelloWorld'}},
-    // ]);
 });

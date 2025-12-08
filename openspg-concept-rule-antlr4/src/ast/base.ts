@@ -71,8 +71,20 @@ export const keysInNode = <T extends BaseNode>(node: T): string[] => {
 };
 
 export abstract class BaseNode {
+
+    /**
+     *  @hidden
+     */
     type: SyntaxNodeType;
+
+    /**
+     *  @hidden
+     */
     range: [number, number];
+
+    /**
+     *  @hidden
+     */
     location: Location;
 
     constructor(ctx: ParserRuleContext, _visitor: ConceptRuleParserVisitor<any>) {

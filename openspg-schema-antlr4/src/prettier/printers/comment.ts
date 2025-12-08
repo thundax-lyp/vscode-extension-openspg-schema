@@ -16,11 +16,6 @@ export const printComment: Printer<CommentToken>['printComment'] = (path, _optio
         return '';
     }
 
-    // console.log('-'.repeat(10) + '>>>')
-    // console.log(comment.placement)
-    // console.log(comment.text)
-    // console.log('-'.repeat(10) + '<<<')
-
     if (comment.text.startsWith('#')) {
         const content = comment.text.replace(/^[\s#]+/, '')
         return ['# ', content];

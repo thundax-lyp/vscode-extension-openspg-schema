@@ -1,6 +1,6 @@
-import * as ast from '../../ast';
 import type {AstPath, Doc, ParserOptions} from 'prettier';
 import * as doc from 'prettier/doc';
+import * as ast from '../../ast';
 import {SyntaxToken, SyntaxTokenType} from '../../parser';
 import {printComment} from './comment';
 
@@ -63,10 +63,12 @@ export class BasePrinter {
             ? [this.singleQuote, value, this.singleQuote]
             : [this.quote, value, this.quote];
     };
+
     // value[] => value1, value2, value3
     parameter = (value: Doc[], sep: Doc = [this.comma, this.builders.line]) => {
         return this.builders.join(sep, value);
     };
+
     // value = { value }
     block = (
         value: Doc,
@@ -82,25 +84,34 @@ export class BasePrinter {
         const {
             empty = false,
             groupId = Symbol('block'),
-            shouldBreak = true,
+            shouldBreak = false,
             unGroup = false,
             openTag = '',
             closeTag = ''
-        } = options
+        } = options;
+
         if (empty) {
-            return unGroup ? `${openTag}${closeTag}` : this.builders.group([openTag, closeTag], {id: groupId, shouldBreak})
+            return this.builders.group([openTag, closeTag], {id: groupId, shouldBreak});
         }
-        const line = this.options.bracketSpacing ? this.builders.line : this.builders.softline
+        // const line = this.options.bracketSpacing ? this.builders.hardline : this.builders.softline;
+        const line = this.builders.hardline;
         if (unGroup) {
-            return [openTag, line, value, closeTag.length > 0 ? [line, closeTag] : []]
+            return [
+                openTag.length > 0 ? [openTag, line] : [],
+                value,
+                closeTag.length > 0 ? [line, closeTag] : []
+            ];
         }
 
         const beforeLine = this.builders.indentIfBreak(line, {groupId});
         const content = this.builders.indentIfBreak(value, {groupId});
         return this.builders.group([
-            openTag, beforeLine, content, closeTag.length > 0 ? [line, closeTag] : []
+            [openTag, beforeLine],
+            content,
+            closeTag.length > 0 ? [line, closeTag] : []
         ], {id: groupId, shouldBreak});
     };
+
     // value => (value)
     tuple = (
         value: Doc,
@@ -110,8 +121,15 @@ export class BasePrinter {
             unGroup?: boolean;
         } = {},
     ) => {
-        const {groupId = Symbol('tuple'), shouldBreak = false, unGroup = false} = options;
-        if (unGroup) return ['(', value, ')'];
+        const {
+            groupId = Symbol('tuple'),
+            shouldBreak = false,
+            unGroup = false
+        } = options;
+
+        if (unGroup) {
+            return ['(', value, ')'];
+        }
         const content = this.builders.indentIfBreak(value, {groupId});
         const line = this.builders.softline;
         return this.builders.group(
@@ -119,6 +137,7 @@ export class BasePrinter {
             {id: groupId, shouldBreak},
         );
     };
+
     // value => [value]
     list = (
         value: Doc,
@@ -137,11 +156,14 @@ export class BasePrinter {
             {id: groupId, shouldBreak},
         );
     };
+
     // patch unprinted comments
-    comments = (p: AstPath<WithComments>) => {
-        if (!p.node?.comments?.length) return '';
+    comments = (path: AstPath<WithComments>) => {
+        if (!path.node?.comments?.length) {
+            return '';
+        }
         const parts: Doc[] = [];
-        p.map((commentPath) => {
+        path.map((commentPath) => {
             const comment = commentPath.node;
             if (!comment.trailing && !comment.leading && !comment.printed) {
                 comment.printed = true;

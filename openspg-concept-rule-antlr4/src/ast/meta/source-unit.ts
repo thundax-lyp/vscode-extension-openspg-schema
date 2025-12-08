@@ -1,22 +1,33 @@
 import {BaseNode} from '../base';
 import {ConceptRuleParserVisitor, SourceUnitContext} from '../../antlr4';
-import {Namespace, RuleWrapper, TheAction, TheDefineStructure, TheGraphStructure, TheRule,} from '../declaration';
+import {ConceptRuleDeclaration, NamespaceDeclaration, RuleWrapperDeclaration,} from '../declaration';
 
-type SourceUnitNodes =
-    | Namespace
-    | RuleWrapper
-    | TheDefineStructure
-    | TheGraphStructure
-    | TheRule
-    | TheAction
+type SourceUnitNode =
+    | NamespaceDeclaration
+    | RuleWrapperDeclaration
+    | ConceptRuleDeclaration
     ;
 
+/**
+ * AST Root Element
+ */
 export class SourceUnit extends BaseNode {
 
     type = 'SourceUnit' as const;
 
-    // 子节点
-    nodes: SourceUnitNodes[] = [];
+    /**
+     * ```typescript
+     * type SourceUnitNode =
+     *     | NamespaceDeclaration
+     *     | RuleWrapperDeclaration
+     *     | ConceptRuleDeclaration
+     * ```
+     * > **Links**:
+     * > - {@link NamespaceDeclaration}
+     * > - {@link RuleWrapperDeclaration}
+     * > - {@link ConceptRuleDeclaration}
+     */
+    nodes: SourceUnitNode[] = [];
 
     constructor(ctx: SourceUnitContext, visitor: ConceptRuleParserVisitor<any>) {
         super(ctx, visitor);

@@ -3,69 +3,57 @@ parser grammar ConceptRuleParser;
 
 options { tokenVocab=ConceptRuleLexer; }
 
-sourceUnit: (namespace | ruleWrapper | theDefineStructure)*;
+sourceUnit: (namespaceDeclaration | ruleWrapperDeclaration | conceptRuleDeclaration)* ;
 
-namespace: NAMESPACE_KEYWORD namespaceValue;
-namespaceValue: UNESCAPED_SYMBOLIC_NAME | STRING_LITERAL | ESCAPED_SYMBOLIC_NAME;
-
-ruleWrapper : ruleWrapperHead (ruleWrapperBody)?;
-ruleWrapperHead : ruleWrapperPattern;
-ruleWrapperPattern :  labelExpression (COLON labelExpression)+ | labelExpression COLON;
-ruleWrapperBody : WRAPPER_RULE_KEYWORD COLON OPEN_RULE_BLOCK theDefineStructure* CLOSE_RULE_BLOCK;
+namespaceDeclaration: NAMESPACE_KEYWORD namespaceVariable ;
+namespaceVariable: UNESCAPED_SYMBOLIC_NAME | STRING_LITERAL | ESCAPED_SYMBOLIC_NAME ;
 
 //#############################################################################
-// 词法分析
-//#############################################################################
-//#############################################################################
-// 应用模式
-//#############################################################################
-//计算模式
-//    GraphStructure {
-//        path1: (s)-[p1:x]->(end:y)
+//`TaxOfRiskUser`/`赌博App开发者`:
+//    rule: [[
+//        Define (s:label1)-[p:label2]->(o:concept/concept1) {
+//            Structure {
+//            }
+//            Constraint {
+//            }
+//            Action {
+//            }
+//        }
+//    ]]
+ruleWrapperDeclaration : ruleWrapperHead ruleWrapperBody ;
+ruleWrapperHead : labelExpression (COLON labelExpression)+ | labelExpression COLON ;
+ruleWrapperBody : ruleWrapperRuleDeclaration* ;
+
+ruleWrapperRuleDeclaration : ruleWrapperRuleHead COLON OPEN_RULE_BLOCK ruleWrapperRuleBody CLOSE_RULE_BLOCK ;
+ruleWrapperRuleHead : WRAPPER_RULE_KEYWORD ;
+ruleWrapperRuleBody : conceptRuleDeclaration* ;
+
+
+//Define (s:label1)-[p:label2]->(o:concept/concept1) {
+//    Structure {
 //    }
-//    Rule {
-//        R1('xxx'): path1
+//    Constraint {
 //    }
 //    Action {
-//
 //    }
-baseRuleDefine : theGraphStructure theRule? theAction?;
+//}
+conceptRuleDeclaration : conceptRuleHead LBRACE conceptRuleBody RBRACE ;
+conceptRuleHead : DEFINE_KEYWORD nodePattern fullEdgePointingRight nodePattern ;
+conceptRuleBody : theGraphStructureDeclaration theRuleDeclaration? theActionDeclaration? ;
 
-// define 模式
-//    Define (s:label1)-[p:label2]->(o:concept/concept1) {
-//        GraphStructure {
-//            path1: (s)-[p1:x]->(end:y)
-//        }
-//        Rule {
-//            R1('xxx'): path1
-//        }
-//        Action {
-//
-//        }
-//    }
-//basePredicatedDefine : theDefineStructure;
 
 //#############################################################################
-// Define 定义部分
+// the graph structure 定义部分
 //#############################################################################
-theDefineStructure : DEFINE_KEYWORD predicatedDefine LBRACE baseRuleDefine RBRACE;
-predicatedDefine : nodePattern fullEdgePointingRight nodePattern;
-
-//#############################################################################
-// graph structure 定义部分
-//#############################################################################
-theGraphStructure : theGraphStructureHead LBRACE theGraphStructureBody? RBRACE;
-
-theGraphStructureHead : GRAPH_STRUCTURE_KEYWORD | STRUCTURE_KEYWORD;
-
-theGraphStructureBody : graphStructureList | pathPatternList;
+theGraphStructureDeclaration : theGraphStructureHead LBRACE theGraphStructureBody? RBRACE ;
+theGraphStructureHead: GRAPH_STRUCTURE_KEYWORD | STRUCTURE_KEYWORD ;
+theGraphStructureBody : graphStructureList | pathPatternList ;
 
 graphStructureList : graphStructure+;
-
-graphStructure : defineEdge | defineVertex;
+graphStructure : edgeExpression | vertexExpression;
 
 // 定义边 start
-defineEdge: vertexFrom edgeDirection vertexTo (LBRACKET labelPropertyList RBRACKET)? (REPEAT_KEYWORD repeatTime)? (AS_KEYWORD edgeName)?;
+edgeExpression: vertexFrom edgeDirection vertexTo (LBRACKET labelPropertyList RBRACKET)? (REPEAT_KEYWORD repeatTime)? (AS_KEYWORD edgeName)?;
 
 edgeDirection: RIGHT_ARROW | BOTH_ARROW;
 repeatTime : LPARENTH lowerBound COMMA upperBound RPARENTH;
@@ -75,7 +63,7 @@ edgeName : identifier;
 // 定义边 end
 
 // 定义点 start
-defineVertex : vertexName (COMMA vertexName)* (LBRACKET labelPropertyList RBRACKET)?;
+vertexExpression : vertexName (COMMA vertexName)* (LBRACKET labelPropertyList RBRACKET)?;
 
 vertexName : identifier;
 
@@ -133,15 +121,14 @@ elementPatternWhereClause : WHERE_KEYWORD searchCondition;
 searchCondition : logicValueExpression;
 
 //#############################################################################
-// rule 定义部分
+// the rule 定义部分
 //#############################################################################
-theRule : theRuleHead LBRACE theRuleBody RBRACE;
-
+theRuleDeclaration : theRuleHead LBRACE theRuleBody RBRACE;
 theRuleHead : CONSTRAINT_KEYWORD | RULE_KEYWORD;
+theRuleBody : theRuleExpression*;
 
-theRuleBody : ruleExpression*;
 // rule expression
-ruleExpression : projectRuleExpression | logicRuleExpression | expressionSet;
+theRuleExpression : projectRuleExpression | logicRuleExpression | expressionSet;
 // project rule
 projectRuleExpression : identifier (DOT propertyName)? explain? EQ expressionSet;
 // logic rule
@@ -265,21 +252,34 @@ graphAliasElementList : graphAliasWithProperty (COMMA graphAliasWithProperty)*;
 
 
 //#############################################################################
-// graph structure 定义部分
+// the action 定义部分
 //#############################################################################
+//Action {
+//    downEvent = createNodeInstance(
+//        type = ProductChain.IndustryInfluence,
+//        value = {
+//            subject = down.id
+//        }
+//    )
+//    createEdgeInstance(
+//        src = s,
+//        dst = downEvent,
+//        type = leadTo,
+//        value = {
+//        }
+//    )
+//}
+theActionDeclaration : theActionHead LBRACE theActionBody RBRACE ;
+theActionHead : ACTION_KEYWORD ;
+theActionBody : theActionExpression* ;
+theActionExpression: addNodeFunction | addEdgeFunction ;
 
-theAction : ACTION_KEYWORD LBRACE actionBody* RBRACE;
-actionBody : addNode | addEdge;
+addNodeFunction : (identifier EQ)? ADD_NODE_KEYWORD LPARENTH typeFunctionParam COMMA objectFunctionParam RPARENTH;
+addEdgeFunction : ADD_EDGE_KEYWORD LPARENTH nodeFunctionParam COMMA nodeFunctionParam COMMA typeFunctionParam COMMA objectFunctionParam RPARENTH;
 
-addEdge : ADD_EDGE_KEYWORD LPARENTH addEdgeParam COMMA addEdgeParam COMMA addType COMMA addProps RPARENTH;
-
-addType : identifier EQ labelExpression;
-
-addEdgeParam : identifier EQ identifier;
-
-addProps : identifier EQ complexObjExpr;
-
-addNode : (identifier EQ)? ADD_NODE_KEYWORD LPARENTH addType COMMA addProps RPARENTH;
+typeFunctionParam : identifier EQ labelExpression;
+nodeFunctionParam : identifier EQ identifier;
+objectFunctionParam : identifier EQ complexObjExpression;
 
 // rule 表达式
 and : AND_KEYWORD | ANDAND;
@@ -336,7 +336,7 @@ truthValue : TRUE_KEYWORD | FALSE_KEYWORD | NULL_KEYWORD;
 unsignedNumericLiteral : numericLiteral;
 sign : PLUS | MINUS;
 
-complexObjExpr : LBRACE assignmentExpression* RBRACE;
+complexObjExpression : LBRACE assignmentExpression* RBRACE;
 
 assignmentExpression : identifier EQ expressionSet;
 

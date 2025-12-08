@@ -3,6 +3,8 @@ import {ConceptNameContext, ConceptRuleParserVisitor} from '../../antlr4';
 import {ConceptType} from "./concept-type";
 
 
+// conceptName : conceptType DIV conceptInstanceId;
+// conceptInstanceId : ESCAPED_SYMBOLIC_NAME;
 export class ConceptName extends BaseNode {
 
     type = 'ConceptName' as const;

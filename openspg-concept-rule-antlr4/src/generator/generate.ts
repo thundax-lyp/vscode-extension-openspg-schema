@@ -12,7 +12,7 @@ export interface GenerateOptions extends Options {
 class PrettierGenerator extends PrettierParser {
 
     // @ts-ignore
-    public static name = 'openspg-concept-rule-antlr4-generator';
+    public static name = 'openspg-concept-rule-generator';
 
     public parse = (ast: string, _options: ParserOptions<SyntaxNode>) => JSON.parse(ast);
 

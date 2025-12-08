@@ -12,6 +12,15 @@ const format = async (code: string) =>
     });
 
 test('comment', async () => {
-    expect(await format(load('comment.concept.rule'))).toMatchSnapshot()
+    const testFileName = `prettier.comment.concept.rule`
+    const expectedFileName = `${testFileName}.expected`
+    expect(await format(load(testFileName))).toBe(load(expectedFileName))
 });
+
+// test('no comment', async () => {
+//     const testFileName = `prettier.no-comment.concept.rule`
+//     const expectedFileName = `${testFileName}.expected`
+//     expect(await format(load(testFileName))).toBe(load(expectedFileName))
+// })
+
 

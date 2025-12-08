@@ -9,12 +9,12 @@ export class AssignmentExpression extends BaseNode {
 
     type = 'AssignmentExpression' as const;
 
-    identifier: Identifier
+    variable: Identifier
     expressionSet: ExpressionSet
 
     constructor(ctx: AssignmentExpressionContext, visitor: ConceptRuleParserVisitor<any>) {
         super(ctx, visitor);
-        this.identifier = ctx.identifier().accept(visitor)
+        this.variable = ctx.identifier().accept(visitor)
         this.expressionSet = ctx.expressionSet().accept(visitor)
     }
 

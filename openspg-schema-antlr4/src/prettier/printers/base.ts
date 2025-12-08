@@ -98,6 +98,7 @@ export class BasePrinter {
                 closeTag.length > 0 ? [line, closeTag] : []
             ];
         }
+
         const beforeLine = this.builders.indentIfBreak(line, {groupId});
         const content = this.builders.indentIfBreak(value, {groupId});
         return this.builders.group([

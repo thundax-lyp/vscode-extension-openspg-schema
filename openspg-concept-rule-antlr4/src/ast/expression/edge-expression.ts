@@ -1,12 +1,18 @@
 import {BaseNode} from "../base";
-import {ConceptRuleParserVisitor, DefineEdgeContext} from "../../antlr4";
+import {ConceptRuleParserVisitor, EdgeExpressionContext} from "../../antlr4";
 import {Identifier} from "../literal";
 import {LabelPropertyList} from "../expression";
 
 
-// defineEdge: vertexFrom edgeDirection vertexTo (LBRACKET labelPropertyList RBRACKET)? (REPEAT_KEYWORD repeatTime)? (AS_KEYWORD edgeName)?;
-export class DefineEdge extends BaseNode {
-    type = 'DefineEdge' as const;
+// edgeExpression: vertexFrom edgeDirection vertexTo (LBRACKET labelPropertyList RBRACKET)? (REPEAT_KEYWORD repeatTime)? (AS_KEYWORD edgeName)?;
+// edgeDirection: RIGHT_ARROW | BOTH_ARROW;
+// repeatTime : LPARENTH lowerBound COMMA upperBound RPARENTH;
+// vertexFrom : vertexName;
+// vertexTo : vertexName;
+// edgeName : identifier;
+
+export class EdgeExpression extends BaseNode {
+    type = 'EdgeExpression' as const;
 
     vertexFrom: Identifier
     vertexTo: Identifier
@@ -15,7 +21,7 @@ export class DefineEdge extends BaseNode {
     repeatTime: string | null = null
     alias: string | null = null
 
-    constructor(ctx: DefineEdgeContext, visitor: ConceptRuleParserVisitor<any>) {
+    constructor(ctx: EdgeExpressionContext, visitor: ConceptRuleParserVisitor<any>) {
         super(ctx, visitor);
         this.vertexFrom = ctx.vertexFrom().vertexName().identifier().accept(visitor)
         this.vertexTo = ctx.vertexTo().vertexName().identifier().accept(visitor)

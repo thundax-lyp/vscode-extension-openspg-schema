@@ -1,53 +1,33 @@
-import {AddEdge} from './add-edge';
-import {AddEdgeParam} from './add-edge-param';
-import {AddNode} from './add-node';
-import {AddProps} from './add-props';
-import {AddType} from './add-type';
-import {BaseRuleDefine} from './base-rule-define';
-import {DefineEdge} from './define-edge';
-import {DefineVertex} from './define-vertex';
+import {ConceptRuleDeclaration} from './concept-rule-declaration';
+import {ConceptRuleHead} from './concept-rule-head';
 // import {GraphStructure} from './graph-structure';
-import {GraphStructureList} from './graph-structure-list';
-import {Namespace} from './namespace';
-import {NamespaceValue} from './namespace-value';
-import {PredicatedDefine} from './predicated-define';
-import {RuleWrapper} from './rule-wrapper';
-import {RuleWrapperBody} from './rule-wrapper-body';
-// import {RuleWrapperHead} from './rule-wrapper-head';
-import {RuleWrapperPattern} from './rule-wrapper-pattern';
-import {TheAction} from './the-action';
-import {TheDefineStructure} from './the-define-structure';
-import {TheGraphStructure} from './the-graph-structure';
-// import {TheGraphStructureBody} from './the-graph-structure-body';
+import {NamespaceDeclaration} from './namespace-declaration';
+import {NamespaceVariable} from './namespace-variable';
+import {RuleWrapperDeclaration} from './rule-wrapper-declaration';
+import {RuleWrapperHead} from './rule-wrapper-head';
+import {RuleWrapperRuleDeclaration} from './rule-wrapper-rule-declaration';
+import {RuleWrapperRuleHead} from './rule-wrapper-rule-head';
+import {TheActionDeclaration} from './the-action-declaration';
+import {TheActionHead} from './the-action-head';
+import {TheGraphStructureDeclaration} from './the-graph-structure-declaration';
 import {TheGraphStructureHead} from './the-graph-structure-head';
-import {TheRule} from './the-rule';
-import {TheRuleBody} from './the-rule-body';
+import {TheRuleDeclaration} from './the-rule-declaration';
 import {TheRuleHead} from './the-rule-head';
 
 export {
-	AddEdge,
-	AddEdgeParam,
-	AddNode,
-	AddProps,
-	AddType,
-	BaseRuleDefine,
-	DefineEdge,
-	DefineVertex,
+	ConceptRuleDeclaration,
+	ConceptRuleHead,
 // 	GraphStructure,
-	GraphStructureList,
-	Namespace,
-	NamespaceValue,
-	PredicatedDefine,
-	RuleWrapper,
-	RuleWrapperBody,
-// 	RuleWrapperHead,
-	RuleWrapperPattern,
-	TheAction,
-	TheDefineStructure,
-	TheGraphStructure,
-// 	TheGraphStructureBody,
+	NamespaceDeclaration,
+	NamespaceVariable,
+	RuleWrapperDeclaration,
+	RuleWrapperHead,
+	RuleWrapperRuleDeclaration,
+	RuleWrapperRuleHead,
+	TheActionDeclaration,
+	TheActionHead,
+	TheGraphStructureDeclaration,
 	TheGraphStructureHead,
-	TheRule,
-	TheRuleBody,
+	TheRuleDeclaration,
 	TheRuleHead,
 }

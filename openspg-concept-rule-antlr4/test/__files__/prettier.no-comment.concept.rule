@@ -1,0 +1,39 @@
+namespace Sample
+
+`TaxOfRiskUser`/`赌博App开发者`:
+    rule: [[
+        Define (s: `ProductChain`.`TaxonomyOfCompanyAccident`/`周期性行业头部上市公司停产事故`)-[p: leadTo]->(o: `ProductChain`.`TaxonomyOfIndustryInfluence`/`成本上升`) {
+            Structure {
+            `TaxOfRiskApp` [`TaxOfRiskApp`]
+            }
+            Constraint {
+                R("30天内浏览"): p.timestamp > -30
+                o = group(s).count(u)
+            }
+            Action {
+                downEvent = createNodeInstance(
+                    type = ProductChain.IndustryInfluence,
+                    value = {
+                            subject = down.id
+                            }
+                )
+                createEdgeInstance(
+                    src = s,
+                    dst = downEvent,
+                    type = leadTo,
+                    value = {
+                            }
+                )
+            }
+        }
+
+        Define (s: `ProductChain`)-[p: leadTo]->(o) {
+            Structure {
+            }
+            Constraint {
+
+            }
+            Action {
+            }
+        }
+    ]]

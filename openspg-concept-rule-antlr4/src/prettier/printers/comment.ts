@@ -17,7 +17,7 @@ export const printComment: Printer<CommentToken>['printComment'] = (path, _optio
     }
 
     if (comment.text.startsWith('//')) {
-        const content = comment.text.substring(2).trim();
+        const content = comment.text.replace(/^[\s\/]+/, '')
         return ['// ', content];
     }
 
@@ -27,13 +27,10 @@ export const printComment: Printer<CommentToken>['printComment'] = (path, _optio
         const lines = comment.text
             .slice(2, -2)
             .split('\n')
-            .map((line) => {
-                const trimmed = line.trim();
-                if (trimmed.startsWith('*')) {
-                    return trimmed.slice(1).trim();
-                }
-                return trimmed;
-            })
+            .map((line) => line
+                .replace(/^[\s*]+/, '')
+                .replace(/[\s*]+$/, '')
+            )
             .filter(Boolean);
 
         if (isMultiline) {
@@ -58,7 +55,7 @@ export const massageAstNode: Printer<CommentToken>['massageAstNode'] = () => {
 (<any>massageAstNode).ignoredProperties = new Set(['location', 'range', 'comments']);
 
 export const handleComments: Printer<CommentToken>['handleComments'] = {
-    ownLine: (commentNode, text, options, ast, isLastComment) => false,
-    endOfLine: (commentNode, text, options, ast, isLastComment) => false,
-    remaining: (commentNode, text, options, ast, isLastComment) => false,
+    ownLine: () => false,
+    endOfLine: () => false,
+    remaining: () => false,
 };

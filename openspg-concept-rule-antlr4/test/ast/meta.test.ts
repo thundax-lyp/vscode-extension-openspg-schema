@@ -6,4 +6,3 @@ test('sourceUnit', () => {
         type: 'SourceUnit',
     });
 });
-
