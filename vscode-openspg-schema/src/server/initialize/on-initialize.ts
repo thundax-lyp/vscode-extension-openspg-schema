@@ -27,10 +27,10 @@ export const onInitialize = ({connection}: Context): OnInitialize => async ({ini
             documentSymbolProvider: true,
             semanticTokensProvider: {
                 legend: {
-                    tokenTypes: ["A", "B", "C"],
-                    tokenModifiers: ["AA", "BB", "CC"]
+                    tokenTypes: [],
+                    tokenModifiers: []
                 },
-                range: true,
+                range: false,
                 full: true,
             },
             // typeDefinitionProvider: true,
