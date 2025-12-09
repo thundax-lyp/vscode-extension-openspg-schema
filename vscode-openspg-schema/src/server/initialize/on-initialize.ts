@@ -25,6 +25,14 @@ export const onInitialize = ({connection}: Context): OnInitialize => async ({ini
                 triggerCharacters: ['(', ','],
             },
             documentSymbolProvider: true,
+            semanticTokensProvider: {
+                legend: {
+                    tokenTypes: ["A", "B", "C"],
+                    tokenModifiers: ["AA", "BB", "CC"]
+                },
+                range: true,
+                full: true,
+            },
             // typeDefinitionProvider: true,
             definitionProvider: true,
             referencesProvider: true,

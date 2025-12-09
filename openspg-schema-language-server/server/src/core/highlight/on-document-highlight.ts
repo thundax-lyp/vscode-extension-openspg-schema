@@ -1,7 +1,6 @@
-import {DocumentHighlight, Range} from 'vscode-languageserver';
+import {DocumentHighlight, DocumentHighlightKind, Range} from 'vscode-languageserver';
 import {SyntaxNode} from 'openspg-schema-antlr4'
 import {Context, OnDocumentHighlight} from '../context';
-import {DocumentHighlightKind} from "vscode-languageserver-types/lib/esm/main";
 
 
 export const onDocumentHighlight: OnDocumentHighlight = ({documents}: Context) => async ({textDocument, position}) => {

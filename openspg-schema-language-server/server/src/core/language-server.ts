@@ -7,6 +7,7 @@ import {onDocumentSymbol} from "./symbol";
 import {onDocumentFormatting} from "./format";
 import {onDefinition, onHover, onReferences} from "./definition";
 import {onDocumentHighlight} from "./highlight";
+import {onSemanticTokens} from "./semantic-tokens";
 
 const initDocuments = (connection: Connection): TextDocuments<SchemaTextDocument> => {
     const documents = new TextDocuments(SchemaTextDocument);
@@ -64,7 +65,9 @@ export const listen = (connection: Connection) => {
     // connection.onImplementation(onImplementation(serverState));
     connection.onReferences(onReferences(context));
     connection.onDocumentHighlight(onDocumentHighlight(context));
+
     connection.onDocumentSymbol(onDocumentSymbol(context));
+
 
     // connection.onWorkspaceSymbol(onSignatureHelp(context));
     // connection.onWorkspaceSymbolResolve(onSignatureHelp(context));
@@ -90,9 +93,9 @@ export const listen = (connection: Connection) => {
     // connection.onSelectionRanges(onDocumentLinkResolve(context));
     // connection.onExecuteCommand(onDocumentLinkResolve(context));
 
+    connection.languages.semanticTokens.on(onSemanticTokens(context))
 
     documents.listen(connection)
 
-    // Listen on the connection
     connection.listen()
 }
