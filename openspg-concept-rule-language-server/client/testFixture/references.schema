@@ -1,0 +1,66 @@
+namespace ReferenceSample
+
+Chunk(文本块): EntityType
+    desc: A chunk refers to a segment of text.
+    properties:
+        content(内容): Text
+            index: TextAndVector
+        keyword(关键词): Keyword
+            index: TextAndVector
+            constraint: MultiValue
+
+Date(日期): EntityType
+    properties:
+        info(信息): Text
+            index: TextAndVector
+        semanticType(语义类型): Text
+            index: Text
+
+GeographicLocation(地理位置): EntityType
+    properties:
+        info(信息): Text
+            index: TextAndVector
+        semanticType(语义类型): Text
+            index: Text
+
+Keyword(关键词): EntityType
+    properties:
+        info(信息): Text
+            index: TextAndVector
+        semanticType(语义类型): Text
+            index: Text
+
+Person(人物): EntityType
+    properties:
+        info(信息): Text
+            index: TextAndVector
+        semanticType(语义类型): Text
+            index: Text
+        job(工作): Text
+            constraint: MultiValue
+
+Works(作品): EntityType
+    properties:
+        info(信息): Text
+            index: TextAndVector
+        semanticType(语义类型): Text
+            index: Text
+        publishTime(发行时间): Date
+        authors(作者): Person
+            desc: authors of work, such as director, actor,  lyricist, composer and singer
+            constraint: MultiValue
+
+BaikeEvent(事件): EventType
+    properties:
+        subject(主体): Person
+        participants(参与者): Person
+            desc: the participants of event, such as subject and objects
+            constraint: MultiValue
+        time(时间): Date
+        location(地点): GeographicLocation
+        abstract(摘要): Text
+            index: TextAndVector
+        semanticType(事件语义类型): Text
+            desc: a more specific and clearly defined type, such as Professor or Actor for the Person type
+            index: Text
+        belongTo(归属): Chunk

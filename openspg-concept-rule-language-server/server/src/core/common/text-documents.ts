@@ -23,7 +23,7 @@ import {
     EVENT_TEXT_DOCUMENTS_ON_DELETE,
     EVENT_TEXT_DOCUMENTS_ON_SYNC,
 } from './constants';
-import {SchemaTextDocument} from './text-document';
+import {ConceptRuleTextDocument} from './text-document';
 
 
 export interface TextDocumentConnection {
@@ -300,4 +300,4 @@ export class TextDocuments<T extends TextDocument> {
     };
 }
 
-export const documents = new TextDocuments(SchemaTextDocument);
+export const documents = new TextDocuments(ConceptRuleTextDocument);

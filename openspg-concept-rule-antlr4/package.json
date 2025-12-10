@@ -1,7 +1,7 @@
 {
     "name": "openspg-concept-rule-antlr4",
     "description": "OpenSPG Concept-Rule Mark Language Lexer and Parser by official ANTLR4 grammar",
-    "version": "0.0.1",
+    "version": "0.0.1-dev-0",
     "keywords": [
         "openspg",
         "schema",

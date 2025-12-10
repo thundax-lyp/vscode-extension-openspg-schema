@@ -16,43 +16,45 @@ import {
     SelectorFilter,
     query,
     NamespaceDeclaration,
-    EntityDeclaration,
+    RuleWrapperDeclaration,
+    ConceptRuleDeclaration,
 } from './parser';
 import {documents} from './text-documents';
 
-export interface SchemaExportItem {
-    name: string    // Foo, Foo.Bar, Foo.Bar.baz etc.
+export interface ConceptRuleExportItem {
+    name: string
     uri: string
     node:
         | NamespaceDeclaration
-        | EntityDeclaration
+        | RuleWrapperDeclaration
+        | ConceptRuleDeclaration
 }
 
-export interface SchemaImportItem extends SchemaExportItem {
+export interface ConceptRuleImportItem extends ConceptRuleExportItem {
     sourceName: string;
 }
 
-export class SchemaTextDocument implements TextDocument {
+export class ConceptRuleTextDocument implements TextDocument {
     public static create(
         uri: string,
         languageId: string,
         version: number,
         content: string,
-    ): SchemaTextDocument {
-        return new SchemaTextDocument(uri, languageId, version, content);
+    ): ConceptRuleTextDocument {
+        return new ConceptRuleTextDocument(uri, languageId, version, content);
     }
 
     public static update(
-        document: SchemaTextDocument,
+        document: ConceptRuleTextDocument,
         changes: TextDocumentContentChangeEvent[],
         version: number,
-    ): SchemaTextDocument {
-        if (document instanceof SchemaTextDocument) {
+    ): ConceptRuleTextDocument {
+        if (document instanceof ConceptRuleTextDocument) {
             document.update(changes, version);
             return document;
         } else {
             throw new Error(
-                'SchemaTextDocument.update: document must be created by SchemaTextDocument.create',
+                'ConceptRuleTextDocument.update: document must be created by ConceptRuleTextDocument.create',
             );
         }
     }
@@ -98,7 +100,7 @@ export class SchemaTextDocument implements TextDocument {
     public ast: SourceUnit | null = null;
     public tokens: SyntaxToken[] = [];
     // export items
-    public exports: SchemaExportItem[] = [];
+    public exports: ConceptRuleExportItem[] = [];
 
     public constructor(uri: string, languageId: string, version: number, content: string) {
         this._textDocument = TextDocument.create(uri, languageId, version, content);
@@ -125,7 +127,7 @@ export class SchemaTextDocument implements TextDocument {
             if (!this.ast) return;
 
             // get export items
-            this.exports = this.getExportItems();
+            // this.exports = this.getExportItems();
 
         } catch (error) {
             // ignore
@@ -142,38 +144,6 @@ export class SchemaTextDocument implements TextDocument {
             //     ],
             // });
         }
-    }
-
-    /**
-     * Get exported items for current document
-     * @returns exports
-     */
-    public getExportItems() {
-        const uri = this.uri;
-        const result: SchemaExportItem[] = [];
-        if (!this.ast) {
-            return result;
-        }
-
-        (this?.ast?.nodes || []).forEach((node) => {
-            switch (node.type) {
-                case 'NamespaceDeclaration':
-                    result.push({node, uri, name: node.variable.text});
-                    break
-                case 'EntityDeclaration':
-                    result.push({
-                        node, uri,
-                        name: [
-                            ...node.declaration.name.variable.semanticNames.map(({text}) => text),
-                            node.declaration.name.variable.realName.text
-                        ].join('#')
-                    });
-                    break;
-                default:
-                    break;
-            }
-        });
-        return result;
     }
 
     /**

@@ -1,0 +1,13 @@
+
+namespace DocumentFormatting
+
+Person(人物):   EntityType
+  desc: a great name
+  properties:
+       age(年龄):   Text
+       birth(生日):   Text
+
+Works(作品):    EntityType
+  desc: a great book
+  properties:
+       author(作者): Person

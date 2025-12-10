@@ -4,10 +4,10 @@ import {
     VisitHandlers,
     TraversePath,
     SyntaxNodeType,
-} from 'openspg-schema-antlr4';
+} from 'openspg-concept-rule-antlr4';
 import {PartialDeep} from 'type-fest';
 
-export * from 'openspg-schema-antlr4';
+export * from 'openspg-concept-rule-antlr4';
 
 // visit nodes
 export const visitEnter = (ast: SyntaxNode, enter: VisitHandlers['enter']) => visit(ast, {enter});
@@ -57,16 +57,3 @@ export const checkNode = <T extends SyntaxNode>(
     }
     return true;
 };
-
-// TODO: REMOVE
-// export const isTypeNode = <T extends TypeNode>(node: any): node is T => {
-//     const types: TypeNodeType[] = [
-//         'ElementaryTypeName',
-//         'FunctionTypeName',
-//         'MappingKeyType',
-//         'MappingType',
-//         'MetaType',
-//         'TypeName',
-//     ];
-//     return types.includes(node.type);
-// };

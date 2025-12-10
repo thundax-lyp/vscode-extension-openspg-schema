@@ -82,12 +82,12 @@ export const activate = (context: ExtensionContext) => {
     const clientOptions: LanguageClientOptions = {
         // Register the server for plain text documents
         documentSelector: [{
-            language: 'schema', scheme: 'file',
+            language: 'conceptRule', scheme: 'file',
         }, {
-            language: 'schema', scheme: 'untitled'
+            language: 'conceptRule', scheme: 'untitled'
         }],
         synchronize: {
-            fileEvents: workspace.createFileSystemWatcher('**/.schema')
+            fileEvents: workspace.createFileSystemWatcher('**/*.rule')
         },
         initializationOptions: context.extensionPath,
         outputChannel: new MyOutputChannel(),
@@ -95,8 +95,8 @@ export const activate = (context: ExtensionContext) => {
 
     // Create the language client and start the client.
     client = new LanguageClient(
-        'schemaLanguageServer',
-        'OpenSPG Schema Language Server',
+        'conceptRuleLanguageServer',
+        'OpenSPG Concept Rule Language Server',
         serverOptions,
         clientOptions
     );
