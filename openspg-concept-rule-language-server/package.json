@@ -1,0 +1,85 @@
+{
+    "name": "openspg-concept-rule-language-server",
+    "version": "0.0.1-dev-0",
+    "description": "Language Server Protocol implementation for OpenSPG Concept-Rule",
+    "keywords": [
+        "openspg",
+        "language-server",
+        "lsp",
+        "vscode",
+        "extension"
+    ],
+    "license": "Apache-2.0",
+    "author": "Thundax <thundax@qq.com>",
+    "homepage": "https://github.com/thundax-lyp/vscode-extension-openspg-schema/openspg-concept-rule-language-server",
+    "categories": [
+        "Programming Languages"
+    ],
+    "publisher": "thundax-lyp",
+    "files": [
+        "server/dist",
+        "README.md"
+    ],
+    "engines": {
+        "vscode": "^1.100.0"
+    },
+    "activationEvents": [
+        "onLanguage:plaintext"
+    ],
+    "main": "./client/dist/extension",
+    "contributes": {
+        "languages": [
+            {
+                "id": "conceptRule",
+                "aliases": [
+                    "OpenSPG Concept-Rule",
+                    "conceptRule"
+                ],
+                "extensions": [
+                    ".rule"
+                ]
+            }
+        ],
+        "configuration": {
+            "type": "object",
+            "title": "OpenSPG Concept Rule configuration",
+            "properties": {
+                "languageServerConceptRule.maxNumberOfProblems": {
+                    "scope": "resource",
+                    "type": "number",
+                    "default": 100,
+                    "description": "Controls the maximum number of problems produced by the server."
+                },
+                "languageServerConceptRule.trace.server": {
+                    "scope": "window",
+                    "type": "string",
+                    "enum": [
+                        "off",
+                        "messages",
+                        "verbose"
+                    ],
+                    "default": "off",
+                    "description": "Traces the communication between VS Code and the language server."
+                }
+            }
+        }
+    },
+    "scripts": {
+        "vscode:prepublish": "npm run compile",
+        "compile": "tsc -b",
+        "watch": "tsc -b -w",
+        "lint": "eslint",
+        "test": "sh ./scripts/e2e.sh",
+        "dev": "\"./.vscode-test/vscode-darwin-1.106.3/Visual Studio Code.app/Contents/MacOS/Electron\" --no-sandbox --disable-gpu-sandbox --disable-updates --skip-welcome --skip-release-notes --disable-workspace-trust --extensionDevelopmentPath=/Volumes/storage/workspace/vscode-extension-openspg-schema/openspg-schema-language-server"
+    },
+    "devDependencies": {
+        "@eslint/js": "^9.13.0",
+        "@stylistic/eslint-plugin": "^2.9.0",
+        "@types/mocha": "^10.0.6",
+        "@types/node": "^22",
+        "eslint": "^9.13.0",
+        "mocha": "^10.3.0",
+        "typescript": "^5.9.2",
+        "typescript-eslint": "^8.39.0"
+    }
+}
