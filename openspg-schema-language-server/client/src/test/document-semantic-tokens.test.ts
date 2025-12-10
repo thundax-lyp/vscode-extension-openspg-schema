@@ -3,15 +3,15 @@ import * as assert from 'assert';
 import {getDocUri, activate, doc, findKeywordRange, createTicker, toRange} from './helper';
 
 enum TokenTypes {
-    comment = 0,
-    keyword = 1,
-    string = 2,
-    namespace = 3,
-    structure = 4,
-    inherited = 5,
-    property = 6,
-    variable = 7,
-    _ = 8
+    none = 0,
+    comment = 1,
+    keyword = 2,
+    string = 3,
+    namespace = 4,
+    structure = 5,
+    inherited = 6,
+    property = 7,
+    variable = 8,
 }
 
 suite('Document Semantic Tokens', () => {
