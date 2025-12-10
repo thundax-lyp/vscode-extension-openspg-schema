@@ -8,7 +8,9 @@ import {TheActionDeclaration} from "./the-action-declaration";
 /**
  * ### Grammar:
  * ```
- * conceptRuleDeclaration : 'Define' conceptRuleExpression '{' conceptRuleBody '}' ;
+ * conceptRuleDeclaration : conceptRuleHead '{' conceptRuleBody '}' ;
+ *
+ * conceptRuleHead : 'Define' nodePattern fullEdgePointingRight nodePattern ;
  *
  * conceptRuleBody : theGraphStructureDeclaration theRuleDeclaration? theActionDeclaration? ;
  * ```
