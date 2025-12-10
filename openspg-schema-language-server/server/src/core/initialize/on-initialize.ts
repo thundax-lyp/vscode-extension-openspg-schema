@@ -27,8 +27,12 @@ export const onInitialize = ({connection}: Context): OnInitialize => async ({ini
             documentSymbolProvider: true,
             semanticTokensProvider: {
                 legend: {
-                    tokenTypes: [],
-                    tokenModifiers: []
+                    tokenTypes: [
+                        'none', 'comment', 'keyword', 'string', 'namespace', 'structure', 'inherited', 'property', 'variable',
+                    ],
+                    tokenModifiers: [
+                        'none', 'deprecated', 'declaration', 'readonly'
+                    ]
                 },
                 range: false,
                 full: true,

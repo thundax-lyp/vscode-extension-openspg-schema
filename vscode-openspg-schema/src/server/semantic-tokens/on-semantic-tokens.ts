@@ -2,76 +2,25 @@ import {SemanticTokensBuilder} from 'vscode-languageserver';
 import {Context, OnSemanticTokens} from '../context';
 import * as schema from "openspg-schema-antlr4";
 
-export enum TokenTypes {
-    unused = -1,
-    comment = 0,
-    keyword = 1,
-    string = 2,
-    namespace = 3,
-    structure = 4,
-    inherited = 5,
-    property = 6,
-    variable = 7,
-    _ = 8
+enum TokenTypes {
+    none = 0,
+    comment = 1,
+    keyword = 2,
+    string = 3,
+    namespace = 4,
+    structure = 5,
+    inherited = 6,
+    property = 7,
+    variable = 8,
 }
 
 enum TokenModifiers {
-    default = 0,
+    none = 0,
     deprecated = 1,
-    _ = 2,
+    declaration = 2,
+    readonly = 3,
 }
 
-export type HandleSyntaxNodeFunc<T extends schema.SyntaxNode = schema.SyntaxNode> = (path: schema.TraversePath<T>) => number;
-
-const defaultSyntaxNodeFunc = () => TokenTypes.unused;
-
-class SyntaxNodeEmitter implements Record<`handle${schema.SyntaxNodeType}`, HandleSyntaxNodeFunc<any>> {
-    handleNamespaceDeclaration = defaultSyntaxNodeFunc;
-    handleNamespaceVariable = () => TokenTypes.variable;
-    handleEntityDeclaration = defaultSyntaxNodeFunc;
-    handleEntityMetaDeclaration = defaultSyntaxNodeFunc;
-    handlePropertyDeclaration = defaultSyntaxNodeFunc;
-    handlePropertyMetaDeclaration = defaultSyntaxNodeFunc;
-    handleSubPropertyDeclaration = defaultSyntaxNodeFunc;
-    handleSubPropertyMetaDeclaration = defaultSyntaxNodeFunc;
-    handleBasicPropertyDeclaration = defaultSyntaxNodeFunc;
-    handleBasicPropertyName = () => TokenTypes.property;
-    handleBasicPropertyValue = () => TokenTypes.variable;
-    handleBasicStructureDeclaration = defaultSyntaxNodeFunc;
-    handleBasicStructureType = () => TokenTypes.keyword;
-    handleBasicStructureTypeExpression = defaultSyntaxNodeFunc;
-    handleBlockPropertyValue = () => TokenTypes.string;
-    handleBuiltinPropertyName = () => TokenTypes.keyword;
-    handleBuiltinPropertyValue = () => TokenTypes.keyword;
-    handleInheritedStructureTypeExpression = defaultSyntaxNodeFunc;
-    handleKnowledgeStructureType = () => TokenTypes.keyword;
-    handlePropertyNameExpression = defaultSyntaxNodeFunc;
-    handlePropertyValueExpression = defaultSyntaxNodeFunc;
-    handleStandardStructureType = () => TokenTypes.keyword;
-    handleStructureAlias = () => TokenTypes.string;
-    handleStructureAliasExpression = defaultSyntaxNodeFunc;
-    handleStructureName = defaultSyntaxNodeFunc;
-    handleStructureNameExpression = defaultSyntaxNodeFunc;
-    handleStructureRealName = ({path}: { path: string }) => {
-        if (path.split('.').includes('BasicStructureTypeExpression')) {
-            return TokenTypes.inherited;
-        }
-        return TokenTypes.structure;
-    };
-    handleStructureSemanticName = ({path}: { path: string }) => {
-        if (path.split('.').includes('BasicStructureTypeExpression')) {
-            return TokenTypes.inherited;
-        }
-        return TokenTypes.structure;
-    };
-    handleIdentifier = defaultSyntaxNodeFunc;
-    handleSourceUnit = defaultSyntaxNodeFunc;
-}
-
-const syntaxNodeEmitters: Record<`handle${schema.SyntaxNodeType}`, HandleSyntaxNodeFunc> = Object.assign(
-    {},
-    new SyntaxNodeEmitter(),
-);
 
 export const onSemanticTokens = (ctx: Context): OnSemanticTokens => async ({textDocument}) => {
     const builder = new SemanticTokensBuilder();
@@ -81,20 +30,78 @@ export const onSemanticTokens = (ctx: Context): OnSemanticTokens => async ({text
         return builder.build();
     }
 
+    const syntaxNodeEmitters: Record<`handle${schema.SyntaxNodeType}`, HandleSyntaxNodeFunc | null> = Object.assign(
+        {},
+        new SyntaxNodeEmitter(),
+    );
+
     schema.traverse(document.ast, (path) => {
         const emitterName = `handle${path.node.type}` as `handle${schema.SyntaxNodeType}`;
         const emitter = syntaxNodeEmitters[emitterName];
-        if (!emitter) {
-            throw new Error(`missing emitter for node type "${path.node.type}"`);
-        }
-
-        const tokenType = emitter(path);
-        if (tokenType !== TokenTypes.unused) {
-            const {line, column} = path.node.location.start;
-            const tokenModifiers = TokenModifiers.default;
-            builder.push(line - 1, column, path.node.range[1] - path.node.range[0] + 1, tokenType, tokenModifiers)
+        if (emitter) {
+            const result = emitter(path);
+            if (result.tokenType !== TokenTypes.none) {
+                const {line, column} = path.node.location.start;
+                builder.push(line - 1, column, path.node.range[1] - path.node.range[0] + 1, result.tokenType, result.tokenModifier)
+            }
         }
     })
 
     return builder.build();
 }
+
+class HandleSyntaxNodeResult {
+    tokenType: TokenTypes;
+    tokenModifier: TokenModifiers;
+
+    constructor(tokenType: TokenTypes, tokenModifier: TokenModifiers = TokenModifiers.none) {
+        this.tokenType = tokenType;
+        this.tokenModifier = tokenModifier;
+    }
+}
+
+type HandleSyntaxNodeFunc<T extends schema.SyntaxNode = schema.SyntaxNode> = (path: schema.TraversePath<T>) => HandleSyntaxNodeResult;
+
+class SyntaxNodeEmitter implements Record<`handle${schema.SyntaxNodeType}`, HandleSyntaxNodeFunc<any> | null> {
+    handleNamespaceDeclaration = null;
+    handleNamespaceVariable = () => new HandleSyntaxNodeResult(TokenTypes.variable);
+    handleEntityDeclaration = null;
+    handleEntityMetaDeclaration = null;
+    handlePropertyDeclaration = null;
+    handlePropertyMetaDeclaration = null;
+    handleSubPropertyDeclaration = null;
+    handleSubPropertyMetaDeclaration = null;
+    handleBasicPropertyDeclaration = null;
+    handleBasicPropertyName = () => new HandleSyntaxNodeResult(TokenTypes.property);
+    handleBasicPropertyValue = () => new HandleSyntaxNodeResult(TokenTypes.variable);
+    handleBasicStructureDeclaration = null;
+    handleBasicStructureType = () => new HandleSyntaxNodeResult(TokenTypes.keyword);
+    handleBasicStructureTypeExpression = null;
+    handleBlockPropertyValue = () => new HandleSyntaxNodeResult(TokenTypes.string);
+    handleBuiltinPropertyName = () => new HandleSyntaxNodeResult(TokenTypes.keyword);
+    handleBuiltinPropertyValue = () => new HandleSyntaxNodeResult(TokenTypes.keyword);
+    handleInheritedStructureTypeExpression = null;
+    handleKnowledgeStructureType = () => new HandleSyntaxNodeResult(TokenTypes.keyword);
+    handlePropertyNameExpression = null;
+    handlePropertyValueExpression = null;
+    handleStandardStructureType = () => new HandleSyntaxNodeResult(TokenTypes.keyword);
+    handleStructureAlias = () => new HandleSyntaxNodeResult(TokenTypes.string);
+    handleStructureAliasExpression = null;
+    handleStructureName = null;
+    handleStructureNameExpression = null;
+    handleStructureRealName = ({path}: { path: string }) => {
+        if (path.split('.').includes('BasicStructureTypeExpression')) {
+            return new HandleSyntaxNodeResult(TokenTypes.inherited);
+        }
+        return new HandleSyntaxNodeResult(TokenTypes.structure);
+    };
+    handleStructureSemanticName = ({path}: { path: string }) => {
+        if (path.split('.').includes('BasicStructureTypeExpression')) {
+            return new HandleSyntaxNodeResult(TokenTypes.inherited);
+        }
+        return new HandleSyntaxNodeResult(TokenTypes.structure);
+    };
+    handleIdentifier = null;
+    handleSourceUnit = null;
+}
+
