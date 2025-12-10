@@ -2,7 +2,7 @@ import {BaseNode} from '../base';
 import {ConceptRuleParserVisitor, SourceUnitContext} from '../../antlr4';
 import {ConceptRuleDeclaration, NamespaceDeclaration, RuleWrapperDeclaration,} from '../declaration';
 
-type SourceUnitNode =
+export type SourceUnitNode =
     | NamespaceDeclaration
     | RuleWrapperDeclaration
     | ConceptRuleDeclaration

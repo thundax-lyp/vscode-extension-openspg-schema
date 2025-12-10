@@ -1,6 +1,5 @@
 import * as parser from '../antlr4';
 import * as ast from './index';
-import {RuleWrapperRuleDeclarationContext, RuleWrapperRuleHeadContext} from "../antlr4";
 
 export type Result = ast.SyntaxNode;
 
@@ -28,8 +27,8 @@ export class ConceptRuleASTBuilder extends parser.ConceptRuleParserVisitor<ast.S
     visitRuleWrapperDeclaration = (ctx: parser.RuleWrapperDeclarationContext) => new ast.RuleWrapperDeclaration(ctx, this);
     visitRuleWrapperHead = (ctx: parser.RuleWrapperHeadContext) => new ast.RuleWrapperHead(ctx, this);
     // visitRuleWrapperBody?: (ctx: RuleWrapperBodyContext) => Result;
-    visitRuleWrapperRuleDeclaration = (ctx: RuleWrapperRuleDeclarationContext)  => new ast.RuleWrapperRuleDeclaration(ctx, this);
-    visitRuleWrapperRuleHead = (ctx: RuleWrapperRuleHeadContext) => new ast.RuleWrapperRuleHead(ctx, this);
+    visitRuleWrapperRuleDeclaration = (ctx: parser.RuleWrapperRuleDeclarationContext) => new ast.RuleWrapperRuleDeclaration(ctx, this);
+    visitRuleWrapperRuleHead = (ctx: parser.RuleWrapperRuleHeadContext) => new ast.RuleWrapperRuleHead(ctx, this);
     // visitRuleWrapperRuleBody = (ctx: RuleWrapperRuleBodyContext) => new ast.RuleWrapperRuleDeclaration(ctx, this);;
 
     /**

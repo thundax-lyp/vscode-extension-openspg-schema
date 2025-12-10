@@ -16,6 +16,10 @@ export const print: Printer<any>['print'] = (path, options, _print) => {
         return '';
     }
 
+    if (typeof node === 'string') {
+        return node;
+    }
+
     if (Array.isArray(node)) {
         return path.map(_print);
     }
@@ -31,16 +35,10 @@ export const print: Printer<any>['print'] = (path, options, _print) => {
 
     const printer = mixin[printerName];
     if (!printer) {
+        console.log(typeof node);
+        console.log(node);
         throw new Error(`missing printer for node type "${node.type}"`);
     }
 
-    // print
-    const document = printer({path, options, print: _print, node});
-
-    // debug
-    // if (node.comments?.some((c) => !c.printed)) {
-    //   console.log(node.type, node.comments?.length, node.comments);
-    // }
-
-    return document;
+    return printer({path, options, print: _print, node});
 };
