@@ -5,7 +5,7 @@ import {PrettierPrinter} from './printer';
 import {defaultOptions, options} from './options';
 
 export const languages: SupportLanguage[] = [{
-    name: 'OpenSPG Concept-Rule',
+    name: 'OpenSPG Concept Rule',
     tmScope: 'source.conceptRule',
     extensions: ['.rule'],
     parsers: [PrettierParser.name],

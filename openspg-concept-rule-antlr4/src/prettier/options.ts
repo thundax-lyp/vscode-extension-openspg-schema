@@ -1,6 +1,6 @@
 import type {Plugin} from 'prettier';
 
-const category = 'OpenSPG Concept-Rule';
+const category = 'OpenSPG Concept Rule';
 
 export const options: Plugin['options'] = {
     printWidth: {

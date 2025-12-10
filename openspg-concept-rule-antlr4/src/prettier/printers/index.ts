@@ -35,8 +35,6 @@ export const print: Printer<any>['print'] = (path, options, _print) => {
 
     const printer = mixin[printerName];
     if (!printer) {
-        console.log(typeof node);
-        console.log(node);
         throw new Error(`missing printer for node type "${node.type}"`);
     }
 

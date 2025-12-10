@@ -1,6 +1,5 @@
 import {BaseNodeString} from '../base';
 
-
 /**
  * ### Grammar:
  * ```

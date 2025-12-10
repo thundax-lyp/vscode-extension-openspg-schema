@@ -13,7 +13,7 @@ export type SourceUnitNode =
  * ```
  * sourceUnit : (namespaceDeclaration | ruleWrapperDeclaration | conceptRuleDeclaration)* ;
  * ```
- **/
+ */
 export class SourceUnit extends BaseNode {
 
     type = 'SourceUnit' as const;

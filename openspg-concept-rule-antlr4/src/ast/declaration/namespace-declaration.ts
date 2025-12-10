@@ -2,7 +2,6 @@ import {BaseNode} from '../base';
 import {ConceptRuleParserVisitor, NamespaceDeclarationContext} from '../../antlr4';
 import {NamespaceVariable} from "./namespace-variable";
 
-
 /**
  * ### Grammar:
  * ```
