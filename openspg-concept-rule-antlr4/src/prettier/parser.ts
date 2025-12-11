@@ -13,10 +13,9 @@ export const getCommentTokens = (tokens: SyntaxToken[]) => {
 
 export class PrettierParser implements Parser<SyntaxNode> {
 
-    // @ts-ignore
-    public static name = 'openspg-concept-rule-prettier-parser';
+    public static NAME = 'openspg-concept-rule-prettier-parser';
 
-    public astFormat = PrettierPrinter.name;
+    public astFormat = PrettierPrinter.NAME;
     public locStart = (node: SyntaxNode) => node.range[0];
     public locEnd = (node: SyntaxNode) => node.range[1] + 1;
     public parse = (text: string, _options: ParserOptions<SyntaxNode>) => {

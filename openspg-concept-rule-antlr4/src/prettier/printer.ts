@@ -11,8 +11,7 @@ export type PrintFunc<T extends ast.SyntaxNode = ast.SyntaxNode> = (arg: {
 
 export class PrettierPrinter implements Printer<any> {
 
-    // @ts-ignore
-    public static name = 'openspg-concept-rule-printer';
+    public static NAME = 'openspg-concept-rule-printer';
 
     public print = print;
     public printComment = printComment;

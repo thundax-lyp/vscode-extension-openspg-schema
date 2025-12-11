@@ -11,8 +11,7 @@ export interface GenerateOptions extends Options {
 
 class PrettierGenerator extends PrettierParser {
 
-    // @ts-ignore
-    public static name = 'openspg-concept-rule-generator';
+    public static NAME = 'openspg-concept-rule-generator';
 
     public parse = (ast: string, _options: ParserOptions<SyntaxNode>) => JSON.parse(ast);
 
@@ -21,7 +20,7 @@ class PrettierGenerator extends PrettierParser {
 const generatorPlugin: Plugin = {
     ...plugin,
     parsers: {
-        [PrettierGenerator.name]: new PrettierGenerator(),
+        [PrettierGenerator.NAME]: new PrettierGenerator(),
     },
 };
 
@@ -31,7 +30,7 @@ export const generate = async (ast: SyntaxNode, options: GenerateOptions = {}): 
     }
     return prettier.format(JSON.stringify(ast), {
         ...options,
-        parser: PrettierGenerator.name,
+        parser: PrettierGenerator.NAME,
         plugins: [...(options.plugins ?? []), generatorPlugin],
     });
 };

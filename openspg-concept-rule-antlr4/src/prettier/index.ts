@@ -8,16 +8,16 @@ export const languages: SupportLanguage[] = [{
     name: 'OpenSPG Concept Rule',
     tmScope: 'source.conceptRule',
     extensions: ['.rule'],
-    parsers: [PrettierParser.name],
+    parsers: [PrettierParser.NAME],
     vscodeLanguageIds: ['openspgConceptRule'],
 }];
 
 export const parsers: Record<string, Parser<SyntaxNode>> = {
-    [PrettierParser.name]: new PrettierParser(),
+    [PrettierParser.NAME]: new PrettierParser(),
 };
 
 export const printers: Record<string, Printer<any>> = {
-    [PrettierPrinter.name]: new PrettierPrinter(),
+    [PrettierPrinter.NAME]: new PrettierPrinter(),
 };
 
 export const plugin: Plugin = {
@@ -28,6 +28,6 @@ export const plugin: Plugin = {
     defaultOptions,
 };
 
-export const parserName = PrettierParser.name;
+export const parserName = PrettierParser.NAME;
 
 export default plugin;
