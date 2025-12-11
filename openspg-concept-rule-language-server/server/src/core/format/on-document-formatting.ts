@@ -10,13 +10,12 @@ export const onDocumentFormatting: OnDocumentFormatting = ({connection, document
         return null;
     }
 
-    const config = (await connection.workspace.getConfiguration('schema.formatter')) as Partial<Options>;
-
+    const config = (await connection.workspace.getConfiguration('conceptRule.formatter')) as Partial<Options>;
     const source = document.getText();
     const range = Range.create(document.positionAt(0), document.positionAt(source.length));
 
     const prettierOptions = {
-        parser: 'openspg-concept-rule-parser',
+        parser: 'openspg-concept-rule-prettier-parser',
         plugins: [{
             languages: ruleSyntax.languages,
             parsers: ruleSyntax.parsers,

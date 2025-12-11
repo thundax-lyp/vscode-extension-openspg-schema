@@ -1,6 +1,7 @@
 import {DocumentSymbol, SymbolKind} from 'vscode-languageserver';
+import * as ruleSyntax from "openspg-concept-rule-antlr4";
 import {OnDocumentSymbol} from '../context';
-import {ConceptRuleDeclaration, generate, NamespaceDeclaration, RuleWrapperDeclaration} from '../common/parser';
+import {generate} from "../common/generate";
 
 export const onDocumentSymbol: OnDocumentSymbol = (ctx) => async ({textDocument}) => {
     const document = ctx.documents.get(textDocument.uri);
@@ -8,14 +9,14 @@ export const onDocumentSymbol: OnDocumentSymbol = (ctx) => async ({textDocument}
         return null;
     }
 
-    const handleNamespaceDeclaration = async (ast: NamespaceDeclaration): Promise<DocumentSymbol> => ({
+    const handleNamespaceDeclaration = async (ast: ruleSyntax.NamespaceDeclaration): Promise<DocumentSymbol> => ({
         name: await generate(ast.variable),
         kind: SymbolKind.Namespace,
         range: document.getNodeRange(ast),
         selectionRange: document.getNodeRange(ast.variable),
     })
 
-    const handleRuleWrapperDeclaration = async (ast: RuleWrapperDeclaration): Promise<DocumentSymbol> => ({
+    const handleRuleWrapperDeclaration = async (ast: ruleSyntax.RuleWrapperDeclaration): Promise<DocumentSymbol> => ({
         name: await generate(ast.head),
         kind: SymbolKind.Class,
         range: document.getNodeRange(ast),
@@ -27,9 +28,35 @@ export const onDocumentSymbol: OnDocumentSymbol = (ctx) => async ({textDocument}
         )
     })
 
-    const handleConceptRuleDeclaration = async (ast: ConceptRuleDeclaration): Promise<DocumentSymbol> => ({
+    const handleConceptRuleDeclaration = async (ast: ruleSyntax.ConceptRuleDeclaration): Promise<DocumentSymbol> => ({
         name: await generate(ast.head),
-        kind: SymbolKind.Variable,
+        kind: SymbolKind.Struct,
+        range: document.getNodeRange(ast),
+        selectionRange: document.getNodeRange(ast.head),
+        children: [
+            await handleTheGraphStructureDeclaration(ast.theGraph),
+            ast.theRule ? await handleTheRuleDeclaration(ast.theRule) : null,
+            ast.theAction ? await handleTheActionDeclaration(ast.theAction) : null,
+        ].filter(Boolean) as DocumentSymbol[]
+    })
+
+    const handleTheGraphStructureDeclaration = async (ast: ruleSyntax.TheGraphStructureDeclaration): Promise<DocumentSymbol> => ({
+        name: await generate(ast.head),
+        kind: SymbolKind.Function,
+        range: document.getNodeRange(ast),
+        selectionRange: document.getNodeRange(ast.head),
+    })
+
+    const handleTheRuleDeclaration = async (ast: ruleSyntax.TheRuleDeclaration): Promise<DocumentSymbol> => ({
+        name: await generate(ast.head),
+        kind: SymbolKind.Function,
+        range: document.getNodeRange(ast),
+        selectionRange: document.getNodeRange(ast.head),
+    })
+
+    const handleTheActionDeclaration = async (ast: ruleSyntax.TheActionDeclaration): Promise<DocumentSymbol> => ({
+        name: await generate(ast.head),
+        kind: SymbolKind.Function,
         range: document.getNodeRange(ast),
         selectionRange: document.getNodeRange(ast.head),
     })

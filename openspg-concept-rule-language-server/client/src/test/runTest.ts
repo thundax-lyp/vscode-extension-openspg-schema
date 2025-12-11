@@ -9,17 +9,21 @@ async function main() {
         const extensionDevelopmentPath = path.resolve(__dirname, '../../../');
         console.log(`Running ${extensionDevelopmentPath}`);
 
+        const workspaceFolder = path.resolve(__dirname, '../../testFixture/');
+        console.log(`Workspace ${workspaceFolder}`);
+
         // The path to test runner
         // Passed to --extensionTestsPath
         const extensionTestsPath = path.resolve(__dirname, './index');
 
-        const version = '1.106.1';
+        const version = '1.106.3';
 
         // Download VS Code, unzip it and run the integration test
         await runTests({
             extensionDevelopmentPath,
             extensionTestsPath,
             version,
+            // launchArgs: [workspaceFolder]
         });
     } catch {
         console.error('Failed to run tests');

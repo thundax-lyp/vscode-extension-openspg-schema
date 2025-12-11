@@ -38,9 +38,9 @@ export const onInitialize = ({connection}: Context): OnInitialize => async ({ini
                 full: true,
             },
             // typeDefinitionProvider: true,
-            definitionProvider: true,
-            referencesProvider: true,
-            hoverProvider: true,
+            // definitionProvider: true,
+            // referencesProvider: true,
+            // hoverProvider: true,
             // documentLinkProvider: {
             //     resolveProvider: false
             // },

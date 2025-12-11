@@ -1,5 +1,5 @@
 import * as path from 'path';
-import {workspace, ExtensionContext, OutputChannel} from 'vscode';
+import * as vscode from 'vscode';
 
 import {
     LanguageClient,
@@ -8,7 +8,7 @@ import {
     TransportKind
 } from 'vscode-languageclient/node';
 
-class MyOutputChannel implements OutputChannel {
+class MyOutputChannel implements vscode.OutputChannel {
     name = 'Extension';
 
     constructor(name: string = 'Extension') {
@@ -46,7 +46,7 @@ class MyOutputChannel implements OutputChannel {
 
 let client: LanguageClient;
 
-export const activate = (context: ExtensionContext) => {
+export const activate = (context: vscode.ExtensionContext) => {
     // The server is implemented in node
     const serverModule = context.asAbsolutePath(
         path.join('server', 'dist', 'server.js')
@@ -54,7 +54,7 @@ export const activate = (context: ExtensionContext) => {
 
     console.log('-'.repeat(40) + 'extensionPath: ' +  context.extensionPath)
 
-    // languages.getLanguages().then(langs => {
+    // vscode.languages.getLanguages().then(langs => {
     //     console.log('='.repeat(60))
     //     langs.forEach(x => {
     //         console.log(x)
@@ -87,11 +87,12 @@ export const activate = (context: ExtensionContext) => {
             language: 'conceptRule', scheme: 'untitled'
         }],
         synchronize: {
-            fileEvents: workspace.createFileSystemWatcher('**/*.rule')
+            fileEvents: vscode.workspace.createFileSystemWatcher('**/*.rule')
         },
         initializationOptions: context.extensionPath,
         outputChannel: new MyOutputChannel(),
     };
+
 
     // Create the language client and start the client.
     client = new LanguageClient(

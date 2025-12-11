@@ -11,7 +11,7 @@ export let platformEol: string;
  */
 export async function activate(docUri: vscode.Uri) {
     // The extensionId is `publisher.name` from package.json
-    const ext = vscode.extensions.getExtension('thundax-lyp.openspg-schema-language-server')!;
+    const ext = vscode.extensions.getExtension('thundax-lyp.openspg-concept-rule-language-server')!;
     await ext.activate();
 
     try {
