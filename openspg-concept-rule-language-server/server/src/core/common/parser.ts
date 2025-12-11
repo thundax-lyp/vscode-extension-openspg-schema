@@ -1,10 +1,4 @@
-import {
-    visit,
-    SyntaxNode,
-    VisitHandlers,
-    TraversePath,
-    SyntaxNodeType,
-} from 'openspg-concept-rule-antlr4';
+import {SyntaxNode, SyntaxNodeType, TraversePath, visit, VisitHandlers,} from 'openspg-concept-rule-antlr4';
 import {PartialDeep} from 'type-fest';
 
 export * from 'openspg-concept-rule-antlr4';

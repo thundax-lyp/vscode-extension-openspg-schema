@@ -18,7 +18,7 @@ export function run(): Promise<void> {
         console.log(files);
         // Add files to the test suite
         files
-            .filter(x => x.includes('semantic-tokens'))
+            .filter(x => x.includes('symbol'))
             .forEach(x => mocha.addFile(path.resolve(testsRoot, x)));
 
         try {

@@ -2,22 +2,22 @@ import * as vscodeUri from 'vscode-uri';
 import {Position, Range, TextDocumentContentChangeEvent} from 'vscode-languageserver';
 import {TextDocument} from 'vscode-languageserver-textdocument';
 import {
+    checkNode,
+    ConceptRuleDeclaration,
+    createSelector,
+    NamespaceDeclaration,
+    parse,
+    query,
+    QueryFilter,
+    RuleWrapperDeclaration,
+    Selector,
+    SelectorFilter,
+    SourceUnit,
     SyntaxNode,
     SyntaxToken,
-    parse,
     tokenizer,
-    TraversePath,
     traverse,
-    SourceUnit,
-    QueryFilter,
-    checkNode,
-    Selector,
-    createSelector,
-    SelectorFilter,
-    query,
-    NamespaceDeclaration,
-    RuleWrapperDeclaration,
-    ConceptRuleDeclaration,
+    TraversePath,
 } from './parser';
 import {documents} from './text-documents';
 

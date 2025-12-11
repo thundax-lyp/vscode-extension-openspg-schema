@@ -1,6 +1,6 @@
 import {DocumentSymbol, SymbolKind} from 'vscode-languageserver';
 import {OnDocumentSymbol} from '../context';
-import {generate, NamespaceDeclaration, ConceptRuleDeclaration, RuleWrapperDeclaration} from '../common/parser';
+import {ConceptRuleDeclaration, generate, NamespaceDeclaration, RuleWrapperDeclaration} from '../common/parser';
 
 export const onDocumentSymbol: OnDocumentSymbol = (ctx) => async ({textDocument}) => {
     const document = ctx.documents.get(textDocument.uri);

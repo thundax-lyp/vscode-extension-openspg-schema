@@ -1,5 +1,5 @@
 import {DocumentHighlight, DocumentHighlightKind, Range} from 'vscode-languageserver';
-import {SyntaxNode} from 'openspg-schema-antlr4'
+import * as ruleSyntax from 'openspg-concept-rule-antlr4'
 import {Context, OnDocumentHighlight} from '../context';
 
 
@@ -11,7 +11,7 @@ export const onDocumentHighlight: OnDocumentHighlight = ({documents}: Context) =
     }
 
     const createSelector = document.createPositionSelector(position);
-    const selectedPath = document.getPathAt<SyntaxNode>(createSelector('*'))
+    const selectedPath = document.getPathAt<ruleSyntax.SyntaxNode>(createSelector('*'))
     if (!selectedPath) {
         return null;
     }

@@ -1,16 +1,16 @@
 import {Connection} from "vscode-languageserver";
-import {SchemaTextDocument} from "./common/text-document";
+import {ConceptRuleTextDocument} from "./common/text-document";
 import {TextDocuments} from "./common/text-documents";
 import {Context} from "./context";
 import {onExit, onInitialize, onInitialized} from "./initialize";
 import {onDocumentSymbol} from "./symbol";
 import {onDocumentFormatting} from "./format";
-import {onDefinition, onHover, onReferences} from "./definition";
+import {onHover} from "./definition";
 import {onDocumentHighlight} from "./highlight";
 import {onSemanticTokens} from "./semantic-tokens";
 
-const initDocuments = (connection: Connection): TextDocuments<SchemaTextDocument> => {
-    const documents = new TextDocuments(SchemaTextDocument);
+const initDocuments = (connection: Connection): TextDocuments<ConceptRuleTextDocument> => {
+    const documents = new TextDocuments(ConceptRuleTextDocument);
     documents.onDidOpen(event => {
         // connection.console.log('documents.onDidOpen()');
     })
@@ -60,10 +60,10 @@ export const listen = (connection: Connection) => {
     // connection.onSignatureHelp(onSignatureHelp(context));
 
     // connection.onDeclaration(onSignatureHelp(context));
-    connection.onDefinition(onDefinition(context));
+    // connection.onDefinition(onDefinition(context));
     // connection.onTypeDefinition(onSignatureHelp(context));
     // connection.onImplementation(onImplementation(serverState));
-    connection.onReferences(onReferences(context));
+    // connection.onReferences(onReferences(context));
     connection.onDocumentHighlight(onDocumentHighlight(context));
 
     connection.onDocumentSymbol(onDocumentSymbol(context));

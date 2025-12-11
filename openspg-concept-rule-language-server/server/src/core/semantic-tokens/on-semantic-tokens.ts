@@ -1,6 +1,6 @@
 import {SemanticTokensBuilder} from 'vscode-languageserver';
 import {Context, OnSemanticTokens} from '../context';
-import * as schema from "openspg-schema-antlr4";
+import * as ruleSyntax from 'openspg-concept-rule-antlr4'
 
 enum TokenTypes {
     none = 0,
@@ -30,13 +30,13 @@ export const onSemanticTokens = (ctx: Context): OnSemanticTokens => async ({text
         return builder.build();
     }
 
-    const syntaxNodeEmitters: Record<`handle${schema.SyntaxNodeType}`, HandleSyntaxNodeFunc | null> = Object.assign(
+    const syntaxNodeEmitters: Record<`handle${ruleSyntax.SyntaxNodeType}`, HandleSyntaxNodeFunc | null> = Object.assign(
         {},
         new SyntaxNodeEmitter(),
     );
 
-    schema.traverse(document.ast, (path) => {
-        const emitterName = `handle${path.node.type}` as `handle${schema.SyntaxNodeType}`;
+    ruleSyntax.traverse(document.ast, (path) => {
+        const emitterName = `handle${path.node.type}` as `handle${ruleSyntax.SyntaxNodeType}`;
         const emitter = syntaxNodeEmitters[emitterName];
         if (emitter) {
             const result = emitter(path);
@@ -60,47 +60,54 @@ class HandleSyntaxNodeResult {
     }
 }
 
-type HandleSyntaxNodeFunc<T extends schema.SyntaxNode = schema.SyntaxNode> = (path: schema.TraversePath<T>) => HandleSyntaxNodeResult;
+type HandleSyntaxNodeFunc<T extends ruleSyntax.SyntaxNode = ruleSyntax.SyntaxNode> = (path: ruleSyntax.TraversePath<T>) => HandleSyntaxNodeResult;
 
-class SyntaxNodeEmitter implements Record<`handle${schema.SyntaxNodeType}`, HandleSyntaxNodeFunc<any> | null> {
+class SyntaxNodeEmitter implements Record<`handle${ruleSyntax.SyntaxNodeType}`, HandleSyntaxNodeFunc<any> | null> {
     handleNamespaceDeclaration = null;
     handleNamespaceVariable = () => new HandleSyntaxNodeResult(TokenTypes.variable);
-    handleEntityDeclaration = null;
-    handleEntityMetaDeclaration = null;
-    handlePropertyDeclaration = null;
-    handlePropertyMetaDeclaration = null;
-    handleSubPropertyDeclaration = null;
-    handleSubPropertyMetaDeclaration = null;
-    handleBasicPropertyDeclaration = null;
-    handleBasicPropertyName = () => new HandleSyntaxNodeResult(TokenTypes.property);
-    handleBasicPropertyValue = () => new HandleSyntaxNodeResult(TokenTypes.variable);
-    handleBasicStructureDeclaration = null;
-    handleBasicStructureType = () => new HandleSyntaxNodeResult(TokenTypes.keyword);
-    handleBasicStructureTypeExpression = null;
-    handleBlockPropertyValue = () => new HandleSyntaxNodeResult(TokenTypes.string);
-    handleBuiltinPropertyName = () => new HandleSyntaxNodeResult(TokenTypes.keyword);
-    handleBuiltinPropertyValue = () => new HandleSyntaxNodeResult(TokenTypes.keyword);
-    handleInheritedStructureTypeExpression = null;
-    handleKnowledgeStructureType = () => new HandleSyntaxNodeResult(TokenTypes.keyword);
-    handlePropertyNameExpression = null;
-    handlePropertyValueExpression = null;
-    handleStandardStructureType = () => new HandleSyntaxNodeResult(TokenTypes.keyword);
-    handleStructureAlias = () => new HandleSyntaxNodeResult(TokenTypes.string);
-    handleStructureAliasExpression = null;
-    handleStructureName = null;
-    handleStructureNameExpression = null;
-    handleStructureRealName = ({path}: { path: string }) => {
-        if (path.split('.').includes('BasicStructureTypeExpression')) {
-            return new HandleSyntaxNodeResult(TokenTypes.inherited);
-        }
-        return new HandleSyntaxNodeResult(TokenTypes.structure);
-    };
-    handleStructureSemanticName = ({path}: { path: string }) => {
-        if (path.split('.').includes('BasicStructureTypeExpression')) {
-            return new HandleSyntaxNodeResult(TokenTypes.inherited);
-        }
-        return new HandleSyntaxNodeResult(TokenTypes.structure);
-    };
+
+    handleConceptRuleDeclaration = null;
+    handleConceptRuleHead = null;
+    handleRuleWrapperDeclaration = null;
+    handleRuleWrapperHead = null;
+    handleRuleWrapperRuleDeclaration = null;
+    handleRuleWrapperRuleHead = null;
+    handleTheActionDeclaration = null;
+    handleTheActionHead = null;
+    handleTheGraphStructureDeclaration = null;
+    handleTheGraphStructureHead = null;
+    handleTheRuleDeclaration = null;
+    handleTheRuleHead = null;
+    handleAddEdgeFunction = null;
+    handleAddNodeFunction = null;
+    handleAssignmentExpression = null;
+    handleConceptName = null;
+    handleConceptType = null;
+    handleEdgeExpression = null;
+    handleEdgePattern = null;
+    handleElementLookup = null;
+    handleElementPattern = null;
+    handleElementPatternAddition = null;
+    handleElementPatternDeclarationAndFiller = null;
+    handleElementPatternList = null;
+    handleElementPatternWhereClause = null;
+    handleElementVariableDeclaration = null;
+    handleExpressionSet = null;
+    handleLabelExpression = null;
+    handleLabelName = null;
+    handleLabelNameList = null;
+    handleLabelPropertyList = null;
+    handleLogicRuleExpression = null;
+    handleNodeFunctionParam = null;
+    handleNodePattern = null;
+    handleObjectFunctionParam = null;
+    handlePathPattern = null;
+    handlePathPatternList = null;
+    handleProjectRuleExpression = null;
+    handlePropertyExpression = null;
+    handleTypeFunctionParam = null;
+    handleValueExpression = null;
+    handleVertexExpression = null;
     handleIdentifier = null;
     handleSourceUnit = null;
 }
