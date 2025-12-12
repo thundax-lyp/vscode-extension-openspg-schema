@@ -2,8 +2,8 @@ import {TextDocumentSyncKind} from 'vscode-languageserver';
 import {Context, OnInitialize} from '../context';
 
 
-export const onInitialize = ({connection}: Context): OnInitialize => async ({initializationOptions}) => {
-    connection.console.log(`initializing with options: ${initializationOptions!!}`,);
+export const onInitialize = (_: Context): OnInitialize => async ({initializationOptions}) => {
+    console.log(`initializing with options: ${initializationOptions!!}`,);
 
     return {
         serverInfo: {
@@ -41,9 +41,9 @@ export const onInitialize = ({connection}: Context): OnInitialize => async ({ini
             // definitionProvider: true,
             // referencesProvider: true,
             // hoverProvider: true,
-            // documentLinkProvider: {
-            //     resolveProvider: false
-            // },
+            documentLinkProvider: {
+                resolveProvider: true
+            },
             // codeLensProvider: {
             //   resolveProvider: false,
             //   workDoneProgress: false,

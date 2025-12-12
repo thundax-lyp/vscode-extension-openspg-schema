@@ -18,21 +18,21 @@ suite('Document Symbols', () => {
         await waitingForTick()
         await testDocumentSymbol(docUri, [
             toSymbol('DocumentSymbol', SymbolKind.Namespace, toRange(0, 0, 0, 24)),
-            toSymbol('`TaxOfRiskApp`/`赌博应用`:', SymbolKind.Class, toRange(2, 0, 13, 6), [
-                toSymbol('Define (s:App)-[p:belongTo]->(o:`TaxOfRiskApp`/`赌博应用`)', SymbolKind.Struct, toRange(4, 8, 12, 9), [
+            toSymbol('`TaxOfRiskApp`/`赌博应用`', SymbolKind.Class, toRange(2, 0, 13, 6), [
+                toSymbol('(s:App)-[p:belongTo]->(o:`TaxOfRiskApp`/`赌博应用`)', SymbolKind.Struct, toRange(4, 8, 12, 9), [
                     toSymbol('Structure', SymbolKind.Function, toRange(5, 12, 6, 13)),
                     toSymbol('Rule', SymbolKind.Function, toRange(7, 12, 9, 13)),
                     toSymbol('Action', SymbolKind.Function, toRange(10, 12, 11, 13)),
                 ]),
             ]),
-            toSymbol('`TaxOfRiskUser`/`赌博App开发者`:', SymbolKind.Class, toRange(15, 0, 24, 6), [
-                toSymbol('Define (s:Person)-[p:belongTo]->(o:`TaxOfRiskUser`/`赌博App开发者`)', SymbolKind.Struct, toRange(17, 8, 23, 9), [
+            toSymbol('`TaxOfRiskUser`/`赌博App开发者`', SymbolKind.Class, toRange(15, 0, 24, 6), [
+                toSymbol('(s:Person)-[p:belongTo]->(o:`TaxOfRiskUser`/`赌博App开发者`)', SymbolKind.Struct, toRange(17, 8, 23, 9), [
                     toSymbol('GraphStructure', SymbolKind.Function, toRange(18, 12, 19, 13)),
                     toSymbol('Constraint', SymbolKind.Function, toRange(20, 12, 22, 13)),
                 ]),
             ]),
-            toSymbol('`TaxOfRiskUser`/`赌博App老板`:', SymbolKind.Class, toRange(26, 0, 34, 6), [
-                toSymbol('Define (s:Person)-[p:belongTo]->(o:`TaxOfRiskUser`/`赌博App老板`)', SymbolKind.Struct, toRange(28, 8, 33, 9), [
+            toSymbol('`TaxOfRiskUser`/`赌博App老板`', SymbolKind.Class, toRange(26, 0, 34, 6), [
+                toSymbol('(s:Person)-[p:belongTo]->(o:`TaxOfRiskUser`/`赌博App老板`)', SymbolKind.Struct, toRange(28, 8, 33, 9), [
                     toSymbol('Structure', SymbolKind.Function, toRange(29, 12, 30, 13)),
                     toSymbol('Action', SymbolKind.Function, toRange(31, 12, 32, 13)),
                 ]),
@@ -52,7 +52,7 @@ async function testDocumentSymbol(docUri: vscode.Uri, expectedSymbols: vscode.Do
 }
 
 const checkSymbols = (actualSymbols: vscode.DocumentSymbol[], expectedSymbols: vscode.DocumentSymbol[]) => {
-    assert.equal(actualSymbols.length, expectedSymbols.length);
+    assert.equal(actualSymbols?.length, expectedSymbols.length);
     expectedSymbols.forEach((expectedSymbol, i) => {
         const actualSymbol = actualSymbols[i];
         checkSymbol(actualSymbol, expectedSymbol)

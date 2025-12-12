@@ -1,6 +1,6 @@
 import {SemanticTokensBuilder} from 'vscode-languageserver';
+import * as syntax from 'openspg-concept-rule-antlr4'
 import {Context, OnSemanticTokens} from '../context';
-import * as ruleSyntax from 'openspg-concept-rule-antlr4'
 
 enum TokenTypes {
     none = 0,
@@ -30,13 +30,13 @@ export const onSemanticTokens = (ctx: Context): OnSemanticTokens => async ({text
         return builder.build();
     }
 
-    const syntaxNodeEmitters: Record<`handle${ruleSyntax.SyntaxNodeType}`, HandleSyntaxNodeFunc | null> = Object.assign(
+    const syntaxNodeEmitters: Record<`handle${syntax.SyntaxNodeType}`, HandleSyntaxNodeFunc | null> = Object.assign(
         {},
         new SyntaxNodeEmitter(),
     );
 
-    ruleSyntax.traverse(document.ast, (path) => {
-        const emitterName = `handle${path.node.type}` as `handle${ruleSyntax.SyntaxNodeType}`;
+    syntax.traverse(document.ast, (path) => {
+        const emitterName = `handle${path.node.type}` as `handle${syntax.SyntaxNodeType}`;
         const emitter = syntaxNodeEmitters[emitterName];
         if (emitter) {
             const result = emitter(path);
@@ -60,9 +60,9 @@ class HandleSyntaxNodeResult {
     }
 }
 
-type HandleSyntaxNodeFunc<T extends ruleSyntax.SyntaxNode = ruleSyntax.SyntaxNode> = (path: ruleSyntax.TraversePath<T>) => HandleSyntaxNodeResult;
+type HandleSyntaxNodeFunc<T extends syntax.SyntaxNode = syntax.SyntaxNode> = (path: syntax.TraversePath<T>) => HandleSyntaxNodeResult;
 
-class SyntaxNodeEmitter implements Record<`handle${ruleSyntax.SyntaxNodeType}`, HandleSyntaxNodeFunc<any> | null> {
+class SyntaxNodeEmitter implements Record<`handle${syntax.SyntaxNodeType}`, HandleSyntaxNodeFunc<any> | null> {
     handleNamespaceDeclaration = null;
     handleNamespaceVariable = () => new HandleSyntaxNodeResult(TokenTypes.variable);
 

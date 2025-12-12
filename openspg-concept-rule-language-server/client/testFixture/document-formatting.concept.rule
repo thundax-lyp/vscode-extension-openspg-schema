@@ -1,4 +1,4 @@
-namespace SupplyChain
+namespace DocumentFormatting
 
 `TaxOfProdEvent`/`价格上涨`:
     rule: [[Define (e:ProductChainEvent)-[p:belongTo]->(o:`TaxOfProdEvent`/`价格上涨`) {

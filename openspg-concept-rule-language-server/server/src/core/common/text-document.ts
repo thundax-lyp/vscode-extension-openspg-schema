@@ -1,33 +1,17 @@
 import * as vscodeUri from 'vscode-uri';
 import {Position, Range, TextDocumentContentChangeEvent} from 'vscode-languageserver';
 import {TextDocument} from 'vscode-languageserver-textdocument';
-import {
-    checkNode,
-    ConceptRuleDeclaration,
-    createSelector,
-    NamespaceDeclaration,
-    parse,
-    query,
-    QueryFilter,
-    RuleWrapperDeclaration,
-    Selector,
-    SelectorFilter,
-    SourceUnit,
-    SyntaxNode,
-    SyntaxToken,
-    tokenizer,
-    traverse,
-    TraversePath,
-} from './parser';
+import * as syntax from 'openspg-concept-rule-antlr4'
+import {checkNode, QueryFilter} from './parser';
 import {documents} from './text-documents';
 
 export interface ConceptRuleExportItem {
     name: string
     uri: string
     node:
-        | NamespaceDeclaration
-        | RuleWrapperDeclaration
-        | ConceptRuleDeclaration
+        | syntax.NamespaceDeclaration
+        | syntax.RuleWrapperDeclaration
+        | syntax.ConceptRuleDeclaration
 }
 
 export interface ConceptRuleImportItem extends ConceptRuleExportItem {
@@ -96,9 +80,8 @@ export class ConceptRuleTextDocument implements TextDocument {
 
     public promiseReady: Promise<void>;
 
-    // File AST parsed by `openspg-schema-antlr4`
-    public ast: SourceUnit | null = null;
-    public tokens: SyntaxToken[] = [];
+    public ast: syntax.SourceUnit | null = null;
+    public tokens: syntax.SyntaxToken[] = [];
     // export items
     public exports: ConceptRuleExportItem[] = [];
 
@@ -122,9 +105,11 @@ export class ConceptRuleTextDocument implements TextDocument {
             if (!content) return;
 
             // parse ast and tokens
-            this.ast = parse<SourceUnit>(content, {tolerant: true});
-            this.tokens = tokenizer(content, {tolerant: true});
-            if (!this.ast) return;
+            this.ast = syntax.parse<syntax.SourceUnit>(content, {tolerant: true});
+            this.tokens = syntax.tokenizer(content, {tolerant: true});
+            if (!this.ast) {
+                return;
+            }
 
             // get export items
             // this.exports = this.getExportItems();
@@ -132,7 +117,6 @@ export class ConceptRuleTextDocument implements TextDocument {
         } catch (error) {
             // ignore
             console.error(error);
-            // TODO: to remove compile error
             // globalThis.connection?.sendDiagnostics({
             //     uri: this.uri,
             //     diagnostics: [
@@ -165,7 +149,7 @@ export class ConceptRuleTextDocument implements TextDocument {
      * @param node ast
      * @returns range
      */
-    public getNodeRange<T extends SyntaxNode>(node?: T): Range {
+    public getNodeRange<T extends syntax.SyntaxNode>(node?: T): Range {
         return {
             start: this.positionAt(node?.range[0] ?? 0),
             end: this.positionAt((node?.range[1] ?? 0) + 1),
@@ -180,13 +164,13 @@ export class ConceptRuleTextDocument implements TextDocument {
      *
      * @deprecated
      */
-    public getNodesAt<T extends SyntaxNode = SyntaxNode>(
+    public getNodesAt<T extends syntax.SyntaxNode = syntax.SyntaxNode>(
         position: Position,
         filters: QueryFilter[] = [],
     ) {
         const offset = this.offsetAt(position);
-        const paths: TraversePath<T>[] = [];
-        traverse(this.ast!, (p) => {
+        const paths: syntax.TraversePath<T>[] = [];
+        syntax.traverse(this.ast!, (p) => {
             const [start, end] = p.node.range;
             if (offset >= start && offset <= end) {
                 if (!filters.length || (filters.length && checkNode(p, filters))) {
@@ -206,10 +190,10 @@ export class ConceptRuleTextDocument implements TextDocument {
      *
      * @deprecated
      */
-    public getNodeAt<T extends SyntaxNode = SyntaxNode>(
+    public getNodeAt<T extends syntax.SyntaxNode = syntax.SyntaxNode>(
         position: Position,
         filters: QueryFilter[] = [],
-    ): TraversePath<T> | null {
+    ): syntax.TraversePath<T> | null {
         const paths = this.getNodesAt<T>(position, filters);
         const target = paths[paths.length - 1];
         return target ?? null;
@@ -217,19 +201,19 @@ export class ConceptRuleTextDocument implements TextDocument {
 
     public createPositionSelector(position?: Position) {
         const offset = position ? this.offsetAt(position) : undefined;
-        return (filter: SelectorFilter) => createSelector(filter, offset);
+        return (filter: syntax.SelectorFilter) => syntax.createSelector(filter, offset);
     }
 
-    public getPathsAt<T extends SyntaxNode = SyntaxNode>(
-        ...selectors: Selector[]
-    ): TraversePath<T>[] {
-        return query<T>(this.ast!, selectors, {queryAll: true, order: 'asc'});
+    public getPathsAt<T extends syntax.SyntaxNode = syntax.SyntaxNode>(
+        ...selectors: syntax.Selector[]
+    ): syntax.TraversePath<T>[] {
+        return syntax.query<T>(this.ast!, selectors, {queryAll: true, order: 'asc'});
     }
 
-    public getPathAt<T extends SyntaxNode = SyntaxNode>(
-        ...selectors: Selector[]
-    ): TraversePath<T> | null {
-        return query<T>(this.ast!, selectors, {queryAll: true, order: 'desc'})?.[0] ?? null;
+    public getPathAt<T extends syntax.SyntaxNode = syntax.SyntaxNode>(
+        ...selectors: syntax.Selector[]
+    ): syntax.TraversePath<T> | null {
+        return syntax.query<T>(this.ast!, selectors, {queryAll: true, order: 'desc'})?.[0] ?? null;
     }
 
     public resolvePath = (target: string): vscodeUri.URI => {

@@ -1,6 +1,6 @@
 import {Range, TextEdit} from 'vscode-languageserver';
 import * as prettier from 'prettier/standalone';
-import * as ruleSyntax from 'openspg-concept-rule-antlr4'
+import * as syntax from 'openspg-concept-rule-antlr4'
 import {Context, OnDocumentFormatting} from '../context';
 import {Options} from "prettier";
 
@@ -17,9 +17,9 @@ export const onDocumentFormatting: OnDocumentFormatting = ({connection, document
     const prettierOptions = {
         parser: 'openspg-concept-rule-prettier-parser',
         plugins: [{
-            languages: ruleSyntax.languages,
-            parsers: ruleSyntax.parsers,
-            printers: ruleSyntax.printers,
+            languages: syntax.languages,
+            parsers: syntax.parsers,
+            printers: syntax.printers,
         }],
         tabWidth: config?.tabWidth ?? 4,
         bracketSpacing: config?.bracketSpacing ?? true,

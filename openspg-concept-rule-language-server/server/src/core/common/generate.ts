@@ -1,12 +1,12 @@
-import * as ruleSyntax from "openspg-concept-rule-antlr4";
+import * as syntax from "openspg-concept-rule-antlr4";
 
-export const generate = async (ast: ruleSyntax.SyntaxNode, options: ruleSyntax.GenerateOptions = {}): Promise<string> => {
-    return ruleSyntax.generate(ast, {
+export const generate = async (ast: syntax.SyntaxNode, options: syntax.GenerateOptions = {}): Promise<string> => {
+    return syntax.generate(ast, {
         ...options,
         plugins: [{
-            languages: ruleSyntax.languages,
-            parsers: ruleSyntax.parsers,
-            printers: ruleSyntax.printers,
+            languages: syntax.languages,
+            parsers: syntax.parsers,
+            printers: syntax.printers,
         }],
     })
 };
