@@ -1,7 +1,7 @@
 import {DocumentSymbol, SymbolKind} from 'vscode-languageserver';
+import * as syntax from "openspg-schema-antlr4";
 import {OnDocumentSymbol} from '../context';
-import {NamespaceDeclaration, EntityDeclaration} from '../common/parser';
-import {BasicPropertyDeclaration, BasicStructureDeclaration, EntityMetaDeclaration, PropertyDeclaration} from "openspg-schema-antlr4";
+import {generate} from "../common";
 
 export const onDocumentSymbol: OnDocumentSymbol = (ctx) => async ({textDocument}) => {
     const document = ctx.documents.get(textDocument.uri);
@@ -9,54 +9,50 @@ export const onDocumentSymbol: OnDocumentSymbol = (ctx) => async ({textDocument}
         return null;
     }
 
-    const renderBasicStructureDeclaration = (declaration: BasicStructureDeclaration) => {
-        return [...declaration.name.variable.semanticNames, declaration.name.variable.realName]
-            .map(x => x.text)
-            .join('#')
-    }
+    const renderBasicStructureDeclaration = async (declaration: syntax.BasicStructureDeclaration) => await generate(declaration.name);
 
-    const renderBasicPropertyDeclaration = (declaration: BasicPropertyDeclaration) => {
-        return declaration.name.variable.text
-    }
+    const renderBasicPropertyDeclaration = async (declaration: syntax.BasicPropertyDeclaration) => await generate(declaration.name);
 
-    const handleNamespaceDeclaration = (ast: NamespaceDeclaration): DocumentSymbol => ({
-        name: ast.variable.text,
+    const handleNamespaceDeclaration = async (ast: syntax.NamespaceDeclaration): Promise<DocumentSymbol> => ({
+        name: await generate(ast.variable),
         kind: SymbolKind.Namespace,
         range: document.getNodeRange(ast),
         selectionRange: document.getNodeRange(ast.variable),
     })
 
-    const handleEntityDeclaration = (ast: EntityDeclaration): DocumentSymbol => ({
-        name: renderBasicStructureDeclaration(ast.declaration),
+    const handleEntityDeclaration = async (ast: syntax.EntityDeclaration): Promise<DocumentSymbol> => ({
+        name: await renderBasicStructureDeclaration(ast.declaration),
         kind: SymbolKind.Class,
         range: document.getNodeRange(ast),
         selectionRange: document.getNodeRange(ast.declaration.name),
-        children: ast.children.map(x => handleEntityMetaDeclaration(x)),
+        children: await Promise.all(ast.children.map(x => handleEntityMetaDeclaration(x))),
     })
 
-    const handleEntityMetaDeclaration = (ast: EntityMetaDeclaration): DocumentSymbol => ({
-        name: renderBasicPropertyDeclaration(ast.declaration),
+    const handleEntityMetaDeclaration = async (ast: syntax.EntityMetaDeclaration): Promise<DocumentSymbol> => ({
+        name: await renderBasicPropertyDeclaration(ast.declaration),
         kind: SymbolKind.Variable,
         range: document.getNodeRange(ast),
         selectionRange: document.getNodeRange(ast.declaration.name.variable),
-        children: ast.children.map(x => handlePropertyDeclaration(x)),
+        children: await Promise.all(ast.children.map(x => handlePropertyDeclaration(x))),
     })
 
-    const handlePropertyDeclaration = (ast: PropertyDeclaration): DocumentSymbol => ({
-        name: renderBasicStructureDeclaration(ast.declaration),
+    const handlePropertyDeclaration = async (ast: syntax.PropertyDeclaration): Promise<DocumentSymbol> => ({
+        name: await renderBasicStructureDeclaration(ast.declaration),
         kind: SymbolKind.Property,
         range: document.getNodeRange(ast),
         selectionRange: document.getNodeRange(ast.declaration.name),
     })
 
-    return document.ast.nodes.map(node => {
-        switch (node.type) {
-            case 'NamespaceDeclaration':
-                return handleNamespaceDeclaration(node);
-            case 'EntityDeclaration':
-                return handleEntityDeclaration(node);
-            default:
-                return null;
-        }
-    }).filter(Boolean) as DocumentSymbol[];
+    return (await Promise.all(
+        document.ast.nodes.map(node => (async () => {
+            switch (node.type) {
+                case 'NamespaceDeclaration':
+                    return handleNamespaceDeclaration(node);
+                case 'EntityDeclaration':
+                    return handleEntityDeclaration(node);
+                default:
+                    return null;
+            }
+        })())
+    )).filter(Boolean) as DocumentSymbol[];
 }
