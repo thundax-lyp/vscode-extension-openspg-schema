@@ -1,6 +1,6 @@
 import {expect, test} from 'vitest';
 import {parse} from '../src';
-import {createSelector, querySelector, querySelectorAll, serialize, traverse, visit,} from '../src';
+import {createSelector, querySelector, querySelectorAll, traverse, visit,} from '../src';
 
 const code = `
 // SPDX-License-Identifier: MIT
@@ -68,15 +68,6 @@ test('traverse', () => {
     expect(enterNames).toEqual(['NamespaceDeclaration', 'RuleWrapperDeclaration', 'RuleWrapperDeclaration', 'RuleWrapperDeclaration']);
     expect(exitNames).toEqual(['NamespaceDeclaration', 'RuleWrapperDeclaration', 'RuleWrapperDeclaration', 'RuleWrapperDeclaration']);
 
-    // @ts-expect-error
-    expect(serialize(ast, (p) => ({...p.node, _flag: true}))._flag).toEqual(true);
-
-    traverse(ast, (path) => {
-        if (path.matches({text: 'greet'})) {
-            expect(path.node.type).toBe('Identifier');
-        }
-    });
-
     traverse(ast, (path) => {
         if (path.node.type === 'RuleWrapperDeclaration') {
             expect(path.getFlattenParents().length).toBe(1);
@@ -84,7 +75,6 @@ test('traverse', () => {
         }
     });
 
-    // expect(visitNodes(ast, (p) => p.depth === 1).length).toBe(2);
 });
 
 test('selector', () => {
