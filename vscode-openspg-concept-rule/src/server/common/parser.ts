@@ -1,22 +1,20 @@
-import {SyntaxNode, SyntaxNodeType, TraversePath, visit, VisitHandlers,} from 'openspg-concept-rule-antlr4';
 import {PartialDeep} from 'type-fest';
-
-export * from 'openspg-concept-rule-antlr4';
+import * as syntax from "openspg-concept-rule-antlr4";
 
 // visit nodes
-export const visitEnter = (ast: SyntaxNode, enter: VisitHandlers['enter']) => visit(ast, {enter});
+export const visitEnter = (ast: syntax.SyntaxNode, enter: syntax.VisitHandlers['enter']) => syntax.visit(ast, {enter});
 
 // visit nodes when exit
-export const visitExit = (ast: SyntaxNode, exit: VisitHandlers['exit']) => visit(ast, {exit});
+export const visitExit = (ast: syntax.SyntaxNode, exit: syntax.VisitHandlers['exit']) => syntax.visit(ast, {exit});
 
-export type QueryFilter = PartialDeep<SyntaxNode> | SyntaxNodeType;
+export type QueryFilter = PartialDeep<syntax.SyntaxNode> | syntax.SyntaxNodeType;
 
-export const getNodes = <T extends SyntaxNode = SyntaxNode>(
-    ast: SyntaxNode,
-    callback: (p: TraversePath) => boolean,
+export const getNodes = <T extends syntax.SyntaxNode = syntax.SyntaxNode>(
+    ast: syntax.SyntaxNode,
+    callback: (p: syntax.TraversePath) => boolean,
 ): T[] => {
     const nodes: T[] = [];
-    visit(ast, {
+    syntax.visit(ast, {
         enter(path) {
             if (callback(path)) nodes.push(path.node as any);
         },
@@ -29,18 +27,18 @@ export const getNodes = <T extends SyntaxNode = SyntaxNode>(
  * @param _path traverse path
  * @param _filters from parent to child
  */
-export const checkNode = <T extends SyntaxNode>(
-    _path: TraversePath<T>,
+export const checkNode = <T extends syntax.SyntaxNode>(
+    _path: syntax.TraversePath<T>,
     _filters: QueryFilter[],
 ) => {
     const filters = _filters.map((filter) =>
         typeof filter === 'string' ? {type: filter} : filter,
-    ) as PartialDeep<SyntaxNode>[];
+    ) as PartialDeep<syntax.SyntaxNode>[];
 
     if (!filters.length) {
         return true;
     }
-    let path: TraversePath | null = _path as any;
+    let path: syntax.TraversePath | null = _path as any;
 
     for (let index = filters.length - 1; index >= 0; index -= 1) {
         const filter = filters[index];

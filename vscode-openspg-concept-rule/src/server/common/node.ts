@@ -1,7 +1,7 @@
-import {SyntaxNode} from './parser';
+import * as syntax from "openspg-concept-rule-antlr4";
 
 // node-to-text
-export const node2markdown = (node?: SyntaxNode | null): string => {
+export const node2markdown = (node?: syntax.SyntaxNode | null): string => {
     if (!node) {
         return '';
     }

@@ -1,9 +1,10 @@
-import {TextDocumentSyncKind} from 'vscode-languageserver';
+import {SemanticTokenModifiers, SemanticTokenTypes, TextDocumentSyncKind} from 'vscode-languageserver';
 import {Context, OnInitialize} from '../context';
 
 
-export const onInitialize = ({connection}: Context): OnInitialize => async ({initializationOptions}) => {
-    connection.console.log(`initializing with options: ${initializationOptions!!}`,);
+export const onInitialize = (_: Context): OnInitialize => async (params) => {
+    console.log(`initializing`)
+    // console.log(`${JSON.stringify(params, null, 4)}`)
 
     return {
         serverInfo: {
@@ -27,12 +28,8 @@ export const onInitialize = ({connection}: Context): OnInitialize => async ({ini
             documentSymbolProvider: true,
             semanticTokensProvider: {
                 legend: {
-                    tokenTypes: [
-                        'none', 'comment', 'keyword', 'string', 'namespace', 'structure', 'inherited', 'property', 'variable',
-                    ],
-                    tokenModifiers: [
-                        'none', 'deprecated', 'declaration', 'readonly'
-                    ]
+                    tokenTypes: Object.values(SemanticTokenTypes),
+                    tokenModifiers: Object.values(SemanticTokenModifiers),
                 },
                 range: false,
                 full: true,
@@ -41,9 +38,9 @@ export const onInitialize = ({connection}: Context): OnInitialize => async ({ini
             // definitionProvider: true,
             // referencesProvider: true,
             // hoverProvider: true,
-            // documentLinkProvider: {
-            //     resolveProvider: false
-            // },
+            documentLinkProvider: {
+                resolveProvider: true
+            },
             // codeLensProvider: {
             //   resolveProvider: false,
             //   workDoneProgress: false,

@@ -1,25 +1,24 @@
 import {Connection} from "vscode-languageserver";
-import {ConceptRuleTextDocument} from "./common/text-document";
-import {TextDocuments} from "./common/text-documents";
+import {ConceptRuleTextDocument, TextDocuments} from "./common";
 import {Context} from "./context";
 import {onExit, onInitialize, onInitialized} from "./initialize";
 import {onDocumentSymbol} from "./symbol";
 import {onDocumentFormatting} from "./format";
-import {onHover} from "./definition";
+import {onDocumentLinkResolve, onDocumentLinks, onHover} from "./definition";
 import {onDocumentHighlight} from "./highlight";
 import {onSemanticTokens} from "./semantic-tokens";
 
-const initDocuments = (connection: Connection): TextDocuments<ConceptRuleTextDocument> => {
+const initDocuments = (_: Connection): TextDocuments<ConceptRuleTextDocument> => {
     const documents = new TextDocuments(ConceptRuleTextDocument);
-    documents.onDidOpen(event => {
+    documents.onDidOpen(() => {
         // connection.console.log('documents.onDidOpen()');
     })
 
-    documents.onDidClose(event => {
+    documents.onDidClose(() => {
         // connection.console.log('documents.onDidClose()');
     })
 
-    documents.onDidChangeContent(event => {
+    documents.onDidChangeContent(() => {
         // connection.console.log('documents.onDidChangeContent()');
     });
 
@@ -84,8 +83,8 @@ export const listen = (connection: Connection) => {
 
     // connection.onRenameRequest(onRename(serverState));
 
-    // connection.onDocumentLinks(onDocumentLinks(context));
-    // connection.onDocumentLinkResolve(onDocumentLinkResolve(context));
+    connection.onDocumentLinks(onDocumentLinks(context));
+    connection.onDocumentLinkResolve(onDocumentLinkResolve(context));
 
     // connection.onDocumentColor(onDocumentLinkResolve(context));
     // connection.onColorPresentation(onDocumentLinkResolve(context));
