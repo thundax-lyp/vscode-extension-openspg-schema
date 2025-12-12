@@ -7,7 +7,7 @@ namespace DocumentSemanticTokens
             }
             Rule {
 
-                }
+            }
             Action {
             }
         }
