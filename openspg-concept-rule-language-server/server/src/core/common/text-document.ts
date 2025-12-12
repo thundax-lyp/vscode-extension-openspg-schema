@@ -1,9 +1,10 @@
 import * as vscodeUri from 'vscode-uri';
-import {Position, Range, TextDocumentContentChangeEvent} from 'vscode-languageserver';
+import {Connection, Position, Range, TextDocumentContentChangeEvent} from 'vscode-languageserver';
 import {TextDocument} from 'vscode-languageserver-textdocument';
 import * as syntax from 'openspg-concept-rule-antlr4'
 import {checkNode, QueryFilter} from './parser';
 import {documents} from './text-documents';
+import {EVENT_TEXT_DOCUMENTS_READ_CONTENT} from "./constants";
 
 export interface ConceptRuleExportItem {
     name: string
@@ -246,16 +247,14 @@ export class ConceptRuleTextDocument implements TextDocument {
         let content: string;
         if (uri.startsWith('https://')) {
             content = await fetch(uri)
-                .then((res) => res.text())
+                .then((resp) => resp.text())
                 .catch((error) => {
-                    console.error(error);
                     throw error;
                 });
         } else if (uri.startsWith('file:///')) {
-            // TODO: to remove compile error
-            // const connection: Connection = globalThis.connection;
-            // content = await connection.sendRequest(EVENT_TEXT_DOCUMENTS_READ_CONTENT, uri);
-            throw new Error("bad global varaint globalThis");
+            // @ts-ignore
+            const connection: Connection = globalThis.connection;
+            content = await connection.sendRequest(EVENT_TEXT_DOCUMENTS_READ_CONTENT, uri);
         } else if (uri.startsWith('http://')) {
             throw new Error("only support 'https://'");
         } else {

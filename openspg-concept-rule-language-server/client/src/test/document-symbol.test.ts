@@ -1,6 +1,5 @@
 import * as vscode from 'vscode';
 import * as assert from 'assert';
-import {DocumentSymbol, SymbolKind} from 'vscode';
 import {activate, createTicker, getDocUri, toRange} from './helper';
 
 suite('Document Symbols', () => {
@@ -17,24 +16,24 @@ suite('Document Symbols', () => {
     test('Find Symbols', async () => {
         await waitingForTick()
         await testDocumentSymbol(docUri, [
-            toSymbol('DocumentSymbol', SymbolKind.Namespace, toRange(0, 0, 0, 24)),
-            toSymbol('`TaxOfRiskApp`/`赌博应用`', SymbolKind.Class, toRange(2, 0, 13, 6), [
-                toSymbol('(s:App)-[p:belongTo]->(o:`TaxOfRiskApp`/`赌博应用`)', SymbolKind.Struct, toRange(4, 8, 12, 9), [
-                    toSymbol('Structure', SymbolKind.Function, toRange(5, 12, 6, 13)),
-                    toSymbol('Rule', SymbolKind.Function, toRange(7, 12, 9, 13)),
-                    toSymbol('Action', SymbolKind.Function, toRange(10, 12, 11, 13)),
+            toSymbol('DocumentSymbol', vscode.SymbolKind.Namespace, toRange(0, 0, 0, 24)),
+            toSymbol('`TaxOfRiskApp`/`赌博应用`', vscode.SymbolKind.Class, toRange(2, 0, 13, 6), [
+                toSymbol('(s:App)-[p:belongTo]->(o:`TaxOfRiskApp`/`赌博应用`)', vscode.SymbolKind.Struct, toRange(4, 8, 12, 9), [
+                    toSymbol('Structure', vscode.SymbolKind.Function, toRange(5, 12, 6, 13)),
+                    toSymbol('Rule', vscode.SymbolKind.Function, toRange(7, 12, 9, 13)),
+                    toSymbol('Action', vscode.SymbolKind.Function, toRange(10, 12, 11, 13)),
                 ]),
             ]),
-            toSymbol('`TaxOfRiskUser`/`赌博App开发者`', SymbolKind.Class, toRange(15, 0, 24, 6), [
-                toSymbol('(s:Person)-[p:belongTo]->(o:`TaxOfRiskUser`/`赌博App开发者`)', SymbolKind.Struct, toRange(17, 8, 23, 9), [
-                    toSymbol('GraphStructure', SymbolKind.Function, toRange(18, 12, 19, 13)),
-                    toSymbol('Constraint', SymbolKind.Function, toRange(20, 12, 22, 13)),
+            toSymbol('`TaxOfRiskUser`/`赌博App开发者`', vscode.SymbolKind.Class, toRange(15, 0, 24, 6), [
+                toSymbol('(s:Person)-[p:belongTo]->(o:`TaxOfRiskUser`/`赌博App开发者`)', vscode.SymbolKind.Struct, toRange(17, 8, 23, 9), [
+                    toSymbol('GraphStructure', vscode.SymbolKind.Function, toRange(18, 12, 19, 13)),
+                    toSymbol('Constraint', vscode.SymbolKind.Function, toRange(20, 12, 22, 13)),
                 ]),
             ]),
-            toSymbol('`TaxOfRiskUser`/`赌博App老板`', SymbolKind.Class, toRange(26, 0, 34, 6), [
-                toSymbol('(s:Person)-[p:belongTo]->(o:`TaxOfRiskUser`/`赌博App老板`)', SymbolKind.Struct, toRange(28, 8, 33, 9), [
-                    toSymbol('Structure', SymbolKind.Function, toRange(29, 12, 30, 13)),
-                    toSymbol('Action', SymbolKind.Function, toRange(31, 12, 32, 13)),
+            toSymbol('`TaxOfRiskUser`/`赌博App老板`', vscode.SymbolKind.Class, toRange(26, 0, 34, 6), [
+                toSymbol('(s:Person)-[p:belongTo]->(o:`TaxOfRiskUser`/`赌博App老板`)', vscode.SymbolKind.Struct, toRange(28, 8, 33, 9), [
+                    toSymbol('Structure', vscode.SymbolKind.Function, toRange(29, 12, 30, 13)),
+                    toSymbol('Action', vscode.SymbolKind.Function, toRange(31, 12, 32, 13)),
                 ]),
             ]),
         ]);
@@ -46,8 +45,7 @@ const toSymbol = (name: string, kind: vscode.SymbolKind, range: vscode.Range, ch
 })
 
 async function testDocumentSymbol(docUri: vscode.Uri, expectedSymbols: vscode.DocumentSymbol[]) {
-    const actualSymbols = await vscode.commands.executeCommand<DocumentSymbol[]>('vscode.executeDocumentSymbolProvider', docUri);
-
+    const actualSymbols = await vscode.commands.executeCommand<vscode.DocumentSymbol[]>('vscode.executeDocumentSymbolProvider', docUri);
     checkSymbols(actualSymbols, expectedSymbols)
 }
 
@@ -65,4 +63,16 @@ const checkSymbol = (actualSymbol: vscode.DocumentSymbol, expectedSymbol: vscode
     assert.deepEqual(actualSymbol.range, expectedSymbol.range);
 
     checkSymbols(actualSymbol.children, expectedSymbol.children)
+}
+
+const traceSymbols = (symbols: vscode.DocumentSymbol[], prefix = '') => {
+    symbols.forEach(symbol => {
+        traceSymbol(symbol, prefix);
+    })
+}
+
+const traceSymbol = (symbol: vscode.DocumentSymbol, prefix = '') => {
+    const {start, end} = symbol.range;
+    console.log(`${prefix}${symbol.name}: [${symbol.kind}] [(${start.line},${start.character}), (${end.line},${end.character})]`);
+    traceSymbols(symbol.children, prefix + ' '.repeat(4));
 }

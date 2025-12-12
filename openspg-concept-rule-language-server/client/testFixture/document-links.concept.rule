@@ -1,4 +1,4 @@
-namespace DocumentSemanticTokens
+namespace DocumentLink
 
 `TaxOfRiskApp`/`赌博应用`:
     rule: [[
@@ -7,7 +7,7 @@ namespace DocumentSemanticTokens
             }
             Rule {
 
-                }
+            }
             Action {
             }
         }

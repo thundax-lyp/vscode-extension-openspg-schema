@@ -1,8 +1,8 @@
-import {TextDocumentSyncKind} from 'vscode-languageserver';
+import {SemanticTokenModifiers, SemanticTokenTypes, TextDocumentSyncKind} from 'vscode-languageserver';
 import {Context, OnInitialize} from '../context';
 
 
-export const onInitialize = ({connection}: Context): OnInitialize => async ({initializationOptions}) => {
+export const onInitialize = ({connection}: Context): OnInitialize => async ({initializationOptions, capabilities}) => {
     connection.console.log(`initializing with options: ${initializationOptions!!}`,);
 
     return {
@@ -27,12 +27,8 @@ export const onInitialize = ({connection}: Context): OnInitialize => async ({ini
             documentSymbolProvider: true,
             semanticTokensProvider: {
                 legend: {
-                    tokenTypes: [
-                        'none', 'comment', 'keyword', 'string', 'namespace', 'structure', 'inherited', 'property', 'variable',
-                    ],
-                    tokenModifiers: [
-                        'none', 'deprecated', 'declaration', 'readonly'
-                    ]
+                    tokenTypes: Object.values(SemanticTokenTypes),
+                    tokenModifiers: Object.values(SemanticTokenModifiers),
                 },
                 range: false,
                 full: true,

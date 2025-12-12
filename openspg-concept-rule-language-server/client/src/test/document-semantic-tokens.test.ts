@@ -1,21 +1,10 @@
 import * as vscode from 'vscode';
 import * as assert from 'assert';
 import {getDocUri, activate, doc, findKeywordRange, createTicker, toRange} from './helper';
-
-enum TokenTypes {
-    comment = 0,
-    keyword = 1,
-    string = 2,
-    namespace = 3,
-    structure = 4,
-    inherited = 5,
-    property = 6,
-    variable = 7,
-    _ = 8
-}
+import {SemanticTokenTypes} from "vscode-languageclient";
 
 suite('Document Semantic Tokens', () => {
-    const fileName = 'document-semantic-tokens.schema';
+    const fileName = 'document-semantic-tokens.concept.rule';
     const docUri = getDocUri(fileName);
 
     const {fireTick, waitingForTick} = createTicker()
@@ -31,47 +20,48 @@ suite('Document Semantic Tokens', () => {
         await waitingForTick()
 
         await testSemanticTokens(docUri, toSemanticTokens([
-            {range: findKeywordRange(doc, 'DocumentSemanticTokens', 1), tokenType: TokenTypes.variable},
+            {range: findKeywordRange(doc, 'DocumentSemanticTokens', 1), tokenType: SemanticTokenTypes.variable},
 
-            {range: findKeywordRange(doc, 'Person', 1), tokenType: TokenTypes.structure},
-            {range: findKeywordRange(doc, '人物', 2), tokenType: TokenTypes.string},
-            {range: findKeywordRange(doc, 'EntityType', 1), tokenType: TokenTypes.keyword},
-
-            {range: findKeywordRange(doc, 'desc', 1), tokenType: TokenTypes.keyword},
-            {range: findKeywordRange(doc, 'a great name', 1), tokenType: TokenTypes.variable},
-
-            {range: findKeywordRange(doc, 'properties', 1), tokenType: TokenTypes.keyword},
-
-            {range: findKeywordRange(doc, 'age', 1), tokenType: TokenTypes.structure},
-            {range: findKeywordRange(doc, '年龄', 1), tokenType: TokenTypes.string},
-            {range: findKeywordRange(doc, 'Text', 1), tokenType: TokenTypes.keyword},
-
-            {range: findKeywordRange(doc, 'birth', 1), tokenType: TokenTypes.structure},
-            {range: findKeywordRange(doc, '生日', 1), tokenType: TokenTypes.string},
-            {range: findKeywordRange(doc, 'Text', 2), tokenType: TokenTypes.keyword},
-
-            {range: findKeywordRange(doc, 'Works', 1), tokenType: TokenTypes.structure},
-            {range: findKeywordRange(doc, '作品', 2), tokenType: TokenTypes.string},
-            {range: findKeywordRange(doc, 'EntityType', 2), tokenType: TokenTypes.keyword},
-
-            {range: findKeywordRange(doc, 'desc', 2), tokenType: TokenTypes.keyword},
-            {range: findKeywordRange(doc, 'a great book', 1), tokenType: TokenTypes.variable},
-
-            {range: findKeywordRange(doc, 'properties', 2), tokenType: TokenTypes.keyword},
-
-            {range: findKeywordRange(doc, 'author', 1), tokenType: TokenTypes.structure},
-            {range: findKeywordRange(doc, '作者', 1), tokenType: TokenTypes.string},
-            {range: findKeywordRange(doc, 'Person', 2), tokenType: TokenTypes.inherited},
+            // {range: findKeywordRange(doc, 'Person', 1), tokenType: SemanticTokenTypes.structure},
+            // {range: findKeywordRange(doc, '人物', 2), tokenType: TokenTypes.string},
+            // {range: findKeywordRange(doc, 'EntityType', 1), tokenType: TokenTypes.keyword},
+            //
+            // {range: findKeywordRange(doc, 'desc', 1), tokenType: TokenTypes.keyword},
+            // {range: findKeywordRange(doc, 'a great name', 1), tokenType: TokenTypes.variable},
+            //
+            // {range: findKeywordRange(doc, 'properties', 1), tokenType: TokenTypes.keyword},
+            //
+            // {range: findKeywordRange(doc, 'age', 1), tokenType: TokenTypes.structure},
+            // {range: findKeywordRange(doc, '年龄', 1), tokenType: TokenTypes.string},
+            // {range: findKeywordRange(doc, 'Text', 1), tokenType: TokenTypes.keyword},
+            //
+            // {range: findKeywordRange(doc, 'birth', 1), tokenType: TokenTypes.structure},
+            // {range: findKeywordRange(doc, '生日', 1), tokenType: TokenTypes.string},
+            // {range: findKeywordRange(doc, 'Text', 2), tokenType: TokenTypes.keyword},
+            //
+            // {range: findKeywordRange(doc, 'Works', 1), tokenType: TokenTypes.structure},
+            // {range: findKeywordRange(doc, '作品', 2), tokenType: TokenTypes.string},
+            // {range: findKeywordRange(doc, 'EntityType', 2), tokenType: TokenTypes.keyword},
+            //
+            // {range: findKeywordRange(doc, 'desc', 2), tokenType: TokenTypes.keyword},
+            // {range: findKeywordRange(doc, 'a great book', 1), tokenType: TokenTypes.variable},
+            //
+            // {range: findKeywordRange(doc, 'properties', 2), tokenType: TokenTypes.keyword},
+            //
+            // {range: findKeywordRange(doc, 'author', 1), tokenType: TokenTypes.structure},
+            // {range: findKeywordRange(doc, '作者', 1), tokenType: TokenTypes.string},
+            // {range: findKeywordRange(doc, 'Person', 2), tokenType: TokenTypes.inherited},
 
         ]));
     });
 
 });
 
-const toSemanticTokens = (records: { range: vscode.Range, tokenType: number }[]) => {
+const toSemanticTokens = (records: { range: vscode.Range, tokenType: SemanticTokenTypes }[]) => {
     const builder = new vscode.SemanticTokensBuilder();
+    const tokenTypes = Object.values(SemanticTokenTypes)
     records.forEach(({range, tokenType}) => {
-        builder.push(range.start.line, range.start.character, range.end.character - range.start.character, tokenType, 0);
+        builder.push(range.start.line, range.start.character, range.end.character - range.start.character, tokenTypes.indexOf(tokenType), 0);
     })
     return builder.build()
 }

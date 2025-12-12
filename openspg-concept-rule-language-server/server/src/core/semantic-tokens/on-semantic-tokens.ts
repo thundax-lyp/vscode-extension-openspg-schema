@@ -1,25 +1,6 @@
-import {SemanticTokensBuilder} from 'vscode-languageserver';
+import {SemanticTokensBuilder, SemanticTokenModifiers, SemanticTokenTypes} from 'vscode-languageserver';
 import * as syntax from 'openspg-concept-rule-antlr4'
 import {Context, OnSemanticTokens} from '../context';
-
-enum TokenTypes {
-    none = 0,
-    comment = 1,
-    keyword = 2,
-    string = 3,
-    namespace = 4,
-    structure = 5,
-    inherited = 6,
-    property = 7,
-    variable = 8,
-}
-
-enum TokenModifiers {
-    none = 0,
-    deprecated = 1,
-    declaration = 2,
-    readonly = 3,
-}
 
 
 export const onSemanticTokens = (ctx: Context): OnSemanticTokens => async ({textDocument}) => {
@@ -35,14 +16,20 @@ export const onSemanticTokens = (ctx: Context): OnSemanticTokens => async ({text
         new SyntaxNodeEmitter(),
     );
 
+    const tokenTypes = Object.values(SemanticTokenTypes)
+    const tokenModifiers = Object.values(SemanticTokenModifiers)
+
     syntax.traverse(document.ast, (path) => {
         const emitterName = `handle${path.node.type}` as `handle${syntax.SyntaxNodeType}`;
         const emitter = syntaxNodeEmitters[emitterName];
         if (emitter) {
             const result = emitter(path);
-            if (result.tokenType !== TokenTypes.none) {
+            if (result) {
                 const {line, column} = path.node.location.start;
-                builder.push(line - 1, column, path.node.range[1] - path.node.range[0] + 1, result.tokenType, result.tokenModifier)
+                builder.push(
+                    line - 1, column, path.node.range[1] - path.node.range[0] + 1,
+                    tokenTypes.indexOf(result.tokenType), tokenModifiers.indexOf(result.tokenModifier)
+                )
             }
         }
     })
@@ -51,20 +38,20 @@ export const onSemanticTokens = (ctx: Context): OnSemanticTokens => async ({text
 }
 
 class HandleSyntaxNodeResult {
-    tokenType: TokenTypes;
-    tokenModifier: TokenModifiers;
+    tokenType: SemanticTokenTypes;
+    tokenModifier: SemanticTokenModifiers;
 
-    constructor(tokenType: TokenTypes, tokenModifier: TokenModifiers = TokenModifiers.none) {
+    constructor(tokenType: SemanticTokenTypes, tokenModifier: SemanticTokenModifiers = SemanticTokenModifiers.declaration) {
         this.tokenType = tokenType;
         this.tokenModifier = tokenModifier;
     }
 }
 
-type HandleSyntaxNodeFunc<T extends syntax.SyntaxNode = syntax.SyntaxNode> = (path: syntax.TraversePath<T>) => HandleSyntaxNodeResult;
+type HandleSyntaxNodeFunc<T extends syntax.SyntaxNode = syntax.SyntaxNode> = (path: syntax.TraversePath<T>) => HandleSyntaxNodeResult | null;
 
 class SyntaxNodeEmitter implements Record<`handle${syntax.SyntaxNodeType}`, HandleSyntaxNodeFunc<any> | null> {
     handleNamespaceDeclaration = null;
-    handleNamespaceVariable = () => new HandleSyntaxNodeResult(TokenTypes.variable);
+    handleNamespaceVariable = () => new HandleSyntaxNodeResult(SemanticTokenTypes.variable);
 
     handleConceptRuleDeclaration = null;
     handleConceptRuleHead = null;
