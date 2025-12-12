@@ -28,7 +28,7 @@ suite('Document Semantic Tokens', () => {
             {range: findKeywordRange(doc, 'EntityType', 1), tokenType: SemanticTokenTypes.keyword},
 
             {range: findKeywordRange(doc, 'desc', 1), tokenType: SemanticTokenTypes.keyword},
-            {range: findKeywordRange(doc, 'a great name', 1), tokenType: SemanticTokenTypes.variable},
+            {range: findKeywordRange(doc, 'a great name', 1), tokenType: SemanticTokenTypes.string},
 
             {range: findKeywordRange(doc, 'properties', 1), tokenType: SemanticTokenTypes.keyword},
 
@@ -45,7 +45,7 @@ suite('Document Semantic Tokens', () => {
             {range: findKeywordRange(doc, 'EntityType', 2), tokenType: SemanticTokenTypes.keyword},
 
             {range: findKeywordRange(doc, 'desc', 2), tokenType: SemanticTokenTypes.keyword},
-            {range: findKeywordRange(doc, 'a great book', 1), tokenType: SemanticTokenTypes.variable},
+            {range: findKeywordRange(doc, 'a great book', 1), tokenType: SemanticTokenTypes.string},
 
             {range: findKeywordRange(doc, 'properties', 2), tokenType: SemanticTokenTypes.keyword},
 
