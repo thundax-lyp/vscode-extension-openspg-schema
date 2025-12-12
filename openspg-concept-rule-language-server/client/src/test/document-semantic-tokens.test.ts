@@ -8,12 +8,10 @@ suite('Document Semantic Tokens', () => {
     const docUri = getDocUri(fileName);
 
     const {fireTick, waitingForTick} = createTicker()
-    let sourceCode = ''
 
     test(`Open [${fileName}]`, async () => {
         await activate(docUri);
         fireTick();
-        sourceCode = doc.getText();
     });
 
     test(`Semantic Tokens [All]`, async () => {
@@ -21,6 +19,15 @@ suite('Document Semantic Tokens', () => {
 
         await testSemanticTokens(docUri, toSemanticTokens([
             {range: findKeywordRange(doc, 'DocumentSemanticTokens', 1), tokenType: SemanticTokenTypes.variable},
+            {range: findKeywordRange(doc, '`TaxOfRiskApp`/`赌博应用`', 1), tokenType: SemanticTokenTypes.variable},
+            {range: findKeywordRange(doc, 'rule', 1), tokenType: SemanticTokenTypes.property},
+            {range: findKeywordRange(doc, 'Define', 1), tokenType: SemanticTokenTypes.keyword},
+            {range: findKeywordRange(doc, '"s:App', 1), tokenType: SemanticTokenTypes.variable},
+            {range: findKeywordRange(doc, 'o:`TaxOfRiskApp`/`赌博应用`', 1), tokenType: SemanticTokenTypes.variable},
+            {range: findKeywordRange(doc, '`TaxOfRiskApp`/`赌博应用`', 2), tokenType: SemanticTokenTypes.variable},
+            {range: findKeywordRange(doc, 'Structure', 1), tokenType: SemanticTokenTypes.keyword},
+            {range: findKeywordRange(doc, 'Rule', 1), tokenType: SemanticTokenTypes.keyword},
+            {range: findKeywordRange(doc, 'Action', 1), tokenType: SemanticTokenTypes.keyword},
         ]));
     });
 
@@ -58,10 +65,11 @@ const testSemanticTokens = async (docUri: vscode.Uri, expectedSemanticTokens: vs
     }
 
     const render = (index: number, item: number[]) => {
-        const [ln, col, len, type] = item;
-        const text = doc.getText(toRange(ln, col, ln, col + len))
+        const [ln, col, len, tokenType] = item;
+        const text = doc.getText(toRange(ln, col, ln, col + len));
+        const type = Object.values(SemanticTokenTypes)[tokenType];
         return JSON.stringify({
-            ln, col, len, type, text
+            index: index + 1, ln, col, len, type, text
         })
     }
 
