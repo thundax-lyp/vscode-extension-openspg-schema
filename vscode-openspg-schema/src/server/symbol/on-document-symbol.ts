@@ -1,8 +1,7 @@
 import {DocumentSymbol, SymbolKind} from 'vscode-languageserver';
 import {OnDocumentSymbol} from '../context';
 import {NamespaceDeclaration, EntityDeclaration} from '../common/parser';
-import {BasicPropertyDeclaration, EntityMetaDeclaration, PropertyDeclaration} from "openspg-schema-antlr4";
-import {BasicStructureDeclaration} from "openspg-schema-antlr4/dist/ast/expression";
+import {BasicPropertyDeclaration, BasicStructureDeclaration, EntityMetaDeclaration, PropertyDeclaration} from "openspg-schema-antlr4";
 
 export const onDocumentSymbol: OnDocumentSymbol = (ctx) => async ({textDocument}) => {
     const document = ctx.documents.get(textDocument.uri);

@@ -2,25 +2,6 @@ import {SemanticTokensBuilder, SemanticTokenTypes, SemanticTokenModifiers} from 
 import {Context, OnSemanticTokens} from '../context';
 import * as schema from "openspg-schema-antlr4";
 
-// enum TokenTypes {
-//     none = 0,
-//     comment = 1,
-//     keyword = 2,
-//     string = 3,
-//     namespace = 4,
-//     structure = 5,
-//     inherited = 6,
-//     property = 7,
-//     variable = 8,
-// }
-//
-// enum TokenModifiers {
-//     none = 0,
-//     deprecated = 1,
-//     declaration = 2,
-//     readonly = 3,
-// }
-
 
 export const onSemanticTokens = (ctx: Context): OnSemanticTokens => async ({textDocument}) => {
     const builder = new SemanticTokensBuilder();

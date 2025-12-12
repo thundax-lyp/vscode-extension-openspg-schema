@@ -19,6 +19,8 @@ import {
     EntityDeclaration,
 } from './parser';
 import {documents} from './text-documents';
+import {format} from './format'
+import {NamespaceVariable, StructureName} from "openspg-schema-antlr4";
 
 export interface SchemaExportItem {
     name: string    // Foo, Foo.Bar, Foo.Bar.baz etc.
@@ -130,17 +132,6 @@ export class SchemaTextDocument implements TextDocument {
         } catch (error) {
             // ignore
             console.error(error);
-            // TODO: to remove compile error
-            // globalThis.connection?.sendDiagnostics({
-            //     uri: this.uri,
-            //     diagnostics: [
-            //         {
-            //             message: (error as any).message,
-            //             severity: 1, // means `error`
-            //             range: Range.create(this.positionAt(0), this.positionAt(0)),
-            //         },
-            //     ],
-            // });
         }
     }
 
@@ -150,30 +141,33 @@ export class SchemaTextDocument implements TextDocument {
      */
     public getExportItems() {
         const uri = this.uri;
-        const result: SchemaExportItem[] = [];
         if (!this.ast) {
-            return result;
+            return [];
         }
 
-        (this?.ast?.nodes || []).forEach((node) => {
+        const formatter = {
+            printNamespaceVariable: (node: NamespaceVariable) => {
+                return node.text
+            },
+
+            printStructureName: (node: StructureName) => {
+                return [
+                    ...node.semanticNames.map(x => x.text),
+                    node.realName.text
+                ].join('#')
+            },
+        }
+
+        return (this?.ast?.nodes || []).map((node) => {
             switch (node.type) {
                 case 'NamespaceDeclaration':
-                    result.push({node, uri, name: node.variable.text});
-                    break
+                    return {node, uri, name: format(node.variable, formatter)}
                 case 'EntityDeclaration':
-                    result.push({
-                        node, uri,
-                        name: [
-                            ...node.declaration.name.variable.semanticNames.map(({text}) => text),
-                            node.declaration.name.variable.realName.text
-                        ].join('#')
-                    });
-                    break;
-                default:
-                    break;
+                    return {
+                        node, uri, name: format(node.declaration.name.variable, formatter)
+                    }
             }
-        });
-        return result;
+        }).filter(Boolean) as SchemaExportItem[]
     }
 
     /**

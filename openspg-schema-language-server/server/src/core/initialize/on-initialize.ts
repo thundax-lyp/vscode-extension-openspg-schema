@@ -2,7 +2,7 @@ import {SemanticTokenModifiers, SemanticTokenTypes, TextDocumentSyncKind} from '
 import {Context, OnInitialize} from '../context';
 
 
-export const onInitialize = ({connection}: Context): OnInitialize => async ({initializationOptions, capabilities}) => {
+export const onInitialize = ({connection}: Context): OnInitialize => async ({initializationOptions}) => {
     connection.console.log(`initializing with options: ${initializationOptions!!}`,);
 
     return {
