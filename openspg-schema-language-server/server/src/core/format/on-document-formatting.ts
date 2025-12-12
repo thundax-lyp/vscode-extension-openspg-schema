@@ -1,6 +1,6 @@
 import {Range, TextEdit} from 'vscode-languageserver';
 import * as prettier from 'prettier/standalone';
-import * as schemaSyntax from 'openspg-schema-antlr4'
+import * as syntax from 'openspg-schema-antlr4'
 import {Context, OnDocumentFormatting} from '../context';
 import {Options} from "prettier";
 
@@ -11,16 +11,15 @@ export const onDocumentFormatting: OnDocumentFormatting = ({connection, document
     }
 
     const config = (await connection.workspace.getConfiguration('schema.formatter')) as Partial<Options>;
-
     const source = document.getText();
     const range = Range.create(document.positionAt(0), document.positionAt(source.length));
 
     const prettierOptions = {
         parser: 'openspg-schema-parser',
         plugins: [{
-            languages: schemaSyntax.languages,
-            parsers: schemaSyntax.parsers,
-            printers: schemaSyntax.printers,
+            languages: syntax.languages,
+            parsers: syntax.parsers,
+            printers: syntax.printers,
         }],
         tabWidth: config?.tabWidth ?? 4,
         bracketSpacing: config?.bracketSpacing ?? true,

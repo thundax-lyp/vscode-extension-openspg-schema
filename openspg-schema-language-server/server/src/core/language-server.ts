@@ -1,6 +1,5 @@
 import {Connection} from "vscode-languageserver";
-import {SchemaTextDocument} from "./common/text-document";
-import {TextDocuments} from "./common/text-documents";
+import {SchemaTextDocument, TextDocuments} from "./common";
 import {Context} from "./context";
 import {onExit, onInitialize, onInitialized} from "./initialize";
 import {onDocumentSymbol} from "./symbol";
@@ -9,17 +8,17 @@ import {onDefinition, onHover, onReferences} from "./definition";
 import {onDocumentHighlight} from "./highlight";
 import {onSemanticTokens} from "./semantic-tokens";
 
-const initDocuments = (connection: Connection): TextDocuments<SchemaTextDocument> => {
+const initDocuments = (_: Connection): TextDocuments<SchemaTextDocument> => {
     const documents = new TextDocuments(SchemaTextDocument);
-    documents.onDidOpen(event => {
+    documents.onDidOpen(() => {
         // connection.console.log('documents.onDidOpen()');
     })
 
-    documents.onDidClose(event => {
+    documents.onDidClose(() => {
         // connection.console.log('documents.onDidClose()');
     })
 
-    documents.onDidChangeContent(event => {
+    documents.onDidChangeContent(() => {
         // connection.console.log('documents.onDidChangeContent()');
     });
 
