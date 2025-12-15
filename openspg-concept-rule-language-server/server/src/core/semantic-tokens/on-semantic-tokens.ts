@@ -52,9 +52,9 @@ export const onSemanticTokens = (ctx: Context): OnSemanticTokens => async ({text
         TheRuleHead: ({node}) => emit(node, SemanticTokenTypes.keyword),
         TheActionHead: ({node}) => emit(node, SemanticTokenTypes.keyword),
 
-        ElementPatternDeclarationAndFiller: ({node}) => emit(node, SemanticTokenTypes.variable),
         ConceptName: ({node}) => emit(node, SemanticTokenTypes.variable),
         ConceptInstanceId: ({node}) => emit(node, SemanticTokenTypes.variable),
+        ElementVariableDeclaration: ({node}) => emit(node, SemanticTokenTypes.variable),
     })
 
     return builder.build();
