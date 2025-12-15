@@ -9,6 +9,7 @@ export const expressionNodeTypes = Object.keys(nodeMap) as ExpressionNodeType[];
 export * from './add-edge-function';
 export * from './add-node-function';
 export * from './assignment-expression';
+export * from './concept-instance-id';
 export * from './concept-name';
 export * from './concept-type';
 export * from './edge-expression';

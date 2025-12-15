@@ -1,6 +1,7 @@
 import {AddEdgeFunction} from './add-edge-function';
 import {AddNodeFunction} from './add-node-function';
 import {AssignmentExpression} from './assignment-expression';
+import {ConceptInstanceId} from './concept-instance-id';
 import {ConceptName} from './concept-name';
 import {ConceptType} from './concept-type';
 import {EdgeExpression} from './edge-expression';
@@ -35,6 +36,7 @@ export {
 	AddEdgeFunction,
 	AddNodeFunction,
 	AssignmentExpression,
+	ConceptInstanceId,
 	ConceptName,
 	ConceptType,
 	EdgeExpression,

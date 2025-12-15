@@ -48,9 +48,14 @@ export class PrinterExpression extends BasePrinter implements Record<`print${ast
 
     // conceptName : conceptType DIV conceptInstanceId;
     // conceptInstanceId : ESCAPED_SYMBOLIC_NAME;
-    printConceptName: PrintFunc<ast.ConceptName> = ({node, path, print}) => [
-        path.call(print, "conceptType"), this.div, node.instanceId
+    printConceptName: PrintFunc<ast.ConceptName> = ({path, print}) => [
+        path.call(print, "conceptType"),
+        this.div,
+        path.call(print, "instanceId"),
     ]
+
+    // conceptInstanceId : ESCAPED_SYMBOLIC_NAME;
+    printConceptInstanceId: PrintFunc<ast.ConceptInstanceId> = ({node}) => node.text;
 
     // conceptType : identifier (DOT identifier)?;
     printConceptType: PrintFunc<ast.ConceptType> = ({path, print}) => [

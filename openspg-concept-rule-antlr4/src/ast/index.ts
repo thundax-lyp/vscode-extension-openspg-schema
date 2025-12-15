@@ -21,4 +21,3 @@ export * from "./declaration";
 export * from "./expression";
 export * from "./literal";
 export * from "./meta";
-export * from "./base";

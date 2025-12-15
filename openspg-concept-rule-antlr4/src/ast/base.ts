@@ -121,6 +121,21 @@ export abstract class BaseNodeString extends BaseNode {
     }
 }
 
+export abstract class BaseNodeKeyword extends BaseNodeString {
+
+    public suggest(...suggestTexts: string[]) {
+        if (this.text) {
+            const suggestText = suggestTexts.find(x => x.toLowerCase() === this.text.toLowerCase());
+            if (!suggestText) {
+                throw new Error(`Text "${this.text}" not found in suggest texts array.`);
+            }
+            this.text = suggestText;
+        }
+
+        return this;
+    }
+}
+
 export abstract class BaseNodeUnion<
     T extends BaseNode | BaseNodeList<BaseNode> = BaseNode,
 > extends BaseNode {

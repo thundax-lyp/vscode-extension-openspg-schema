@@ -27,29 +27,32 @@ export const onSemanticTokens = (ctx: Context): OnSemanticTokens => async ({text
         )
     }
 
+    const emitPrefixKeyword = (
+        node: syntax.SyntaxNode,
+        prefix: string,
+        tokenType: SemanticTokenTypes = SemanticTokenTypes.keyword,
+        tokenModifier: SemanticTokenModifiers = SemanticTokenModifiers.declaration
+    ) => {
+        const {line, column} = node.location.start;
+        builder.push(
+            line - 1, column, prefix.length,
+            tokenTypes.indexOf(tokenType),
+            tokenModifiers.indexOf(tokenModifier)
+        )
+    }
+
     syntax.visit(document.ast, {
+        NamespaceDeclaration: ({node}) => emitPrefixKeyword(node, 'namespace'),
         NamespaceVariable: ({node}) => emit(node, SemanticTokenTypes.variable),
-        RuleWrapperRuleHead: ({node}) => {
-            const {line, column} = node.location.start;
-            builder.push(
-                line - 1, column, "rule".length,
-                tokenTypes.indexOf(SemanticTokenTypes.property),
-                tokenModifiers.indexOf(SemanticTokenModifiers.declaration)
-            )
-        },
-        ConceptName: ({node}) => emit(node, SemanticTokenTypes.variable),
-        ConceptRuleHead: ({node}) => {
-            const {line, column} = node.location.start;
-            builder.push(
-                line - 1, column, "Define".length,
-                tokenTypes.indexOf(SemanticTokenTypes.keyword),
-                tokenModifiers.indexOf(SemanticTokenModifiers.declaration)
-            )
-        },
+        RuleWrapperRuleHead: ({node}) => emitPrefixKeyword(node, 'rule'),
+        ConceptRuleHead: ({node}) => emitPrefixKeyword(node, 'define'),
         ElementPatternDeclarationAndFiller: ({node}) => emit(node, SemanticTokenTypes.variable),
         TheGraphStructureHead: ({node}) => emit(node, SemanticTokenTypes.keyword),
         TheRuleHead: ({node}) => emit(node, SemanticTokenTypes.keyword),
         TheActionHead: ({node}) => emit(node, SemanticTokenTypes.keyword),
+
+        ConceptName: ({node}) => emit(node, SemanticTokenTypes.variable),
+        ConceptInstanceId: ({node}) => emit(node, SemanticTokenTypes.variable),
     })
 
     return builder.build();

@@ -165,7 +165,7 @@ export class ConceptRuleASTBuilder extends parser.ConceptRuleParserVisitor<ast.S
     visitLabelName = (ctx: parser.LabelNameContext) => new ast.LabelName(ctx, this);
     visitConceptType = (ctx: parser.ConceptTypeContext) => new ast.ConceptType(ctx, this);
     visitConceptName = (ctx: parser.ConceptNameContext) => new ast.ConceptName(ctx, this);
-    // visitConceptInstanceId?: (ctx: ConceptInstanceIdContext) => Result;
+    visitConceptInstanceId = (ctx: parser.ConceptInstanceIdContext) => new ast.ConceptInstanceId(ctx, this);
 
 
     /**
