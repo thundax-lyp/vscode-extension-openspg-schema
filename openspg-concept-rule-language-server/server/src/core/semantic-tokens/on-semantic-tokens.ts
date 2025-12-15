@@ -44,13 +44,15 @@ export const onSemanticTokens = (ctx: Context): OnSemanticTokens => async ({text
     syntax.visit(document.ast, {
         NamespaceDeclaration: ({node}) => emitPrefixKeyword(node, 'namespace'),
         NamespaceVariable: ({node}) => emit(node, SemanticTokenTypes.variable),
+
         RuleWrapperRuleHead: ({node}) => emitPrefixKeyword(node, 'rule'),
         ConceptRuleHead: ({node}) => emitPrefixKeyword(node, 'define'),
-        ElementPatternDeclarationAndFiller: ({node}) => emit(node, SemanticTokenTypes.variable),
+
         TheGraphStructureHead: ({node}) => emit(node, SemanticTokenTypes.keyword),
         TheRuleHead: ({node}) => emit(node, SemanticTokenTypes.keyword),
         TheActionHead: ({node}) => emit(node, SemanticTokenTypes.keyword),
 
+        ElementPatternDeclarationAndFiller: ({node}) => emit(node, SemanticTokenTypes.variable),
         ConceptName: ({node}) => emit(node, SemanticTokenTypes.variable),
         ConceptInstanceId: ({node}) => emit(node, SemanticTokenTypes.variable),
     })
