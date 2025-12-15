@@ -66,7 +66,7 @@ const initLanguageClient = (context: vscode.ExtensionContext) => {
             {language: 'schema', scheme: 'untitled'}
         ],
         synchronize: {
-            fileEvents: vscode.workspace.createFileSystemWatcher('**/.schema')
+            fileEvents: vscode.workspace.createFileSystemWatcher('**/*.schema')
         },
         initializationOptions: context.extensionPath,
         // outputChannel: new MyOutputChannel(),
