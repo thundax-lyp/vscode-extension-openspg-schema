@@ -27,17 +27,38 @@ export const onSemanticTokens = (ctx: Context): OnSemanticTokens => async ({text
         )
     }
 
+    const emitPrefixKeyword = (
+        node: syntax.SyntaxNode,
+        prefix: string,
+        tokenType: SemanticTokenTypes = SemanticTokenTypes.keyword,
+        tokenModifier: SemanticTokenModifiers = SemanticTokenModifiers.declaration
+    ) => {
+        const {line, column} = node.location.start;
+        builder.push(
+            line - 1, column, prefix.length,
+            tokenTypes.indexOf(tokenType),
+            tokenModifiers.indexOf(tokenModifier)
+        )
+    }
+
     syntax.visit(document.ast, {
+        NamespaceDeclaration: ({node}) => emitPrefixKeyword(node, 'namespace'),
         NamespaceVariable: ({node}) => emit(node, SemanticTokenTypes.variable),
+
         BasicPropertyName: ({node}) => emit(node, SemanticTokenTypes.property),
         BasicPropertyValue: ({node}) => emit(node, SemanticTokenTypes.string),
+
         BasicStructureType: ({node}) => emit(node, SemanticTokenTypes.keyword),
+
         BlockPropertyValue: ({node}) => emit(node, SemanticTokenTypes.string),
+
         BuiltinPropertyName: ({node}) => emit(node, SemanticTokenTypes.keyword),
         BuiltinPropertyValue: ({node}) => emit(node, SemanticTokenTypes.keyword),
         KnowledgeStructureType: ({node}) => emit(node, SemanticTokenTypes.keyword),
         StandardStructureType: ({node}) => emit(node, SemanticTokenTypes.keyword),
+
         StructureAlias: ({node}) => emit(node, SemanticTokenTypes.string),
+
         StructureRealName: ({node, path}) => {
             if (path.split('.').includes('BasicStructureTypeExpression')) {
                 emit(node, SemanticTokenTypes.modifier);
@@ -45,6 +66,7 @@ export const onSemanticTokens = (ctx: Context): OnSemanticTokens => async ({text
                 emit(node, SemanticTokenTypes.struct);
             }
         },
+
         StructureSemanticName: ({node, path}) => {
             if (path.split('.').includes('BasicStructureTypeExpression')) {
                 emit(node, SemanticTokenTypes.modifier);
