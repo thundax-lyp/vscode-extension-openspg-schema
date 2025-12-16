@@ -16,7 +16,7 @@
         "vscode": "^1.100.0"
     },
     "dependencies": {
-        "openspg-concept-rule-antlr4": "file:../../openspg-concept-rule-antlr4-0.0.1-dev-2.tgz",
+        "openspg-concept-rule-antlr4": "0.1.0",
         "prettier": "^3.6.2",
         "type-fest": "^5.2.0",
         "vscode-languageclient": "^9.0.1",
