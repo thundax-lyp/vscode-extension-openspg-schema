@@ -52,16 +52,6 @@ export const activate = (context: ExtensionContext) => {
         path.join('server', 'dist', 'server.js')
     );
 
-    console.log('-'.repeat(40) + 'extensionPath: ' +  context.extensionPath)
-
-    // languages.getLanguages().then(langs => {
-    //     console.log('='.repeat(60))
-    //     langs.forEach(x => {
-    //         console.log(x)
-    //     })
-    //     console.log('-'.repeat(60))
-    // })
-
     // If the extension is launched in debug mode then the debug server options are used
     // Otherwise the run options are used
     const serverOptions: ServerOptions = {
@@ -87,7 +77,7 @@ export const activate = (context: ExtensionContext) => {
             language: 'schema', scheme: 'untitled'
         }],
         synchronize: {
-            fileEvents: workspace.createFileSystemWatcher('**/.schema')
+            fileEvents: workspace.createFileSystemWatcher('**/*.schema')
         },
         initializationOptions: context.extensionPath,
         outputChannel: new MyOutputChannel(),
@@ -95,7 +85,7 @@ export const activate = (context: ExtensionContext) => {
 
     // Create the language client and start the client.
     client = new LanguageClient(
-        'schemaLanguageServer',
+        'openspgSchemaLanguageServer',
         'OpenSPG Schema Language Server',
         serverOptions,
         clientOptions
@@ -103,7 +93,7 @@ export const activate = (context: ExtensionContext) => {
 
     // Start the client. This will also launch the server
     client.start().then(() => {
-        console.log('Server started');
+        console.log('OpenSPG Schema Language Server started');
     })
 }
 

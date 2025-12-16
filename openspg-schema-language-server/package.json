@@ -1,6 +1,6 @@
 {
     "name": "openspg-schema-language-server",
-    "version": "0.0.1-dev-0",
+    "version": "0.0.1-dev-1",
     "description": "Language Server Protocol implementation for OpenSPG Schema",
     "keywords": [
         "openspg",
@@ -17,7 +17,7 @@
     ],
     "publisher": "thundax-lyp",
     "files": [
-        "server/dist",
+        "dist",
         "README.md"
     ],
     "engines": {
@@ -28,11 +28,18 @@
     ],
     "main": "./client/dist/extension",
     "contributes": {
-        "languages": [{
-            "id": "schema",
-            "aliases": ["OpenSPG Schema", "schema"],
-            "extensions": [".schema"]
-        }],
+        "languages": [
+            {
+                "id": "schema",
+                "aliases": [
+                    "OpenSPG Schema",
+                    "schema"
+                ],
+                "extensions": [
+                    ".schema"
+                ]
+            }
+        ],
         "configuration": {
             "type": "object",
             "title": "OpenSPG Schema configuration",
@@ -61,9 +68,12 @@
         "vscode:prepublish": "npm run compile",
         "compile": "tsc -b",
         "watch": "tsc -b -w",
+        "build": "unbuild --clean",
         "lint": "eslint",
-        "test": "sh ./scripts/e2e.sh",
-        "dev": "\"./.vscode-test/vscode-darwin-1.106.3/Visual Studio Code.app/Contents/MacOS/Electron\" --no-sandbox --disable-gpu-sandbox --disable-updates --skip-welcome --skip-release-notes --disable-workspace-trust --extensionDevelopmentPath=/Volumes/storage/workspace/vscode-extension-openspg-schema/openspg-schema-language-server"
+        "test": "sh ./scripts/e2e.sh"
+    },
+    "dependencies": {
+        "openspg-schema-antlr4": "0.1.0"
     },
     "devDependencies": {
         "@eslint/js": "^9.13.0",
@@ -73,6 +83,7 @@
         "eslint": "^9.13.0",
         "mocha": "^10.3.0",
         "typescript": "^5.9.2",
-        "typescript-eslint": "^8.39.0"
+        "typescript-eslint": "^8.39.0",
+        "unbuild": "^3.6.1"
     }
 }

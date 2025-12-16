@@ -1,7 +1,7 @@
 {
-	"name": "openspg-schema-language-client",
-	"version": "0.0.1",
-	"description": "Language Client implementation for OpenSPG Schema",
+	"name": "openspg-schema-extension",
+	"version": "0.1.0",
+	"description": "VSCode extension implementation for OpenSPG Schema",
 	"keywords": [
 		"openspg",
 		"language-server",

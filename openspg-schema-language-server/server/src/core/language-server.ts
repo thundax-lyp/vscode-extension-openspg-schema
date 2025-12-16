@@ -51,11 +51,6 @@ export const listen = (connection: Connection) => {
     // connection.onCompletion(onCompletion(context));
     // connection.onCompletionResolve(onCompletion(context));
 
-    /**
-     * 函数签名提示
-     * 触发时机：用户输入函数调用时（如输入"("），VSCode会自动请求签名信息。
-     * 返回内容：包含函数参数、返回值等帮助信息，通过SignatureHelp对象传递
-     */
     // connection.onSignatureHelp(onSignatureHelp(context));
 
     // connection.onDeclaration(onSignatureHelp(context));
