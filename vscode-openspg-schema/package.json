@@ -32,6 +32,17 @@
                     ".schema"
                 ],
                 "configuration": "./schema.configuration.json"
+            },
+            {
+                "id": "conceptRule",
+                "aliases": [
+                    "OpenSPG Concept Rule",
+                    "conceptRule"
+                ],
+                "extensions": [
+                    ".rule"
+                ],
+                "configuration": "./conceptRule.configuration.json"
             }
         ],
         "grammars": [
@@ -39,6 +50,11 @@
                 "language": "schema",
                 "scopeName": "source.schema",
                 "path": "./syntaxes/schema.tmLanguage.json"
+            },
+            {
+                "language": "conceptRule",
+                "scopeName": "source.conceptRule",
+                "path": "./syntaxes/conceptRule.tmLanguage.json"
             }
         ]
     },
@@ -67,7 +83,9 @@
     },
     "dependencies": {
         "glob": "11.1.0",
-        "openspg-schema-antlr4": "file:../openspg-schema-antlr4-0.0.1-dev-1.tgz",
+        "openspg-concept-rule-antlr4": "0.1.0",
+        "openspg-concept-rule-language-server": "file:../openspg-concept-rule-language-server-0.0.1-dev-3.tgz",
+        "openspg-schema-antlr4": "0.1.0",
         "prettier": "3.7.0",
         "type-fest": "5.2.0",
         "vscode-languageclient": "9.0.1",

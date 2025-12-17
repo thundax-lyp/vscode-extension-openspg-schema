@@ -15,8 +15,7 @@
             "match": "^namespace\\s+([a-zA-Z0-9]+)",
             "captures": {
                 "0": {
-                    "name": "keyword.control.schema",
-                    "match": "^namespace"
+                    "name": "keyword.control.schema"
                 },
                 "1": {
                     "name": "variable.namespace.schema"
@@ -93,7 +92,7 @@
             },
             "patterns": [
                 {
-                    "name": "string.key-value.schema"
+                    "include": "source.conceptRule"
                 }
             ]
         },
@@ -153,7 +152,7 @@
                     ]
                 },
                 {
-                    "begin": "(^[ \t]+)?(?=#)",
+                    "begin": "(^[ \\t]+)?(?=#)",
                     "end": "(?!\\G)",
                     "beginCaptures": {
                         "1": {
@@ -183,11 +182,7 @@
                 },
                 {
                     "name": "keyword.operator.schema",
-                    "match": "\\:"
-                },
-                {
-                    "name": "keyword.operator.schema",
-                    "match": "\\."
+                    "match": "[\\:\\.]"
                 }
             ]
         },
@@ -266,26 +261,6 @@
                     "patterns": [
                         {
                             "include": "#escapes"
-                        }
-                    ]
-                },
-                {
-                    "name": "string.quoted.block.schema",
-                    "begin": "\\[\\[",
-                    "end": "\\]\\]",
-                    "beginCaptures": {
-                        "0": {
-                            "name": "punctuation.definition.string.begin.schema"
-                        }
-                    },
-                    "endCaptures": {
-                        "0": {
-                            "name": "punctuation.definition.string.end.schema"
-                        }
-                    },
-                    "patterns": [
-                        {
-                            "name": "constant.character.unescape.schema"
                         }
                     ]
                 }

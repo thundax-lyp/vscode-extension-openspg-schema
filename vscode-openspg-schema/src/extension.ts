@@ -7,44 +7,30 @@ import {
     ServerOptions,
     TransportKind
 } from 'vscode-languageclient/node';
-import {SchemaDocumentHighlightProvider} from "./client/highlight";
 
 
-let client: LanguageClient;
+let schemaClient: LanguageClient;
+let conceptRuleClient: LanguageClient;
 
 export const activate = (context: vscode.ExtensionContext) => {
-    initLanguageClient(context)
-
-    context.subscriptions.push(
-        vscode.languages.registerDocumentHighlightProvider('schema', new SchemaDocumentHighlightProvider())
-    );
-
+    schemaClient = initLanguageClient(context);
+    conceptRuleClient = initConceptRuleLanguageClient(context);
 }
 
 
 export const deactivate = (): Thenable<void> | undefined => {
-    if (!client) {
-        return undefined;
+    if (schemaClient) {
+        schemaClient.stop()
     }
-    return client.stop();
+    if (conceptRuleClient) {
+        conceptRuleClient.stop()
+    }
+    return undefined
 }
 
 const initLanguageClient = (context: vscode.ExtensionContext) => {
     const serverModule = path.join(__dirname, 'server.js');
-    console.log(serverModule);
 
-    console.log('-'.repeat(20) + 'extensionPath: ' + context.extensionPath)
-
-    // vscode.languages.getLanguages().then(langs => {
-    //     console.log('='.repeat(20) + 'support languages:')
-    //     langs.forEach(x => {
-    //         console.log(x)
-    //     })
-    //     console.log('-'.repeat(40))
-    // })
-
-    // If the extension is launched in debug mode then the debug server options are used
-    // Otherwise the run options are used
     const serverOptions: ServerOptions = {
         run: {
             module: serverModule,
@@ -59,7 +45,17 @@ const initLanguageClient = (context: vscode.ExtensionContext) => {
         }
     };
 
-    // Options to control the language client
+
+    vscode.workspace.registerTextDocumentContentProvider('openspg-embedded-content', {
+        provideTextDocumentContent: (uri) => {
+            console.log('provideTextDocumentContent '.repeat(10))
+            console.log(uri)
+            // const originalUri = uri.path.slice(1).slice(0, -4);
+            // const decodedUri = decodeURIComponent(originalUri);
+            return null;
+        }
+    })
+
     const clientOptions: LanguageClientOptions = {
         documentSelector: [
             {language: 'schema', scheme: 'file'},
@@ -69,11 +65,9 @@ const initLanguageClient = (context: vscode.ExtensionContext) => {
             fileEvents: vscode.workspace.createFileSystemWatcher('**/*.schema')
         },
         initializationOptions: context.extensionPath,
-        // outputChannel: new MyOutputChannel(),
     };
 
-    // Create the language client and start the client.
-    client = new LanguageClient(
+    const client = new LanguageClient(
         'schemaLanguageServer',
         'OpenSPG Schema Language Server',
         serverOptions,
@@ -81,6 +75,49 @@ const initLanguageClient = (context: vscode.ExtensionContext) => {
     );
 
     client.start().then(() => {
-        console.log('Server started');
+        console.log('OpenSPG Schema Language Server started');
     })
+
+    return client;
+}
+
+const initConceptRuleLanguageClient = (context: vscode.ExtensionContext) => {
+    const serverModule = path.join(__dirname, 'concept-rule-server.js');
+    const serverOptions: ServerOptions = {
+        run: {
+            module: serverModule,
+            transport: TransportKind.ipc,
+        },
+        debug: {
+            module: serverModule,
+            options: {
+                execArgv: ['--nolazy', '--inspect=6010'],
+            },
+            transport: TransportKind.ipc,
+        }
+    };
+
+    const clientOptions: LanguageClientOptions = {
+        documentSelector: [
+            {language: 'conceptRule', scheme: 'file'},
+            {language: 'conceptRule', scheme: 'untitled'}
+        ],
+        synchronize: {
+            fileEvents: vscode.workspace.createFileSystemWatcher('**/*.rule')
+        },
+        initializationOptions: context.extensionPath,
+    };
+
+    const client = new LanguageClient(
+        'conceptRuleLanguageServer',
+        'OpenSPG Concept Rule Language Server',
+        serverOptions,
+        clientOptions
+    );
+
+    client.start().then(() => {
+        console.log('OpenSPG Concept Rule Language Server started');
+    })
+
+    return client
 }

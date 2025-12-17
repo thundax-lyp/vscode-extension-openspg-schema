@@ -10,3 +10,5 @@ Works(作品): EntityType
     desc: a great book
     properties:
         author(作者): Person
+    rule: [[
+    ]]
