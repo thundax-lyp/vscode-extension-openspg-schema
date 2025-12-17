@@ -1,0 +1,14 @@
+namespace DocumentLink
+
+`TaxOfRiskApp`/`赌博应用`:
+    rule: [[
+        Define (s:App)-[p:belongTo]->(o:`TaxOfRiskApp`/`赌博应用`) {
+            Structure {
+            }
+            Rule {
+
+            }
+            Action {
+            }
+        }
+    ]]

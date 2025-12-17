@@ -12,12 +12,12 @@
         {
             "name": "meta.namespace.schema",
             "comment": "namespace declaration",
-            "match": "^namespace\\s+([a-zA-Z0-9]+)",
+            "match": "^(namespace)\\s+([a-zA-Z0-9]+)",
             "captures": {
-                "0": {
+                "1": {
                     "name": "keyword.control.schema"
                 },
-                "1": {
+                "2": {
                     "name": "variable.namespace.schema"
                 }
             }
