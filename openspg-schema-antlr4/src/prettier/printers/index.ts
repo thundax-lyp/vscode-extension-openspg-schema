@@ -40,3 +40,13 @@ export const print: Printer<any>['print'] = (path, options, _print) => {
 
     return printer({path, options, print: _print, node});
 };
+
+export const embed: Printer<any>['embed'] = (path) => {
+    const {node} = path;
+    if (node.type === 'BlockPropertyValue') {
+        return async () => {
+            return [node.text]
+        }
+    }
+    return null;
+}

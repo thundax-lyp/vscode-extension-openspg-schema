@@ -32,9 +32,6 @@ export class PrinterExpression extends BasePrinter implements Record<`print${ast
         this.colon, this.space, path.call(print, 'variable')
     ]
 
-    // blockPropertyValue: OPEN_BLOCK (PLAIN_TEXT | PLAIN_TEXT_PATCH) CLOSE_BLOCK ;
-    printBlockPropertyValue: PrintFunc<ast.BlockPropertyValue> = ({node}) => node.text
-
     // builtinPropertyName :
     //     | DESC_KEYWORD | PROPERTIES_KEYWORD | RELATIONS_KEYWORD | HYPERNYMP_PREDICATE_KEYWORD | REGULAR_KEYWORD
     //     | SPREADABLE_KEYWORD | AUTORELATE_KEYWORD | CONSTRAINT_KEYWORD | RULE_KEYWORD | INDEX_KEYWORD
@@ -96,4 +93,8 @@ export class PrinterExpression extends BasePrinter implements Record<`print${ast
     // structureSemanticName : DEFINITION_IDENTIFIER ;
     printStructureSemanticName: PrintFunc<ast.StructureSemanticName> = ({node}) => node.text
 
+    // blockPropertyValue: OPEN_BLOCK (PLAIN_TEXT | PLAIN_TEXT_PATCH) CLOSE_BLOCK ;
+    printBlockPropertyValue: PrintFunc<ast.BlockPropertyValue> = () => {
+        throw new Error('Unimplemented')
+    }
 }

@@ -1,0 +1,25 @@
+namespace EmbeddedRule
+
+Person(人物): EntityType
+    desc: a great name
+    properties:
+        age(年龄): Text
+    rule: [[
+        Define (s:`ProductChain`)-[p:leadTo]->(o) {
+            Structure {
+                `Person`<->`Work` [`Person`, age=`20`] repeat (1,5) as Genius
+            }
+        }
+    ]]
+
+Works(作品): EntityType
+    desc: a great book
+    properties:
+        author(作者): Person
+    rule: [[
+        Define (s:`ProductChain`)-[p:leadTo]->(o) {
+            Structure {
+                `Work` [title, summary]
+            }
+        }
+    ]]

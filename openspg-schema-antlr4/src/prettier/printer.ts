@@ -1,6 +1,6 @@
 import * as ast from '../ast';
 import type {AstPath, Doc, ParserOptions, Printer} from 'prettier';
-import {canAttachComment, handleComments, isBlockComment, massageAstNode, print, printComment,} from './printers';
+import {canAttachComment, handleComments, isBlockComment, massageAstNode, print, embed, printComment,} from './printers';
 
 export type PrintFunc<T extends ast.SyntaxNode = ast.SyntaxNode> = (arg: {
     path: AstPath<T>;
@@ -9,12 +9,13 @@ export type PrintFunc<T extends ast.SyntaxNode = ast.SyntaxNode> = (arg: {
     args?: any;
 }) => Doc;
 
+
 export class PrettierPrinter implements Printer<any> {
 
-    // @ts-ignore
-    public static name = 'openspg-schema-printer';
+    public static NAME = 'openspg-schema-prettier-printer';
 
     public print = print;
+    public embed = embed;
     public printComment = printComment;
     public isBlockComment = isBlockComment;
     public canAttachComment = canAttachComment;
