@@ -1,6 +1,6 @@
 {
     "name": "openspg-concept-rule-language-server",
-    "version": "0.0.1",
+    "version": "0.0.1-dev-3",
     "description": "Language Server Protocol implementation for OpenSPG Concept Rule",
     "keywords": [
         "openspg",
@@ -12,8 +12,35 @@
     "license": "Apache-2.0",
     "author": "Thundax <thundax@qq.com>",
     "homepage": "https://github.com/thundax-lyp/vscode-extension-openspg-schema/openspg-concept-rule-language-server",
+    "categories": [
+        "Programming Languages"
+    ],
+    "publisher": "thundax-lyp",
+    "type": "module",
+    "module": "./dist/index.js",
+    "main": "./dist/index.cjs",
+    "types": "./dist/index.d.ts",
+    "exports": {
+        ".": {
+            "import": "./dist/index.js",
+            "require": "./dist/index.cjs",
+            "types": "./dist/index.d.ts"
+        }
+    },
+    "files": [
+        "dist",
+        "README.md"
+    ],
     "engines": {
         "vscode": "^1.100.0"
+    },
+    "publishConfig": {
+        "registry": "https://registry.npmjs.org",
+        "access": "public"
+    },
+    "scripts": {
+        "vscode:prepublish": "npm run build",
+        "build": "unbuild --clean"
     },
     "dependencies": {
         "openspg-concept-rule-antlr4": "0.1.0",
@@ -25,6 +52,7 @@
         "vscode-uri": "^3.1.0"
     },
     "devDependencies": {
-        "@types/vscode": "^1.100.0"
+        "@types/vscode": "^1.100.0",
+        "unbuild": "^3.6.1"
     }
 }

@@ -1,6 +1,6 @@
 {
     "name": "openspg-concept-rule-language-server",
-    "version": "0.0.1-dev-1",
+    "version": "0.0.1-dev-3",
     "description": "Language Server Protocol implementation for OpenSPG Concept Rule",
     "keywords": [
         "openspg",
