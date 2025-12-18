@@ -1,6 +1,6 @@
 import * as vscode from 'vscode';
 import * as assert from 'assert';
-import {getDocUri, activate, toRange, createTicker} from './helper';
+import {getDocUri, activate, createTicker, editor} from './helper';
 
 suite('Document Formatting', () => {
     const fileName = 'document-formatting.concept.rule';
@@ -15,58 +15,68 @@ suite('Document Formatting', () => {
 
     test('Formatting document-formatting.concept.rule', async () => {
         await waitingForTick()
-        await testDocumentFormatting(docUri, [
-            {newText: "\n        ", range: toRange(3, 12, 3, 12)},
-            {newText: "}", range: toRange(4, 23, 4, 23)},
-            {newText: "\n", range: toRange(5, 0, 5, 0)},
-            {newText: "", range: toRange(5, 12, 5, 17)},
-            {newText: "        ", range: toRange(6, 0, 6, 0)},
-            {newText: "", range: toRange(6, 19, 6, 20)},
-            {newText: "", range: toRange(6, 22, 6, 23)},
-            {newText: "     ", range: toRange(7, 0, 7, 0)},
-            {newText: "   ", range: toRange(7, 8, 7, 8)},
-            {newText: "", range: toRange(7, 19, 7, 20)},
-            {newText: "", range: toRange(7, 22, 7, 23)},
-            {newText: "\n", range: toRange(10, 6, 10, 6)},
-            {newText: "\n", range: toRange(16, 13, 16, 13)},
-            {newText: "", range: toRange(18, 42, 18, 43)},
-            {newText: "\n", range: toRange(20, 0, 20, 0)},
-            {newText: "   ", range: toRange(24, 0, 24, 0)},
-            {newText: " ", range: toRange(24, 20, 24, 20)},
-            {newText: "   ", range: toRange(25, 0, 25, 0)},
-            {newText: " ", range: toRange(25, 20, 25, 20)},
-            {newText: "   ", range: toRange(26, 0, 26, 0)},
-            {newText: " ", range: toRange(26, 20, 26, 20)},
-            {newText: "   ", range: toRange(27, 0, 27, 0)},
-            {newText: " ", range: toRange(27, 20, 27, 20)},
-            {newText: " ", range: toRange(31, 23, 31, 23)},
-            {newText: " ", range: toRange(31, 24, 31, 24)},
-            {newText: " ", range: toRange(32, 23, 32, 23)},
-            {newText: " ", range: toRange(32, 24, 32, 24)},
-            {newText: "}", range: toRange(34, 29, 34, 29)},
-            {newText: "", range: toRange(35, 16, 35, 17)},
-      ]);
+        const expectedText = '' +
+            'namespace DocumentFormatting\n' +
+            '\n' +
+            '`TaxOfProdEvent`/`价格上涨`:\n' +
+            '  rule: [[\n' +
+            '    Define (e:ProductChainEvent)-[p:belongTo]->(o:`TaxOfProdEvent`/`价格上涨`) {\n' +
+            '      Structure {}\n' +
+            '\n' +
+            '      Constraint {\n' +
+            '        R1: e.index==\'价格\'\n' +
+            '        R2: e.trend==\'上涨\'\n' +
+            '      }\n' +
+            '    }\n' +
+            '  ]]\n' +
+            '\n' +
+            '`TaxOfProdEvent`/`价格上涨`:TaxOfCompanyEvent/`成本上涨`\n' +
+            '  rule: [[\n' +
+            '    Define (s:`TaxOfProdEvent`/`价格上涨`)-[p:leadTo]->(o:`TaxOfCompanyEvent`/`成本上涨`) {\n' +
+            '      Structure {\n' +
+            '        (s)-[:subject]->(prod:Product)-[:hasSupplyChain]->(down:Product)<-[:product]-(c:Company)\n' +
+            '      }\n' +
+            '\n' +
+            '      Constraint {\n' +
+            '        eventName = concat(c.name,"成本上升事件")\n' +
+            '      }\n' +
+            '\n' +
+            '      Action {\n' +
+            '        downEvent = createNodeInstance(\n' +
+            '          type = CompanyEvent,\n' +
+            '          value = {\n' +
+            '            subject = c.id\n' +
+            '            name = eventName\n' +
+            '            trend = "上涨"\n' +
+            '            index = "成本"\n' +
+            '          }\n' +
+            '        )\n' +
+            '        createEdgeInstance(\n' +
+            '          src = s,\n' +
+            '          dst = downEvent,\n' +
+            '          type = leadTo,\n' +
+            '          value = {}\n' +
+            '        )\n' +
+            '      }\n' +
+            '    }\n' +
+            '  ]]\n' +
+            '';
+        await testDocumentFormatting(docUri, expectedText);
     });
 });
 
 
-async function testDocumentFormatting(docUri: vscode.Uri, expectedTextEdits: vscode.TextEdit[]) {
-    await activate(docUri);
+async function testDocumentFormatting(docUri: vscode.Uri, expectedText: string) {
     const options: vscode.FormattingOptions = {
-        tabSize: 4,
+        tabSize: 2,
         insertSpaces: true,
         singleQuote: false
     }
-    const actualTextEdits = await vscode.commands.executeCommand<vscode.TextEdit[]>('vscode.executeFormatDocumentProvider', docUri, {
-        options
-    });
 
+    const actualTextEdits = await vscode.commands.executeCommand<vscode.TextEdit[]>('vscode.executeFormatDocumentProvider', docUri, options);
 
-    assert.equal(actualTextEdits.length, expectedTextEdits.length);
+    await editor.edit(editBuilder => (actualTextEdits || []).forEach(x => editBuilder.replace(x.range, x.newText)));
+    const actualText = editor.document.getText()
 
-    expectedTextEdits.forEach((expectedTextEdit, i) => {
-        const actualTextEdit = actualTextEdits[i];
-        assert.equal(actualTextEdit.newText, expectedTextEdit.newText);
-        assert.deepEqual(actualTextEdit.range, expectedTextEdit.range);
-    });
+    assert.equal(actualText, expectedText);
 }

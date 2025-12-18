@@ -73,7 +73,7 @@
         "test": "sh ./scripts/e2e.sh"
     },
     "dependencies": {
-        "openspg-concept-rule-antlr4": "0.1.0"
+        "openspg-concept-rule-antlr4": "file://../openspg-concept-rule-antlr4-0.1.0-dev-0.tgz"
     },
     "devDependencies": {
         "@eslint/js": "^9.13.0",
