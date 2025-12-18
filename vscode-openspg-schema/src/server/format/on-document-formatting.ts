@@ -5,7 +5,7 @@ import {type Printer} from "prettier";
 import * as syntax from 'openspg-schema-antlr4'
 import {Context, OnDocumentFormatting} from '../context';
 import {Options} from "prettier";
-import { format as ruleFormatter } from './concept-rule-formatter'
+import {format as ruleFormatter} from './concept-rule-formatter'
 
 export const onDocumentFormatting: OnDocumentFormatting = ({connection, documents}: Context) => async ({textDocument, options}) => {
     const document = documents.get(textDocument.uri);
