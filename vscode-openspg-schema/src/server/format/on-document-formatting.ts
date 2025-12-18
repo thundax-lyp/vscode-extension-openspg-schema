@@ -63,4 +63,3 @@ export const onDocumentFormatting: OnDocumentFormatting = ({connection, document
     const formatted = await prettier.format(source, prettierOptions);
     return [TextEdit.replace(range, formatted)];
 };
-
