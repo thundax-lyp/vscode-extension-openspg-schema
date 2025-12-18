@@ -5,6 +5,7 @@ import {type Printer} from "prettier";
 import * as syntax from 'openspg-schema-antlr4'
 import {Context, OnDocumentFormatting} from '../context';
 import {Options} from "prettier";
+import { format as ruleFormatter } from './concept-rule-formatter'
 
 export const onDocumentFormatting: OnDocumentFormatting = ({connection, documents}: Context) => async ({textDocument, options}) => {
     const document = documents.get(textDocument.uri);
@@ -25,19 +26,24 @@ export const onDocumentFormatting: OnDocumentFormatting = ({connection, document
     const source = document.getText();
     const range = Range.create(document.positionAt(0), document.positionAt(source.length));
 
+    const printerName = 'openspg-schema-prettier-printer';
+    const parserName = 'openspg-schema-prettier-parser';
+
     const printers: Record<string, Printer<any>> = {
         ...syntax.printers,
-        [syntax.printerName]: {
-            ...syntax.printers[syntax.printerName],
+        [printerName]: {
+            ...syntax.printers[printerName],
             embed: (path) => {
                 const {node} = path;
                 if (node.type === 'BlockContent') {
-                    const content: string = node.text.trim();
-                    return async () => doc.builders.join(doc.builders.hardline, [
-                        '// prefix',
-                        ...content.split('\n').map(x => x.trim()),
-                        '// suffix'
-                    ])
+                    const sourceCode: string = node.text.trim();
+                    return async () => {
+                        const formattedCode = await ruleFormatter(sourceCode, {
+                            tabSize: config.tabSize,
+                            bracketSpacing: config.bracketSpacing,
+                        })
+                        return doc.builders.join(doc.builders.hardline, formattedCode.trim().split('\n'))
+                    }
                 }
                 return null;
             }
@@ -45,7 +51,7 @@ export const onDocumentFormatting: OnDocumentFormatting = ({connection, document
     };
 
     const prettierOptions = {
-        parser: 'openspg-schema-prettier-parser',
+        parser: parserName,
         plugins: [{
             languages: syntax.languages,
             parsers: syntax.parsers,
