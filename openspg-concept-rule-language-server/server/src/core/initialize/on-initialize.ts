@@ -2,10 +2,7 @@ import {SemanticTokenModifiers, SemanticTokenTypes, TextDocumentSyncKind} from '
 import {Context, OnInitialize} from '../context';
 
 
-export const onInitialize = (_: Context): OnInitialize => async (params) => {
-    console.log(`initializing`)
-    // console.log(`${JSON.stringify(params, null, 4)}`)
-
+export const onInitialize = (_: Context): OnInitialize => async () => {
     return {
         serverInfo: {
             name: 'OpenSPG Concept Rule Language Server',

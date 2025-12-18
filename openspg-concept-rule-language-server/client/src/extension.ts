@@ -52,8 +52,6 @@ export const activate = (context: vscode.ExtensionContext) => {
         path.join('server', 'dist', 'server.js')
     );
 
-    console.log('-'.repeat(40) + 'extensionPath: ' +  context.extensionPath)
-
     // vscode.languages.getLanguages().then(langs => {
     //     console.log('='.repeat(60))
     //     langs.forEach(x => {

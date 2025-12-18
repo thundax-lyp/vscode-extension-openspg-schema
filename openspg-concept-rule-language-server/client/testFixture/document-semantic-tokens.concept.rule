@@ -2,7 +2,7 @@ namespace DocumentSemanticTokens
 
 `TaxOfRiskApp`/`赌博应用`:
     rule: [[
-        Define (s:App)-[p:belongTo]->(o:`TaxOfRiskApp`/`赌博应用`) {
+        Define (subject:App)-[p:belongTo]->(object:`TaxOfRiskApp`/`赌博应用`) {
             Structure {
             }
             Rule {

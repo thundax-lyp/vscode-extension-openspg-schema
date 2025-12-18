@@ -1,6 +1,6 @@
 {
     "name": "openspg-concept-rule-language-server",
-    "version": "0.1.0-dev-0",
+    "version": "0.1.1",
     "description": "Language Server Protocol implementation for OpenSPG Concept Rule",
     "keywords": [
         "openspg",
@@ -11,7 +11,7 @@
     ],
     "license": "Apache-2.0",
     "author": "Thundax <thundax@qq.com>",
-    "homepage": "https://github.com/thundax-lyp/vscode-extension-openspg-schema/openspg-concept-rule-language-server",
+    "homepage": "https://github.com/thundax-lyp/vscode-extension-openspg-schema",
     "categories": [
         "Programming Languages"
     ],
@@ -42,7 +42,7 @@
         "build": "unbuild --clean"
     },
     "dependencies": {
-        "openspg-concept-rule-antlr4": "file:openspg-concept-rule-antlr4-0.1.0-dev-0.tgz",
+        "openspg-concept-rule-antlr4": "0.1.1",
         "prettier": "^3.6.2",
         "type-fest": "^5.2.0",
         "vscode-languageclient": "^9.0.1",
