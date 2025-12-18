@@ -83,9 +83,9 @@
     },
     "dependencies": {
         "glob": "11.1.0",
-        "openspg-concept-rule-antlr4": "0.1.0",
-        "openspg-concept-rule-language-server": "file:../openspg-concept-rule-language-server-0.0.1-dev-3.tgz",
-        "openspg-schema-antlr4": "0.1.0",
+        "openspg-concept-rule-antlr4": "file:openspg-concept-rule-antlr4-0.1.0-dev-0.tgz",
+        "openspg-concept-rule-language-server": "file:openspg-concept-rule-language-server-0.1.0-dev-0.tgz",
+        "openspg-schema-antlr4": "file:openspg-schema-antlr4-0.1.0-dev-0.tgz",
         "prettier": "3.7.0",
         "type-fest": "5.2.0",
         "vscode-languageclient": "9.0.1",

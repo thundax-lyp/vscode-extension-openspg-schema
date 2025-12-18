@@ -22,7 +22,6 @@ export const onDocumentFormatting: OnDocumentFormatting = ({connection, document
 
     const source = document.getText();
     const range = Range.create(document.positionAt(0), document.positionAt(source.length));
-    console.log('**' + JSON.stringify(options))
     const prettierOptions = {
         parser: 'openspg-concept-rule-prettier-parser',
         plugins: [{
@@ -31,7 +30,7 @@ export const onDocumentFormatting: OnDocumentFormatting = ({connection, document
             printers: syntax.printers,
         }],
         tabWidth: config.tabSize,
-        bracketSpacing: config.bracketSpacing || true,
+        bracketSpacing: config.bracketSpacing,
     };
     const formatted = await prettier.format(source, prettierOptions);
     return [TextEdit.replace(range, formatted)];

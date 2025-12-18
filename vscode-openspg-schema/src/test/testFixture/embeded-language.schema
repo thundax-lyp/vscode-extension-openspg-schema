@@ -13,11 +13,11 @@ Works(作品): EntityType
     rule: [[
         Define (s:App)-[p:belongTo]->(o:`TaxOfRiskApp`/`赌博应用`) {
             Structure {
+                (s)-[:subject]->(prod:Product)-[:hasSupplyChain]->(down:Product)<-[:product]-(c:Company)
             }
-            Rule {
 
-            }
-            Action {
-            }
+            Rule {}
+
+            Action {}
         }
     ]]
