@@ -16,7 +16,7 @@ export const onDocumentFormatting: OnDocumentFormatting = ({connection, document
             singleQuote: false,
             bracketSpacing: true,
         },
-        (await connection.workspace.getConfiguration('schema.formatter')) as Partial<Options>,
+        (await connection.workspace.getConfiguration('conceptRule.formatter')) as Partial<Options>,
         options
     )
 
