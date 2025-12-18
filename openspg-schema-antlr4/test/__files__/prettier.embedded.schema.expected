@@ -5,13 +5,13 @@ Person(人物): EntityType
     properties:
         age(年龄): Text
     rule: [[
-    // prefix
+        // prefix
         Define (s:`ProductChain`)-[p:leadTo]->(o) {
-            Structure {
-                `Person`<->`Work` [`Person`, age=`20`] repeat (1,5) as Genius
-            }
+        Structure {
+        `Person`<->`Work` [`Person`, age=`20`] repeat (1,5) as Genius
         }
-    // suffix
+        }
+        // suffix
     ]]
 
 Works(作品): EntityType
@@ -19,11 +19,11 @@ Works(作品): EntityType
     properties:
         author(作者): Person
     rule: [[
-    // prefix
+        // prefix
         Define (s:`ProductChain`)-[p:leadTo]->(o) {
-            Structure {
-                `Work` [title, summary]
-            }
+        Structure {
+        `Work` [title, summary]
         }
-    // suffix
+        }
+        // suffix
     ]]

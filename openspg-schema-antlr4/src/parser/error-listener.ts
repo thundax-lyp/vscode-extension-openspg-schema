@@ -1,5 +1,5 @@
-import {Position} from '../ast/base';
 import {ATNSimulator, BaseErrorListener, RecognitionException, Recognizer, Token,} from '../antlr4';
+import {Position} from '../ast';
 
 export class ParseError extends Error {
     constructor(

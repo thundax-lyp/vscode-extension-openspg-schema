@@ -6,5 +6,6 @@ export type LiteralNodeType = UnionSyntaxNodeType<typeof nodeMap>;
 
 export const literalNodeTypes = Object.keys(nodeMap) as LiteralNodeType[];
 
+export * from './block-content';
 export * from './identifier';
 

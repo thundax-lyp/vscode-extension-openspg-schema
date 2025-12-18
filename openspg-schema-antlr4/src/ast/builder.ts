@@ -63,6 +63,8 @@ export class SchemaASTBuilder extends parser.SchemaParserVisitor<ast.SyntaxNode 
 
     visitBlockPropertyValue = (ctx: parser.BlockPropertyValueContext) => new ast.BlockPropertyValue(ctx, this);
 
+    visitBlockContent = (ctx: parser.BlockContentContext) => new ast.BlockContent(ctx, this);
+
     visitEntityDeclaration = (ctx: parser.EntityDeclarationContext) => new ast.EntityDeclaration(ctx, this);
 
     visitEntityMetaDeclaration = (ctx: parser.EntityMetaDeclarationContext) => new ast.EntityMetaDeclaration(ctx, this);

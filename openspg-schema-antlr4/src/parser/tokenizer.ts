@@ -1,5 +1,5 @@
-import {Position} from '../ast/base';
 import {CharStreams, SchemaLexer} from '../antlr4';
+import {Position} from '../ast';
 import {ParseError, SchemaErrorListener} from './error-listener';
 
 export type SyntaxTokenType = (typeof SchemaLexer.symbolicNames)[number];

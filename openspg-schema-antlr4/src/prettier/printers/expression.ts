@@ -94,7 +94,10 @@ export class PrinterExpression extends BasePrinter implements Record<`print${ast
     printStructureSemanticName: PrintFunc<ast.StructureSemanticName> = ({node}) => node.text
 
     // blockPropertyValue: OPEN_BLOCK (PLAIN_TEXT | PLAIN_TEXT_PATCH) CLOSE_BLOCK ;
-    printBlockPropertyValue: PrintFunc<ast.BlockPropertyValue> = () => {
-        throw new Error('Unimplemented')
-    }
+    printBlockPropertyValue: PrintFunc<ast.BlockPropertyValue> = ({node, path, print}) => [
+        this.block(path.call(print, 'content'), {
+            openTag: '[[', closeTag: ']]', empty: node.content.text.trim().length === 0
+        })
+    ]
+
 }

@@ -69,7 +69,8 @@ builtinPropertyValue    : IS_A_KEYWORD | LOCATE_AT_KEYWORD | MANNER_OF_KEYWORD |
                         | MULTI_VALUE_KEYWORD
                         ;
 
-blockPropertyValue: OPEN_BLOCK (PLAIN_TEXT | PLAIN_TEXT_PATCH) CLOSE_BLOCK ;
+blockPropertyValue  : OPEN_BLOCK blockContent CLOSE_BLOCK ;
+blockContent        : (PLAIN_TEXT | PLAIN_TEXT_PATCH)* ;
 
 //=================================================================================
 /**

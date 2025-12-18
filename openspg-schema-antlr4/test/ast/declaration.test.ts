@@ -139,7 +139,9 @@ Person('人物'): EntityType
                     variable: 'desc'
                 },
                 value: {
-                    variable: '[[  good  ]]'
+                    variable: {
+                        content: '  good  '
+                    }
                 },
             }
         }]

@@ -11,16 +11,12 @@ const printers: Record<string, Printer<any>> = {
         ...new PrettierPrinter(),
         embed: (path) => {
             const {node} = path;
-            if (node.type === 'BlockPropertyValue') {
-                return async () => {
-                    const groupId = Symbol('block');
-                    const line = doc.builders.hardline;
-
-                    const plain = ['// prefix', node.text.substring(2, node.text.length - 2), '// suffix']
-                    const content = doc.builders.indentIfBreak(plain, {groupId});
-
-                    return doc.builders.group(['[[', line, content, line, ']]'], {id: groupId})
-                }
+            if (node.type === 'BlockContent') {
+                return async () => doc.builders.join(doc.builders.hardline, [
+                    '// prefix',
+                    ...node.text.split('\n').map(x => x.trim()).filter(x => x !== ''),
+                    '// suffix'
+                ])
             }
             return null;
         }
