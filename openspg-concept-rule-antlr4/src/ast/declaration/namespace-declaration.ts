@@ -6,6 +6,8 @@ import {NamespaceVariable} from "./namespace-variable";
  * ### Grammar:
  * ```
  * namespaceDeclaration : 'namespace' namespaceVariable ;
+ *
+ * namespaceVariable : unescaped_symbolic_name | string_literal | escaped_symbolic_name ;
  * ```
  **/
 export class NamespaceDeclaration extends BaseNode {

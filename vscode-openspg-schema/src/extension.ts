@@ -45,14 +45,16 @@ const initLanguageClient = (context: vscode.ExtensionContext) => {
         }
     };
 
+    const virtualDocumentContents = new Map<string, string>();
 
-    vscode.workspace.registerTextDocumentContentProvider('openspg-embedded-content', {
+    vscode.workspace.registerTextDocumentContentProvider('openspg-schema-embedded-content', {
         provideTextDocumentContent: (uri) => {
-            console.log('provideTextDocumentContent '.repeat(10))
-            console.log(uri)
-            // const originalUri = uri.path.slice(1).slice(0, -4);
-            // const decodedUri = decodeURIComponent(originalUri);
-            return null;
+            const originalUri = uri.path.slice(1).slice(0, -5);
+            const decodedUri = decodeURIComponent(originalUri);
+            console.log('='.repeat(40) + 'provideTextDocumentContent');
+            console.log(originalUri);
+            console.log(decodedUri);
+            return virtualDocumentContents.get(decodedUri);
         }
     })
 

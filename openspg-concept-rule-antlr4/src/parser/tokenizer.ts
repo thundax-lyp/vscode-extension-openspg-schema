@@ -1,5 +1,5 @@
-import {Position} from '../ast/base';
 import {CharStreams, ConceptRuleLexer} from '../antlr4';
+import {Position} from '../ast/base';
 import {ConceptRuleErrorListener, ParseError} from './error-listener';
 
 export type SyntaxTokenType = (typeof ConceptRuleLexer.symbolicNames)[number];

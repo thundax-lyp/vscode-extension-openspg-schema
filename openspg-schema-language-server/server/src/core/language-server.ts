@@ -83,7 +83,7 @@ export const listen = (connection: Connection) => {
 
     // connection.onDocumentColor(onDocumentLinkResolve(context));
     // connection.onColorPresentation(onDocumentLinkResolve(context));
-    // connection.onFoldingRanges(onDocumentLinkResolve(context));
+    // connection.onFoldingRanges(onFoldingRanges(context));
     // connection.onSelectionRanges(onDocumentLinkResolve(context));
     // connection.onExecuteCommand(onDocumentLinkResolve(context));
 

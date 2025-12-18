@@ -30,4 +30,6 @@ export const plugin: Plugin = {
 
 export const parserName = PrettierParser.NAME;
 
+export const printerName = PrettierPrinter.NAME;
+
 export default plugin;

@@ -12,10 +12,11 @@ export const onDocumentFormatting: OnDocumentFormatting = ({connection, document
         return null;
     }
 
-    const config = {
-        ...(await connection.workspace.getConfiguration('schema.formatter')) as Partial<Options>,
-        ...options,
-    }
+    const config = Object.assign(
+        {},
+        (await connection.workspace.getConfiguration('schema.formatter')) as Partial<Options>,
+        options,
+    )
     const source = document.getText();
     const range = Range.create(document.positionAt(0), document.positionAt(source.length));
 
