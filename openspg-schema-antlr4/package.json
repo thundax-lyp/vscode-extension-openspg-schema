@@ -1,7 +1,7 @@
 {
     "name": "openspg-schema-antlr4",
     "description": "OpenSPG Schema Mark Language Lexer and Parser by official ANTLR4 grammar",
-    "version": "0.1.0-dev-0",
+    "version": "0.1.1",
     "keywords": [
         "openspg",
         "schema",
