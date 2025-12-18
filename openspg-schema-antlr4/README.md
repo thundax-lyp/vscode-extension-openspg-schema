@@ -6,7 +6,7 @@
 
 [![NPM version][npm-image]][npm-url]
 [![NPM downloads][download-image]][download-url]
-[![MIT License][license-shield]][license-url]
+[![Apache-2.0 License][license-shield]][license-url]
 
 [![Contributors][contributors-shield]][contributors-url]
 [![Issues][issues-shield]][issues-url]
