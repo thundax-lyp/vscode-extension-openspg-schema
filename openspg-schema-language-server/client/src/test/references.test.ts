@@ -56,7 +56,7 @@ suite('References', () => {
 const testReferences = async (docUri: vscode.Uri, position: vscode.Position, expectedLocations: vscode.Location[]) => {
     const actualLocations = await vscode.commands.executeCommand<vscode.Location[]>('vscode.executeReferenceProvider', docUri, position);
 
-    assert(actualLocations.length === expectedLocations.length);
+    assert.equal(actualLocations.length, expectedLocations.length);
 
     expectedLocations.forEach((expectedLocation, i) => {
         const actualLocation = actualLocations[i];

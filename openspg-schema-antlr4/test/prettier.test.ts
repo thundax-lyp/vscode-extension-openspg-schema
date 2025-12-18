@@ -14,7 +14,7 @@ const printers: Record<string, Printer<any>> = {
             if (node.type === 'BlockContent') {
                 return async () => doc.builders.join(doc.builders.hardline, [
                     '// prefix',
-                    ...node.text.split('\n').map(x => x.trim()).filter(x => x !== ''),
+                    ...node.text.trim().split('\n').map(x => x.trim()),
                     '// suffix'
                 ])
             }

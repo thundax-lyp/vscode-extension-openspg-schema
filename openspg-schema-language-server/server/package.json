@@ -16,7 +16,7 @@
         "vscode": "^1.100.0"
     },
     "dependencies": {
-        "openspg-schema-antlr4": "0.1.0",
+        "openspg-schema-antlr4": "file://../../openspg-schema-antlr4-0.1.0-dev-0.tgz",
         "prettier": "^3.6.2",
         "type-fest": "^5.2.0",
         "vscode-languageclient": "^9.0.1",
