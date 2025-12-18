@@ -41,9 +41,7 @@ async function testDocumentFormatting(docUri: vscode.Uri, expectedText: string) 
         singleQuote: false
     }
 
-    const actualTextEdits = await vscode.commands.executeCommand<vscode.TextEdit[]>('vscode.executeFormatDocumentProvider', docUri, {
-        options
-    });
+    const actualTextEdits = await vscode.commands.executeCommand<vscode.TextEdit[]>('vscode.executeFormatDocumentProvider', docUri, options);
 
     await editor.edit(editBuilder => actualTextEdits.forEach(x => editBuilder.replace(x.range, x.newText)));
     const actualText = editor.document.getText()

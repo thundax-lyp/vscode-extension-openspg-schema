@@ -12,11 +12,16 @@ export const onDocumentFormatting: OnDocumentFormatting = ({connection, document
         return null;
     }
 
-    const config = Object.assign(
-        {},
+    const config = Object.assign({
+            tabSize: 4,
+            insertSpaces: true,
+            singleQuote: false,
+            bracketSpacing: true,
+        },
         (await connection.workspace.getConfiguration('schema.formatter')) as Partial<Options>,
-        options,
+        options
     )
+
     const source = document.getText();
     const range = Range.create(document.positionAt(0), document.positionAt(source.length));
 
@@ -46,8 +51,8 @@ export const onDocumentFormatting: OnDocumentFormatting = ({connection, document
             parsers: syntax.parsers,
             printers,
         }],
-        tabWidth: config?.tabWidth ?? 4,
-        bracketSpacing: config?.bracketSpacing ?? true,
+        tabWidth: config.tabSize,
+        bracketSpacing: config.bracketSpacing,
     };
     const formatted = await prettier.format(source, prettierOptions);
     return [TextEdit.replace(range, formatted)];
