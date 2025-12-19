@@ -1,6 +1,6 @@
 {
     "name": "openspg-concept-rule-language-server",
-    "version": "0.1.1",
+    "version": "0.1.2",
     "description": "Language Server Protocol implementation for OpenSPG Concept Rule",
     "keywords": [
         "openspg",
@@ -73,7 +73,7 @@
         "test": "sh ./scripts/e2e.sh"
     },
     "dependencies": {
-        "openspg-concept-rule-antlr4": "0.1.1"
+        "openspg-concept-rule-antlr4": "0.1.2"
     },
     "devDependencies": {
         "@eslint/js": "^9.13.0",

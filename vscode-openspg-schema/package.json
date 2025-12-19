@@ -1,7 +1,8 @@
 {
     "name": "vscode-openspg-schema",
-    "version": "0.0.1-dev-0",
-    "description": "VSCode Extension for OpenSPG Schema",
+    "displayName": "OpenSPG Schema",
+    "version": "0.1.2",
+    "description": "OpenSPG Schema Mark Language Support",
     "keywords": [
         "openspg",
         "lsp",
@@ -10,13 +11,18 @@
     ],
     "license": "Apache-2.0",
     "author": "Thundax <thundax@qq.com>",
-    "homepage": "https://github.com/thundax-lyp/vscode-extension-openspg-schema/",
+    "homepage": "https://github.com/thundax-lyp/vscode-extension-openspg-schema",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/thundax-lyp/vscode-extension-openspg-schema"
+    },
     "categories": [
         "Programming Languages"
     ],
     "publisher": "thundax-lyp",
+    "icon": "resources/openspg.png",
     "engines": {
-        "vscode": "^1.100.0"
+        "vscode": "^1.106.1"
     },
     "activationEvents": [],
     "main": "./dist/extension",
@@ -62,7 +68,7 @@
         "vscode:prepublish": "npm run compile",
         "package": "vsce package",
         "prepublishOnly": "tsc --noEmit && npm run build:cli",
-        "build:cli": "tsup src/server.ts -d dist/cli && node scripts/add_shebang.js dist/cli/server.js && node scripts/add_cmd_wrapper.js",
+        "build:cli": "tsup src/server/server.ts -d dist/cli && node scripts/add_shebang.js dist/cli/server.js && node scripts/add_cmd_wrapper.js",
         "compile": "tsc -b",
         "watch": "tsc -b -w",
         "test": "vscode-test"
@@ -83,9 +89,10 @@
     },
     "dependencies": {
         "glob": "11.1.0",
-        "openspg-concept-rule-antlr4": "file:openspg-concept-rule-antlr4-0.1.0-dev-0.tgz",
-        "openspg-concept-rule-language-server": "file:openspg-concept-rule-language-server-0.1.0-dev-0.tgz",
-        "openspg-schema-antlr4": "file:openspg-schema-antlr4-0.1.0-dev-0.tgz",
+        "openspg-concept-rule-antlr4": "0.1.2",
+        "openspg-concept-rule-language-server": "0.1.2",
+        "openspg-schema-antlr4": "0.1.2",
+        "openspg-schema-language-server": "0.1.2",
         "prettier": "3.7.0",
         "type-fest": "5.2.0",
         "vscode-languageclient": "9.0.1",
@@ -101,6 +108,7 @@
         "@vscode/test-electron": "2.5.2",
         "colors": "1.4.0",
         "mocha": "10.8.2",
-        "typescript": "5.9.3"
+        "typescript": "5.9.3",
+        "vsce": "2.15.0"
     }
 }

@@ -13,7 +13,7 @@ let schemaClient: LanguageClient;
 let conceptRuleClient: LanguageClient;
 
 export const activate = (context: vscode.ExtensionContext) => {
-    schemaClient = initLanguageClient(context);
+    schemaClient = initSchemaLanguageClient(context);
     conceptRuleClient = initConceptRuleLanguageClient(context);
 }
 
@@ -28,8 +28,8 @@ export const deactivate = (): Thenable<void> | undefined => {
     return undefined
 }
 
-const initLanguageClient = (context: vscode.ExtensionContext) => {
-    const serverModule = path.join(__dirname, 'server.js');
+const initSchemaLanguageClient = (context: vscode.ExtensionContext) => {
+    const serverModule = path.join(__dirname, 'server', 'schema-server.js');
 
     const serverOptions: ServerOptions = {
         run: {
@@ -71,7 +71,7 @@ const initLanguageClient = (context: vscode.ExtensionContext) => {
 }
 
 const initConceptRuleLanguageClient = (context: vscode.ExtensionContext) => {
-    const serverModule = path.join(__dirname, 'concept-rule-server.js');
+    const serverModule = path.join(__dirname, 'server', 'concept-rule-server.js');
     const serverOptions: ServerOptions = {
         run: {
             module: serverModule,

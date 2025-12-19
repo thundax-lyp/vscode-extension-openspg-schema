@@ -1,6 +1,6 @@
 {
     "name": "openspg-schema-language-server",
-    "version": "0.1.1",
+    "version": "0.1.2",
     "description": "Language Server Protocol implementation for OpenSPG Schema",
     "keywords": [
         "openspg",
@@ -11,13 +11,39 @@
     ],
     "license": "Apache-2.0",
     "author": "Thundax <thundax@qq.com>",
-    "homepage": "https://github.com/thundax-lyp/vscode-extension-openspg-schema/",
+    "homepage": "https://github.com/thundax-lyp/vscode-extension-openspg-schema",
+    "categories": [
+        "Programming Languages"
+    ],
+    "publisher": "thundax-lyp",
+    "module": "./dist/index.js",
+    "main": "./dist/index.cjs",
+    "types": "./dist/index.d.ts",
+    "exports": {
+        ".": {
+            "import": "./dist/index.js",
+            "require": "./dist/index.cjs",
+            "types": "./dist/index.d.ts"
+        }
+    },
+    "files": [
+        "dist",
+        "README.md"
+    ],
     "engines": {
         "vscode": "^1.100.0"
     },
+    "publishConfig": {
+        "registry": "https://registry.npmjs.org",
+        "access": "public"
+    },
+    "scripts": {
+        "vscode:prepublish": "npm run build",
+        "build": "unbuild --clean"
+    },
     "dependencies": {
-        "openspg-concept-rule-antlr4": "0.1.1",
-        "openspg-schema-antlr4": "0.1.1",
+        "openspg-concept-rule-antlr4": "0.1.2",
+        "openspg-schema-antlr4": "0.1.2",
         "prettier": "^3.6.2",
         "type-fest": "^5.2.0",
         "vscode-languageclient": "^9.0.1",
@@ -26,6 +52,7 @@
         "vscode-uri": "^3.1.0"
     },
     "devDependencies": {
-        "@types/vscode": "^1.100.0"
+        "@types/vscode": "^1.100.0",
+        "unbuild": "^3.6.1"
     }
 }

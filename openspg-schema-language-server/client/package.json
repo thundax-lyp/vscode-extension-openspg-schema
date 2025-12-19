@@ -1,6 +1,6 @@
 {
 	"name": "openspg-schema-extension",
-	"version": "0.1.0",
+	"version": "0.1.2",
 	"description": "VSCode extension implementation for OpenSPG Schema",
 	"keywords": [
 		"openspg",
