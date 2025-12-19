@@ -61,6 +61,8 @@ npm install openspg-concept-rule-language-server
 ### Language Server in Node
 
 ```typescript
+// server.ts
+
 import {
     ProposedFeatures,
     createConnection
@@ -73,12 +75,9 @@ listen(connection);
 
 ### Language Server in Web
 
-* `tokenizer(code, [options])`: `tokenizer()` parses the provided code as tokens.
-* `options`:
-    * `tolerant`: `boolean`, default is `false`.
-* `output`: `SyntaxToken[]`.
-
 ```js
+// server.ts
+
 import {
     BrowserMessageReader,
     BrowserMessageWriter,

@@ -61,6 +61,8 @@ npm install openspg-concept-rule-language-server
 ### Language Server in Node
 
 ```typescript
+// server.ts
+
 import {
     ProposedFeatures,
     createConnection
@@ -74,10 +76,12 @@ listen(connection);
 ### Language Server in Web
 
 ```js
+// server.ts
+
 import {
-    BrowserMessageReader,
-    BrowserMessageWriter,
-    createConnection,
+  BrowserMessageReader,
+  BrowserMessageWriter,
+  createConnection,
 } from 'vscode-languageserver/browser';
 import {listen} from 'openspg-concept-rule-language-server';
 
