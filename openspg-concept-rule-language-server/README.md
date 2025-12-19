@@ -1,18 +1,98 @@
-# OpenSPG Schema Language Server
+<div align="center"><a name="readme-top"></a>
 
-[Language Server Protocol](https://microsoft.github.io/language-server-protocol/) implementation for OpenSPG Schema
+<h1>OpenSPG Concept-Rule Language Server</h1>
 
+[Language Server Protocol](https://microsoft.github.io/language-server-protocol/) implementation for [OpenSPG Concept Rule](https://github.com/OpenSPG/KAG).
 
-```shell
-export CODE_TESTS_WORKSPACE="/Volumes/storage/workspace/vscode-extension-openspg-schema/openspg-schema-language-server/client/testFixture"
+[![NPM version][npm-image]][npm-url]
+[![NPM downloads][download-image]][download-url]
+[![Apache License][license-shield]][license-url]
 
-"./.vscode-test/vscode-darwin-1.106.1/Visual Studio Code.app/Contents/MacOS/Electron" \
---no-sandbox \
---disable-gpu-sandbox \
---disable-updates \
---skip-welcome \
---skip-release-notes \
---disable-workspace-trust \
---extensionDevelopmentPath=. \
+[![Contributors][contributors-shield]][contributors-url]
+[![Issues][issues-shield]][issues-url]
+[![Stargazers][stars-shield]][stars-url]
 
+[Change Log](./CHANGELOG.md) · [Report Bug](https://github.com/thundax-lyp/vscode-extension-openspg-schema/issues/new) · [Pull Request](https://github.com/thundax-lyp/vscode-extension-openspg-schema/compare)
+
+![](https://raw.githubusercontent.com/andreasbm/readme/master/assets/lines/rainbow.png)
+
+[npm-image]: https://img.shields.io/npm/v/openspg-concept-rule-language-server?style=for-the-badge
+
+[npm-url]: http://npmjs.org/package/openspg-concept-rule-language-server
+
+[download-image]: https://img.shields.io/npm/dm/openspg-concept-rule-language-server.svg?style=for-the-badge
+
+[download-url]: https://npmjs.org/package/openspg-concept-rule-language-server
+
+[license-shield]: https://img.shields.io/github/license/thundax-lyp/vscode-extension-openspg-schema.svg?style=for-the-badge
+
+[license-url]: https://github.com/thundax-lyp/vscode-extension-openspg-schema/blob/main/LICENSE
+
+[contributors-shield]: https://img.shields.io/github/contributors/thundax-lyp/vscode-extension-openspg-schema.svg?style=for-the-badge
+
+[contributors-url]: https://github.com/thundax-lyp/vscode-extension-openspg-schema/graphs/contributors
+
+[stars-shield]: https://img.shields.io/github/stars/thundax-lyp/vscode-extension-openspg-schema.svg?style=for-the-badge
+
+[stars-url]: https://github.com/thundax-lyp/vscode-extension-openspg-schema/stargazers
+
+[issues-shield]: https://img.shields.io/github/issues/thundax-lyp/vscode-extension-openspg-schema.svg?style=for-the-badge
+
+[issues-url]: https://github.com/thundax-lyp/vscode-extension-openspg-schema/issues
+
+</div>
+
+## Features
+
+* Syntax highlighting
+* Document symbols
+* Formatting
+
+## Installation
+
+```bash
+npm install openspg-concept-rule-language-server
 ```
+
+> It will be `pnpm/yarn add openspg-concept-rule-language-server` if you use pnpm or yarn.
+
+## Usage
+
+### Language Server in Node
+
+```typescript
+import {
+    ProposedFeatures,
+    createConnection
+} from 'vscode-languageserver/node';
+import {listen} from 'openspg-concept-rule-language-server';
+
+const connection = createConnection(ProposedFeatures.all);
+listen(connection);
+```
+
+### Language Server in Web
+
+* `tokenizer(code, [options])`: `tokenizer()` parses the provided code as tokens.
+* `options`:
+    * `tolerant`: `boolean`, default is `false`.
+* `output`: `SyntaxToken[]`.
+
+```js
+import {
+    BrowserMessageReader,
+    BrowserMessageWriter,
+    createConnection,
+} from 'vscode-languageserver/browser';
+import {listen} from 'openspg-concept-rule-language-server';
+
+const messageReader = new BrowserMessageReader(self);
+const messageWriter = new BrowserMessageWriter(self);
+
+const connection = createConnection(messageReader, messageWriter);
+listen(connection);
+```
+
+## License
+
+[Apache License 2.0](./LICENSE)

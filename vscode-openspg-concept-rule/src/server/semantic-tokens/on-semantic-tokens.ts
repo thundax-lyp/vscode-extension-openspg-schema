@@ -52,9 +52,25 @@ export const onSemanticTokens = (ctx: Context): OnSemanticTokens => async ({text
         TheRuleHead: ({node}) => emit(node, SemanticTokenTypes.keyword),
         TheActionHead: ({node}) => emit(node, SemanticTokenTypes.keyword),
 
-        ConceptName: ({node}) => emit(node, SemanticTokenTypes.variable),
-        ConceptInstanceId: ({node}) => emit(node, SemanticTokenTypes.variable),
         ElementVariableDeclaration: ({node}) => emit(node, SemanticTokenTypes.variable),
+
+        ConceptInstanceId: ({node, parentPath}) => {
+            const parents = parentPath?.path.split('.') ?? []
+            if (parents.includes('RuleWrapperHead')) {
+                emit(node, SemanticTokenTypes.class)
+            } else if (parents.includes('ConceptName')) {
+                emit(node, SemanticTokenTypes.variable)
+            }
+        },
+
+        Identifier: ({node, parentPath}) => {
+            const parents = parentPath?.path.split('.') ?? []
+            if (parents.includes('RuleWrapperHead')) {
+                emit(node, SemanticTokenTypes.class)
+            } else if (parents.includes('ConceptType')) {
+                emit(node, SemanticTokenTypes.variable)
+            }
+        },
     })
 
     return builder.build();

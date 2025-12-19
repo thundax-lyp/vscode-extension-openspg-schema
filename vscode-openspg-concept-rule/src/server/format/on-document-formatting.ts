@@ -4,16 +4,24 @@ import * as syntax from 'openspg-concept-rule-antlr4'
 import {Context, OnDocumentFormatting} from '../context';
 import {Options} from "prettier";
 
-export const onDocumentFormatting: OnDocumentFormatting = ({connection, documents}: Context) => async ({textDocument}) => {
+export const onDocumentFormatting: OnDocumentFormatting = ({connection, documents}: Context) => async ({textDocument, options}) => {
     const document = documents.get(textDocument.uri);
     if (!document) {
         return null;
     }
 
-    const config = (await connection.workspace.getConfiguration('conceptRule.formatter')) as Partial<Options>;
+    const config = Object.assign({
+            tabSize: 4,
+            insertSpaces: true,
+            singleQuote: false,
+            bracketSpacing: true,
+        },
+        (await connection.workspace.getConfiguration('conceptRule.formatter')) as Partial<Options>,
+        options
+    )
+
     const source = document.getText();
     const range = Range.create(document.positionAt(0), document.positionAt(source.length));
-
     const prettierOptions = {
         parser: 'openspg-concept-rule-prettier-parser',
         plugins: [{
@@ -21,8 +29,8 @@ export const onDocumentFormatting: OnDocumentFormatting = ({connection, document
             parsers: syntax.parsers,
             printers: syntax.printers,
         }],
-        tabWidth: config?.tabWidth ?? 4,
-        bracketSpacing: config?.bracketSpacing ?? true,
+        tabWidth: config.tabSize,
+        bracketSpacing: config.bracketSpacing,
     };
     const formatted = await prettier.format(source, prettierOptions);
     return [TextEdit.replace(range, formatted)];
