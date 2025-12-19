@@ -1,5 +1,8 @@
 # OpenSPG Schema Mark Language Support for VS Code
 
+[OpenSPG Schema](https://github.com/OpenSPG/KAG) is the mark language used in OpenSPG server to create knowledge graph structure, this extension supports for VS Code
+
+
 ## Project Tree
 
 ```
