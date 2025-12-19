@@ -20,13 +20,14 @@ suite('Document Semantic Tokens', () => {
         await testSemanticTokens(docUri, toSemanticTokens([
             {range: findKeywordRange(doc, 'namespace', 1), tokenType: SemanticTokenTypes.keyword},
             {range: findKeywordRange(doc, 'DocumentSemanticTokens', 1), tokenType: SemanticTokenTypes.variable},
-            {range: findKeywordRange(doc, '`TaxOfRiskApp`/`赌博应用`', 1), tokenType: SemanticTokenTypes.variable},
-            {range: findKeywordRange(doc, '`赌博应用`', 1), tokenType: SemanticTokenTypes.variable},
+            {range: findKeywordRange(doc, '`TaxOfRiskApp`', 1), tokenType: SemanticTokenTypes.class},
+            {range: findKeywordRange(doc, '`赌博应用`', 1), tokenType: SemanticTokenTypes.class},
             {range: findKeywordRange(doc, 'rule', 1), tokenType: SemanticTokenTypes.keyword},
             {range: findKeywordRange(doc, 'Define', 1), tokenType: SemanticTokenTypes.keyword},
             {range: findKeywordRange(doc, 'subject', 1), tokenType: SemanticTokenTypes.variable},
+            {range: findKeywordRange(doc, 'App', 2), tokenType: SemanticTokenTypes.variable},
             {range: findKeywordRange(doc, 'object', 1), tokenType: SemanticTokenTypes.variable},
-            {range: findKeywordRange(doc, '`TaxOfRiskApp`/`赌博应用`', 2), tokenType: SemanticTokenTypes.variable},
+            {range: findKeywordRange(doc, '`TaxOfRiskApp`', 2), tokenType: SemanticTokenTypes.variable},
             {range: findKeywordRange(doc, '`赌博应用`', 2), tokenType: SemanticTokenTypes.variable},
             {range: findKeywordRange(doc, 'Structure', 1), tokenType: SemanticTokenTypes.keyword},
             {range: findKeywordRange(doc, 'Rule', 1), tokenType: SemanticTokenTypes.keyword},
@@ -48,7 +49,7 @@ const toSemanticTokens = (records: { range: vscode.Range, tokenType: SemanticTok
 const testSemanticTokens = async (docUri: vscode.Uri, expectedSemanticTokens: vscode.SemanticTokens) => {
     const actualSemanticTokens = await vscode.commands.executeCommand<vscode.SemanticTokens>('vscode.provideDocumentSemanticTokens', docUri);
 
-    // assert.equal(actualSemanticTokens?.data?.length, expectedSemanticTokens.data.length);
+    assert(actualSemanticTokens?.data, 'no response returned');
 
     const decode = (data: Uint32Array) => {
         let lastX = 0, lastY = 0;
@@ -67,20 +68,24 @@ const testSemanticTokens = async (docUri: vscode.Uri, expectedSemanticTokens: vs
         return result;
     }
 
-    const render = (index: number, item: number[]) => {
-        const [ln, col, len, tokenType] = item;
-        const text = doc.getText(toRange(ln, col, ln, col + len));
-        const type = Object.values(SemanticTokenTypes)[tokenType];
-        return JSON.stringify({
-            index: index + 1, ln, col, len, type, text
-        })
+    const render = (semanticTokens: vscode.SemanticTokens) => {
+        const records = []
+
+        const decodedData= decode(semanticTokens.data)
+        for (let idx = 0; idx < decodedData.length; idx += 5) {
+            const item = decodedData.slice(idx, idx + 5)
+            records.push(item);
+        }
+
+        return records.map((record, index) => {
+            const [ln, col, len, tokenType] = record;
+            const text = doc.getText(toRange(ln, col, ln, col + len));
+            const type = Object.values(SemanticTokenTypes)[tokenType];
+            return JSON.stringify({
+                index: index + 1, ln, col, len, type, text
+            })
+        }).join('\n');
     }
 
-    const actualItems = decode(actualSemanticTokens.data)
-    const expectedItems = decode(expectedSemanticTokens.data)
-    for (let idx = 0; idx < actualSemanticTokens.data.length; idx += 5) {
-        const actualItem = actualItems.slice(idx, idx + 5)
-        const expectedItem = expectedItems.slice(idx, idx + 5)
-        assert.equal(render(idx / 5, actualItem), render(idx / 5, expectedItem));
-    }
+    assert.equal(render(actualSemanticTokens), render(expectedSemanticTokens));
 }
