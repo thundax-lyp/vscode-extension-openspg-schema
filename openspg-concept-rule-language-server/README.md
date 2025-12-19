@@ -73,11 +73,6 @@ listen(connection);
 
 ### Language Server in Web
 
-* `tokenizer(code, [options])`: `tokenizer()` parses the provided code as tokens.
-* `options`:
-    * `tolerant`: `boolean`, default is `false`.
-* `output`: `SyntaxToken[]`.
-
 ```js
 import {
     BrowserMessageReader,
