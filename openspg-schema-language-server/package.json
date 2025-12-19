@@ -1,6 +1,6 @@
 {
     "name": "openspg-schema-language-server",
-    "version": "0.1.0-dev-1",
+    "version": "0.1.1",
     "description": "Language Server Protocol implementation for OpenSPG Schema",
     "keywords": [
         "openspg",
@@ -73,7 +73,7 @@
         "test": "sh ./scripts/e2e.sh"
     },
     "dependencies": {
-        "openspg-schema-antlr4": "file://../openspg-schema-antlr4-0.1.0-dev-0.tgz"
+        "openspg-schema-antlr4": "0.1.1"
     },
     "devDependencies": {
         "@eslint/js": "^9.13.0",

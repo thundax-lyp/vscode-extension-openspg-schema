@@ -47,6 +47,7 @@
 * Syntax highlighting
 * Document symbols
 * Definition and references
+* Hover
 * Formatting
 * Embedded concept rule scripts
 
