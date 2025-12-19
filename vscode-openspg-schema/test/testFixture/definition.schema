@@ -2,29 +2,7 @@ namespace DefinitionSample
 
 # line-comment
 
-const a = 'abc\r\n\t\xff\u1A34abc'
-const b = "def\r\n\t\xff\u1B34def"
-const c = `HIJ\r\n\t\xff\u1C34HIJ`
-[[
-    HIJ\r\n\t\xff\u1C34HIJ
-]]
-
-desc : good
-
- relations : isA 
-relations:isA
-
-abc: locateAt isA 
-
-desc : [[abc]]
-
-good : [[
-    def
-]]
-
-:::::::
-->->->->->->
-Chunk  (  文本块  )  :  EntityType, GoodType # tail-comment
+Chunk  (  文本块  )  :  EntityType
 
 Chunk  (  文本块  )  ->  EntityType, GoodType : # tail-comment
 
@@ -33,9 +11,6 @@ Chunk("文本块"): EntityType # tail-comment
 Chunk(`文本块`): EntityType # tail-comment
 
 
-/**
- * block comment
- */
 Chunk(文本块): EntityType # tail-comment
     desc: A chunk refers to a segment of text.
     properties: /** tail block comment */
@@ -44,12 +19,6 @@ Chunk(文本块): EntityType # tail-comment
         keyword(关键词): Keyword
             index: TextAndVector
             constraint: MultiValue
-
-            # line-comment
-
-/**
- * block comment
- */
 
 Date(日期): EntityType
     properties:
