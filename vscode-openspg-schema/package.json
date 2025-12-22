@@ -24,7 +24,10 @@
     "engines": {
         "vscode": "^1.106.1"
     },
-    "activationEvents": [],
+    "activationEvents": [
+        "onLanguage:schema",
+        "onLanguage:conceptRule"
+    ],
     "main": "./dist/extension",
     "contributes": {
         "languages": [
