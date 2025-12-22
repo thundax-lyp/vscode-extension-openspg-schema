@@ -24,8 +24,7 @@
         "vscode": "^1.100.0"
     },
     "activationEvents": [
-        "onLanguage:schema",
-        "onLanguage:conceptRule"
+        "onLanguage:schema"
     ],
     "main": "./client/dist/extension",
     "contributes": {

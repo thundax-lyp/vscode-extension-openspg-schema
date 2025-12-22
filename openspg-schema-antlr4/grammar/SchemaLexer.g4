@@ -25,7 +25,6 @@ tokens { INDENT, INDENT_META, INDENT_PROP, INDENT_PROP_META, INDENT_SUBPROP, IND
 
     private getIndentLevel(): number {
         if (!this.isAfterEol()) {
-            console.log(this.text)
             throw new Error('bad blank charactor')
         }
         const currentIndentPos = this.text.length
