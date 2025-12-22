@@ -1,1 +1,9 @@
 /.idea/
+/openspg-schema-antlr4/grammar/gen/SchemaLexer.interp
+/openspg-schema-antlr4/grammar/gen/SchemaLexer.java
+/openspg-schema-antlr4/grammar/gen/SchemaLexer.tokens
+/**/*.tgz
+/gen/SchemaLexer.interp
+/gen/SchemaLexer.java
+/gen/SchemaLexer.tokens
+/vscode-openspg-schema/vscode-openspg-schema-0.1.2.vsix
