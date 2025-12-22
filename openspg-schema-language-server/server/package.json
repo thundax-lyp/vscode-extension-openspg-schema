@@ -1,6 +1,6 @@
 {
     "name": "openspg-schema-language-server",
-    "version": "0.1.2",
+    "version": "0.2.0-dev-0",
     "description": "Language Server Protocol implementation for OpenSPG Schema",
     "keywords": [
         "openspg",
@@ -42,8 +42,8 @@
         "build": "unbuild --clean"
     },
     "dependencies": {
-        "openspg-concept-rule-antlr4": "0.1.2",
-        "openspg-schema-antlr4": "0.1.2",
+        "openspg-concept-rule-antlr4": "file://./openspg-concept-rule-antlr4-0.2.0-dev-0.tgz",
+        "openspg-schema-antlr4": "file://./openspg-schema-antlr4-0.2.0-dev-0.tgz",
         "prettier": "^3.6.2",
         "type-fest": "^5.2.0",
         "vscode-languageclient": "^9.0.1",

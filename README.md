@@ -2,6 +2,7 @@
 
 [OpenSPG Schema](https://github.com/OpenSPG/KAG) is the mark language used in OpenSPG server to create knowledge graph structure, this extension supports for VS Code
 
+https://marketplace.visualstudio.com/items?itemName=thundax-lyp.vscode-openspg-schema
 
 ## Project Tree
 

@@ -1,7 +1,7 @@
 {
     "name": "vscode-openspg-schema",
     "displayName": "OpenSPG Schema",
-    "version": "0.1.2",
+    "version": "0.2.0-dev-0",
     "description": "OpenSPG Schema Mark Language Support",
     "keywords": [
         "openspg",
@@ -89,10 +89,10 @@
     },
     "dependencies": {
         "glob": "11.1.0",
-        "openspg-concept-rule-antlr4": "0.1.2",
-        "openspg-concept-rule-language-server": "0.1.2",
-        "openspg-schema-antlr4": "0.1.2",
-        "openspg-schema-language-server": "0.1.2",
+        "openspg-concept-rule-antlr4": "file://./openspg-concept-rule-antlr4-0.2.0-dev-0.tgz",
+        "openspg-concept-rule-language-server": "file://./openspg-concept-rule-language-server-0.2.0-dev-0.tgz",
+        "openspg-schema-antlr4": "file://./openspg-schema-antlr4-0.2.0-dev-0.tgz",
+        "openspg-schema-language-server": "file://./openspg-schema-language-server-0.2.0-dev-0.tgz",
         "prettier": "3.7.0",
         "type-fest": "5.2.0",
         "vscode-languageclient": "9.0.1",
