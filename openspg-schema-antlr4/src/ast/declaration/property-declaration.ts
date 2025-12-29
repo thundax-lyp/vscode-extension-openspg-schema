@@ -8,7 +8,7 @@ import {EntityDeclaration} from "./entity-declaration";
  * ```
  * propertyDeclaration : propertyHead propertyBody? ;
  *
- * propertyHead : basicStructureDeclaration ;
+ * propertyHead : basicPropertyDeclaration ;
  *
  * propertyBody : propertyBody : INDENT entityDeclaration+ DEDENT ;
  * ```
