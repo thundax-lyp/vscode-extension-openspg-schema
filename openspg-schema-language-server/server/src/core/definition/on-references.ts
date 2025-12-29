@@ -1,7 +1,7 @@
 import {Location} from 'vscode-languageserver';
 import {OnReferences} from '../context';
 import {StructureNameExpression, traverse} from "openspg-schema-antlr4";
-import {SchemaTextDocument} from "../common/text-document";
+import {SchemaTextDocument} from "../common";
 
 
 export const onReferences: OnReferences = (ctx) => async (params) => {

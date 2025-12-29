@@ -1,7 +1,7 @@
 import {Location} from 'vscode-languageserver';
 import {StructureName, TraversePath} from "openspg-schema-antlr4";
 import {OnDefinition} from '../context';
-import {SchemaTextDocument} from "../common/text-document";
+import {SchemaTextDocument} from "../common";
 
 
 export const onDefinition: OnDefinition = (ctx) => async (params) => {
