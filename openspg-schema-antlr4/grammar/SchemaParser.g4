@@ -3,7 +3,7 @@ parser grammar SchemaParser;
 
 options { tokenVocab=SchemaLexer; }
 
-sourceUnit : (namespaceDeclaration | entityDeclaration)* ;
+sourceUnit : (namespaceDeclaration | entityDeclaration | propertyDeclaration)* ;
 
 /**
  * Namespace declaration
@@ -81,18 +81,7 @@ blockContent        : (PLAIN_TEXT | PLAIN_TEXT_PATCH)* ;
  */
 entityDeclaration : entityHead entityBody? ;
 entityHead : basicStructureDeclaration ;
-entityBody : entityMetaDeclaration+ ;
-
-
-/**
- * EntityMeta
- * Example:
- * Chunk(文本块): EntityType
- *     desc: 文本块
- */
-entityMetaDeclaration : entityMetaHead entityMetaBody? ;
-entityMetaHead : INDENT_META+ basicPropertyDeclaration ;
-entityMetaBody : propertyDeclaration+ ;
+entityBody : INDENT propertyDeclaration+ DEDENT ;
 
 /**
  * Property
@@ -102,43 +91,5 @@ entityMetaBody : propertyDeclaration+ ;
  *         belongTo(属于) : Story
  */
 propertyDeclaration : propertyHead propertyBody? ;
-propertyHead : INDENT_PROP+ basicStructureDeclaration ;
-propertyBody : propertyMetaDeclaration+ ;
-
-/**
- * PropertyMeta
- * Example:
- * Chunk(文本块): EntityType
- *     properties :
- *         belongTo(属于) : Story
- *             desc: 属于
- */
-propertyMetaDeclaration : propertyMetaHead propertyMetaBody? ;
-propertyMetaHead : INDENT_PROP_META+ basicPropertyDeclaration ;
-propertyMetaBody : subPropertyDeclaration+ ;
-
-/**
- * SubProperty
- * Example:
- * Disease(疾病): EntityType
- *     properties:
- *         commonSymptom(常见症状): Symptom
- *             properties:
- *                 desc(描述): Text
- */
-subPropertyDeclaration : subPropertyHead subPropertyBody? ;
-subPropertyHead : INDENT_SUBPROP+ basicStructureDeclaration ;
-subPropertyBody : subPropertyMetaDeclaration+ ;
-
-/**
- * SubPropertyMeta
- * Example:
- * Disease(疾病): EntityType
- *     properties:
- *         commonSymptom(常见症状): Symptom
- *             properties:
- *                 desc(描述): Text
- *                     index: Text
- */
-subPropertyMetaDeclaration : INDENT_SUBPROP_META+ basicPropertyDeclaration ;
-
+propertyHead : basicPropertyDeclaration ;
+propertyBody : INDENT entityDeclaration+ DEDENT ;

@@ -1,65 +1,51 @@
 lexer grammar SchemaLexer;
 
-tokens { INDENT, INDENT_META, INDENT_PROP, INDENT_PROP_META, INDENT_SUBPROP, INDENT_SUBPROP_META }
+tokens { INDENT, DEDENT, INDENT_META, INDENT_PROP, INDENT_PROP_META, INDENT_SUBPROP, INDENT_SUBPROP_META}
 
 @members {
-    static readonly indentState: number[] = [
-        SchemaLexer.DEFINITION_STATE, SchemaLexer.KV_STATE,
-        SchemaLexer.DEFINITION_STATE, SchemaLexer.KV_STATE,
-        SchemaLexer.DEFINITION_STATE, SchemaLexer.KV_STATE,
-    ]
-    static readonly indentToken: number[] = [
-        SchemaLexer.INDENT, SchemaLexer.INDENT_META, SchemaLexer.INDENT_PROP,
-        SchemaLexer.INDENT_PROP_META, SchemaLexer.INDENT_SUBPROP, SchemaLexer.INDENT_SUBPROP_META,
-    ]
-    static readonly maxIndentLevel = SchemaLexer.indentState.length
+    private readonly TAB_SIZE = 4;
 
-    currentIndentLevel = 0
-    indentPos: number[] = [0]
+    private indents: number[] = []
+    private tokenQueue: antlr.Token[] = []
 
-    private isAfterEol(): boolean {
-        const offset = this.text.length + 1
-        const prev = this.inputStream.getText(new antlr.Interval(this.getCharIndex() - offset, this.getCharIndex() - offset))
-        return prev === '\r' || prev === '\n';
+    private flushIndent() {
+        for (let i = 0; i < this.indents.length; i ++) {
+            this.tokenQueue.push(new antlr.CommonToken(
+                [this, this.inputStream],
+                SchemaLexer.DEDENT,
+                SchemaLexer.DEFAULT_TOKEN_CHANNEL,
+                this.getCharIndex() - this.text.length,
+                this.getCharIndex() - this.text.length,
+            ))
+        }
+        this.indents.splice(0, this.indents.length)
     }
 
-    private getIndentLevel(): number {
+    private isAfter(tag: string): boolean {
+        const end = this.getCharIndex() - this.text.length;
+        const start = end - tag.length;
+        return 0 <= start && this.inputStream.getText(new antlr.Interval(start, end - 1)) === tag;
+    }
+
+    private isAfterEol(): boolean {
+        return this.isAfter('\n')
+    }
+
+    private getIndent(): number {
         if (!this.isAfterEol()) {
-            throw new Error('bad blank charactor')
+            throw new Error('bad blank charactor');
         }
-        const currentIndentPos = this.text.length
-        const lastIndentPos = this.indentPos[this.currentIndentLevel]
-        if (currentIndentPos > lastIndentPos) {
-            if (this.currentIndentLevel === SchemaLexer.maxIndentLevel) {
-                return -1
+        let indent = this.text.length;
+        for (let i = 0; i < this.text.length; i+=1) {
+            if (this.text.substring(i, i) === '\t') {
+                indent = Math.floor((indent + this.TAB_SIZE) / this.TAB_SIZE) * this.TAB_SIZE;
             }
-            this.currentIndentLevel ++
-            this.indentPos[this.currentIndentLevel] = currentIndentPos
-            return this.currentIndentLevel
-        } else if (currentIndentPos < lastIndentPos) {
-            for (let i = 0; i < this.currentIndentLevel; i++) {
-                if (this.indentPos[i] === currentIndentPos) {
-                    this.currentIndentLevel = i
-                    return this.currentIndentLevel
-                }
-            }
-            return -1
         }
-        return this.currentIndentLevel
+        return indent;
     }
 
     public emitToken(token: Token): void {
         super.emitToken(token)
-    }
-
-    public emitIndent(indentLevel: number): void {
-        this.emitToken(new antlr.CommonToken(
-            [this, this.inputStream],
-            SchemaLexer.indentToken[indentLevel],
-            SchemaLexer.DEFAULT_TOKEN_CHANNEL,
-            this.getCharIndex() - this.text.length,
-            this.getCharIndex() - 1,
-        ))
     }
 
     private pushBack() {
@@ -72,6 +58,17 @@ tokens { INDENT, INDENT_META, INDENT_PROP, INDENT_PROP_META, INDENT_SUBPROP, IND
             this.interpreter.column -= currentText.length
         }
     }
+
+    public nextToken() {
+        const nextToken = super.nextToken();
+        if (nextToken.type === Token.EOF) {
+            this.flushIndent();
+        }
+        this.tokenQueue.push(nextToken);
+
+        const tokens = this.tokenQueue.splice(0, 1)
+        return tokens[0];
+    }
 }
 
 BLANK_LINE_: (SP | BLOCK_COMMENT | LINE_COMMENT)+ EOL {
@@ -80,28 +77,47 @@ BLANK_LINE_: (SP | BLOCK_COMMENT | LINE_COMMENT)+ EOL {
 } -> skip ;
 
 BLANK_PREFIX_OF_LINE_: SP {
-    const indentLevel = this.getIndentLevel();
-    if (indentLevel < 0) {
-        this.pushMode(SchemaLexer.ERROR_STATE);
-    } else {
-        this.emitIndent(this.currentIndentLevel)
-        this.pushMode(SchemaLexer.indentState[this.currentIndentLevel]);
-    }
-} ;
+    const currIndent = this.getIndent();
+    const lastIndent = this.indents.length === 0 ? 0 : this.indents[this.indents.length - 1];
+    if (currIndent > lastIndent) {
+        this.indents.push(currIndent);
+        this.tokenQueue.push(new antlr.CommonToken(
+            [this, this.inputStream],
+            SchemaLexer.INDENT,
+            SchemaLexer.DEFAULT_TOKEN_CHANNEL,
+            this.getCharIndex() - this.text.length,
+            this.getCharIndex() - this.text.length,
+        ));
 
-NAMESPACE_PREFIX_OF_LINE_: NAMESPACE_KEYWORD (SP | EOL) {
-    this.pushBack()
-    this.pushMode(SchemaLexer.NAMESPACE_STATE);
+    } else if (currIndent < lastIndent) {
+        for (let level = 0; level < this.indents.length; level ++) {
+            if (this.indents[level] == currIndent) {
+                while (this.indents.length > level + 1) {
+                    this.indents.splice(this.indents.length - 1);
+                    this.tokenQueue.push(new antlr.CommonToken(
+                        [this, this.inputStream],
+                        SchemaLexer.DEDENT,
+                        SchemaLexer.DEFAULT_TOKEN_CHANNEL,
+                        this.getCharIndex() - this.text.length,
+                        this.getCharIndex() - this.text.length,
+                    ));
+                }
+            }
+        }
+    }
+    this.pushMode(SchemaLexer.INDENT_STATE);
 } -> skip;
 
 ANY_PREFIX_OF_LINE_: ~[\r\n] {
+    this.flushIndent();
     this.pushBack()
-    this.pushMode(SchemaLexer.DEFINITION_STATE);
+    this.pushMode(SchemaLexer.INDENT_STATE);
 } -> skip ;
 
 EOL: (CR | LF | EOF) -> skip ;
 
 BAD_CHAR: ~[\r\n] -> channel(HIDDEN) ;
+
 
 fragment DOUBLE_QUOTED_STRING: '"' ( ~["\\] | ESCAPED_CHAR )* '"' ;
 fragment SINGLE_QUOTED_STRING: '\'' ( ~['\\] | ESCAPED_CHAR )* '\'' ;
@@ -178,6 +194,26 @@ mode ERROR_STATE ;
     ERROR_EOL: EOL -> channel(HIDDEN), popMode ;
     ERROR_CHAR: ~[ \r\n]+ -> channel(HIDDEN);
 
+mode INDENT_STATE ;
+    NAMESPACE_PREFIX_OF_LINE_: NAMESPACE_KEYWORD (SP | EOL) {
+        this.pushBack()
+        this.pushMode(SchemaLexer.NAMESPACE_STATE);
+    } -> skip;
+
+    PROPERTY_PREFIX_OF_LINE_: IDENTIFIER SP? ':' {
+        this.pushBack()
+        this.pushMode(SchemaLexer.KV_STATE);
+    } -> skip;
+
+    ANY_PREFIX_OF_INDENT_LINE_: ~[\r\n] {
+        this.pushBack()
+        this.pushMode(SchemaLexer.DEFINITION_STATE);
+    } -> skip ;
+
+    INDENT_EOL_: EOL {
+        this.pushBack()
+        this.popMode()
+    } -> skip;
 
 mode NAMESPACE_STATE ;
     NAMESPACE_BLOCK_COMMENT: BLOCK_COMMENT -> channel(HIDDEN);
