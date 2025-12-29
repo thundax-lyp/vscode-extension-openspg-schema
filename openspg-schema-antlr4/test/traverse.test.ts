@@ -33,7 +33,7 @@ Person(人物): EntityType
         'StructureAlias',
         'BasicStructureTypeExpression',
         'KnowledgeStructureType',
-        'EntityMetaDeclaration',
+        'PropertyDeclaration',
         'BasicPropertyDeclaration',
         'PropertyNameExpression',
         'BuiltinPropertyName',

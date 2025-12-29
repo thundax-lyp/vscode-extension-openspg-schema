@@ -1,6 +1,6 @@
 import {expect, test} from 'vitest';
 import {SyntaxToken, tokenizer} from '../src';
-import {Position} from "../src/ast/base";
+import {Position} from "../src";
 
 
 test('tokenizer', async () => {
@@ -28,12 +28,14 @@ Person(人物): EntityType
     }, {
         type: 'ENTITY_TYPE_KEYWORD', text: 'EntityType', range: [31, 40], position: Position.create(4, 12)
     }, {
-        type: 'INDENT_META', text: '    ', range: [42, 45], position: Position.create(5, 0)
+        type: 'INDENT', text: ' ', range: [42, 42], position: Position.create(5, 0)
     }, {
         type: 'DESC_KEYWORD', text: 'desc', range: [46, 49], position: Position.create(5, 4)
     }, {
         type: 'KV_COLON', text: ':', range: [50, 50], position: Position.create(5, 8)
     }, {
         type: 'KVV_STRING_LITERAL', text: '"a greater than the name of a Person"', range: [52, 88], position: Position.create(5, 10)
+    }, {
+        type: 'DEDENT', text: '\n', range: [89, 89], position: Position.create(6, 0)
     }])
 });

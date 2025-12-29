@@ -103,7 +103,7 @@ Person('人物'): EntityType
     desc: description
     `)).toMatchObject({
         type: 'EntityDeclaration', children: [{
-            type: 'EntityMetaDeclaration', declaration: {
+            type: 'PropertyDeclaration', declaration: {
                 name: {
                     variable: 'desc'
                 }, value: {
@@ -118,7 +118,7 @@ Person('人物'): EntityType
     desc: description  with  blank
     `)).toMatchObject({
         type: 'EntityDeclaration', children: [{
-            type: 'EntityMetaDeclaration', declaration: {
+            type: 'PropertyDeclaration', declaration: {
                 name: {
                     variable: 'desc'
                 },
@@ -134,7 +134,7 @@ Person('人物'): EntityType
     desc: [[  good  ]]
     `)).toMatchObject({
         type: 'EntityDeclaration', children: [{
-            type: 'EntityMetaDeclaration', declaration: {
+            type: 'PropertyDeclaration', declaration: {
                 name: {
                     variable: 'desc'
                 },
@@ -147,3 +147,4 @@ Person('人物'): EntityType
         }]
     });
 })
+

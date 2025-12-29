@@ -39,7 +39,7 @@ Person(人物): EntityType # 2nd tail comment
                 }
             },
             children: [{
-                type: 'EntityMetaDeclaration', declaration: {
+                type: 'PropertyDeclaration', declaration: {
                     name: {
                         variable: 'desc'
                     },
@@ -48,7 +48,7 @@ Person(人物): EntityType # 2nd tail comment
                     },
                 }
             }, {
-                type: 'EntityMetaDeclaration', declaration: {
+                type: 'PropertyDeclaration', declaration: {
                     name: {
                         variable: 'desc2'
                     },
@@ -60,3 +60,4 @@ Person(人物): EntityType # 2nd tail comment
         }],
     });
 })
+
