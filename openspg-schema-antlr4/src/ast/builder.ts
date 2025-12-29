@@ -67,15 +67,7 @@ export class SchemaASTBuilder extends parser.SchemaParserVisitor<ast.SyntaxNode 
 
     visitEntityDeclaration = (ctx: parser.EntityDeclarationContext) => new ast.EntityDeclaration(ctx, this);
 
-    visitEntityMetaDeclaration = (ctx: parser.EntityMetaDeclarationContext) => new ast.EntityMetaDeclaration(ctx, this);
-
     visitPropertyDeclaration = (ctx: parser.PropertyDeclarationContext) => new ast.PropertyDeclaration(ctx, this);
-
-    visitPropertyMetaDeclaration = (ctx: parser.PropertyMetaDeclarationContext) => new ast.PropertyMetaDeclaration(ctx, this);
-
-    visitSubPropertyDeclaration = (ctx: parser.SubPropertyDeclarationContext) => new ast.SubPropertyDeclaration(ctx, this);
-
-    visitSubPropertyMetaDeclaration = (ctx: parser.SubPropertyMetaDeclarationContext) => new ast.SubPropertyMetaDeclaration(ctx, this);
 
 }
 

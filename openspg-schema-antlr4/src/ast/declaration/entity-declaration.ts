@@ -1,7 +1,7 @@
 import {BaseNode} from '../base';
 import {EntityDeclarationContext, SchemaParserVisitor} from '../../antlr4';
 import {BasicStructureDeclaration} from "../expression";
-import {EntityMetaDeclaration} from "./entity-meta-declaration";
+import {PropertyDeclaration} from "./property-declaration";
 
 /**
  * ### Grammar:
@@ -10,7 +10,7 @@ import {EntityMetaDeclaration} from "./entity-meta-declaration";
  *
  * entityHead : basicStructureDeclaration ;
  *
- * entityBody : entityMetaDeclaration+ ;
+ * entityBody : INDENT propertyDeclaration+ DEDENT ;
  * ```
  **/
 export class EntityDeclaration extends BaseNode {
@@ -18,12 +18,12 @@ export class EntityDeclaration extends BaseNode {
     type = 'EntityDeclaration' as const;
 
     declaration: BasicStructureDeclaration
-    children: EntityMetaDeclaration[]
+    children: PropertyDeclaration[]
 
     constructor(ctx: EntityDeclarationContext, visitor: SchemaParserVisitor<any>) {
         super(ctx, visitor);
         this.declaration = ctx.entityHead().basicStructureDeclaration().accept(visitor)
-        this.children = (ctx.entityBody()?.entityMetaDeclaration() || []).map(x => x.accept(visitor))
+        this.children = (ctx.entityBody()?.propertyDeclaration() || []).map(x => x.accept(visitor))
     }
 
 }
