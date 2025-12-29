@@ -1,6 +1,6 @@
 import {BaseNode} from '../base';
 import {PropertyDeclarationContext, SchemaParserVisitor} from '../../antlr4';
-import {BasicStructureDeclaration} from "../expression";
+import {BasicPropertyDeclaration} from "../expression";
 import {EntityDeclaration} from "./entity-declaration";
 
 /**
@@ -17,7 +17,7 @@ export class PropertyDeclaration extends BaseNode {
 
     type = 'PropertyDeclaration' as const;
 
-    declaration: BasicStructureDeclaration
+    declaration: BasicPropertyDeclaration
     children: EntityDeclaration[]
 
     constructor(ctx: PropertyDeclarationContext, visitor: SchemaParserVisitor<any>) {
