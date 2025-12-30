@@ -52,14 +52,6 @@ export const activate = (context: vscode.ExtensionContext) => {
         path.join('server', 'dist', 'server.js')
     );
 
-    // vscode.languages.getLanguages().then(langs => {
-    //     console.log('='.repeat(60))
-    //     langs.forEach(x => {
-    //         console.log(x)
-    //     })
-    //     console.log('-'.repeat(60))
-    // })
-
     // If the extension is launched in debug mode then the debug server options are used
     // Otherwise the run options are used
     const serverOptions: ServerOptions = {
@@ -91,10 +83,9 @@ export const activate = (context: vscode.ExtensionContext) => {
         outputChannel: new MyOutputChannel(),
     };
 
-
     // Create the language client and start the client.
     client = new LanguageClient(
-        'conceptRuleLanguageServer',
+        'openspgConceptRuleLanguageServer',
         'OpenSPG Concept Rule Language Server',
         serverOptions,
         clientOptions
