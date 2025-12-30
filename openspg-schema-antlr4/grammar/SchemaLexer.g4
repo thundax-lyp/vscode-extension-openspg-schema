@@ -1,6 +1,6 @@
 lexer grammar SchemaLexer;
 
-tokens { INDENT, DEDENT, INDENT_META, INDENT_PROP, INDENT_PROP_META, INDENT_SUBPROP, INDENT_SUBPROP_META}
+tokens { INDENT, DEDENT}
 
 @members {
     private readonly TAB_SIZE = 4;
@@ -9,14 +9,8 @@ tokens { INDENT, DEDENT, INDENT_META, INDENT_PROP, INDENT_PROP_META, INDENT_SUBP
     private tokenQueue: antlr.Token[] = []
 
     private flushIndent() {
-        for (let i = 0; i < this.indents.length; i ++) {
-            this.tokenQueue.push(new antlr.CommonToken(
-                [this, this.inputStream],
-                SchemaLexer.DEDENT,
-                SchemaLexer.DEFAULT_TOKEN_CHANNEL,
-                this.getCharIndex() - this.text.length,
-                this.getCharIndex() - this.text.length,
-            ))
+        for (let i = 0; i < this.indents.length; i++) {
+            this.tokenQueue.push(this.buildDedent());
         }
         this.indents.splice(0, this.indents.length)
     }
@@ -36,7 +30,7 @@ tokens { INDENT, DEDENT, INDENT_META, INDENT_PROP, INDENT_PROP_META, INDENT_SUBP
             throw new Error('bad blank charactor');
         }
         let indent = this.text.length;
-        for (let i = 0; i < this.text.length; i+=1) {
+        for (let i = 0; i < this.text.length; i += 1) {
             if (this.text.substring(i, i) === '\t') {
                 indent = Math.floor((indent + this.TAB_SIZE) / this.TAB_SIZE) * this.TAB_SIZE;
             }
@@ -57,6 +51,40 @@ tokens { INDENT, DEDENT, INDENT_META, INDENT_PROP, INDENT_PROP_META, INDENT_SUBP
         } else {
             this.interpreter.column -= currentText.length
         }
+    }
+
+    private buildEmptyToken(params: {
+        type: number
+        channel?: number
+        start: number
+    }) {
+        const {
+            type, channel = SchemaLexer.DEFAULT_TOKEN_CHANNEL, start,
+        } = params;
+
+        class EmptyToken extends antlr.CommonToken {
+            constructor(source: [antlr.TokenSource | null, antlr.CharStream | null], type: number, channel: number, start: number) {
+                super(source, type, channel, start, start)
+            }
+
+            get text() {
+                return ''
+            }
+        }
+
+        return new EmptyToken([this, this.inputStream], type, channel, start);
+    }
+
+    private buildIndent() {
+        return this.buildEmptyToken({
+            type: SchemaLexer.INDENT, start: this.getCharIndex() - this.text.length
+        })
+    }
+
+    private buildDedent() {
+        return this.buildEmptyToken({
+            type: SchemaLexer.DEDENT, start: this.getCharIndex() - this.text.length
+        })
     }
 
     public nextToken() {
@@ -81,26 +109,14 @@ BLANK_PREFIX_OF_LINE_: SP {
     const lastIndent = this.indents.length === 0 ? 0 : this.indents[this.indents.length - 1];
     if (currIndent > lastIndent) {
         this.indents.push(currIndent);
-        this.tokenQueue.push(new antlr.CommonToken(
-            [this, this.inputStream],
-            SchemaLexer.INDENT,
-            SchemaLexer.DEFAULT_TOKEN_CHANNEL,
-            this.getCharIndex() - this.text.length,
-            this.getCharIndex() - this.text.length,
-        ));
+        this.tokenQueue.push(this.buildIndent());
 
     } else if (currIndent < lastIndent) {
         for (let level = 0; level < this.indents.length; level ++) {
             if (this.indents[level] == currIndent) {
                 while (this.indents.length > level + 1) {
                     this.indents.splice(this.indents.length - 1);
-                    this.tokenQueue.push(new antlr.CommonToken(
-                        [this, this.inputStream],
-                        SchemaLexer.DEDENT,
-                        SchemaLexer.DEFAULT_TOKEN_CHANNEL,
-                        this.getCharIndex() - this.text.length,
-                        this.getCharIndex() - this.text.length,
-                    ));
+                    this.tokenQueue.push(this.buildDedent());
                 }
             }
         }
