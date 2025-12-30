@@ -93,7 +93,7 @@ export const activate = (context: vscode.ExtensionContext) => {
 
     // Start the client. This will also launch the server
     client.start().then(() => {
-        console.log('Server started');
+        console.log('OpenSPG Concept Rule Language Server started');
     })
 }
 
