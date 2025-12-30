@@ -60,7 +60,7 @@ export const findKeywordRange = (document: vscode.TextDocument, keyword: string,
     for (let i = 0; i < index; i++) {
         searchOffset = source.indexOf(keyword, nextOffset)
         if (searchOffset < 0) {
-            return new vscode.Range(new vscode.Position(0, 0), new vscode.Position(0, 0));
+            throw new Error('cannot find keyword: ' + keyword);
         }
         nextOffset = searchOffset + keyword.length;
     }

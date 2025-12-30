@@ -1,5 +1,5 @@
 import * as path from 'path';
-import {workspace, ExtensionContext, OutputChannel} from 'vscode';
+import * as vscode from 'vscode';
 
 import {
     LanguageClient,
@@ -8,7 +8,7 @@ import {
     TransportKind
 } from 'vscode-languageclient/node';
 
-class MyOutputChannel implements OutputChannel {
+class MyOutputChannel implements vscode.OutputChannel {
     name = 'Extension';
 
     constructor(name: string = 'Extension') {
@@ -46,7 +46,7 @@ class MyOutputChannel implements OutputChannel {
 
 let client: LanguageClient;
 
-export const activate = (context: ExtensionContext) => {
+export const activate = (context: vscode.ExtensionContext) => {
     // The server is implemented in node
     const serverModule = context.asAbsolutePath(
         path.join('server', 'dist', 'server.js')
@@ -77,7 +77,7 @@ export const activate = (context: ExtensionContext) => {
             language: 'schema', scheme: 'untitled'
         }],
         synchronize: {
-            fileEvents: workspace.createFileSystemWatcher('**/*.schema')
+            fileEvents: vscode.workspace.createFileSystemWatcher('**/*.schema')
         },
         initializationOptions: context.extensionPath,
         outputChannel: new MyOutputChannel(),

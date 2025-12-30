@@ -1,11 +1,9 @@
 import * as vscode from 'vscode';
 import * as assert from 'assert';
-import {SemanticTokenTypes} from "vscode-languageclient";
-import {getDocUri, activate, doc, findKeywordRange, createTicker, toRange, sleep} from './helper';
-import {DocumentSymbol, FoldingRangeKind} from "vscode";
+import {getDocUri, activate, doc, createTicker} from './helper';
 
 
-suite('Document Semantic Tokens', () => {
+suite('Folding Ranges', () => {
     const fileName = 'folding-range.schema';
     const docUri = getDocUri(fileName);
 
