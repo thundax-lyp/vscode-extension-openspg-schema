@@ -1,5 +1,4 @@
 import {Hover, MarkupKind} from 'vscode-languageserver';
-import {OnHover} from '../context';
 import {
     BasicStructureDeclaration,
     BasicStructureType,
@@ -11,8 +10,8 @@ import {
     StructureName,
     TraversePath
 } from "openspg-schema-antlr4";
-import {SchemaTextDocument} from "../common/text-document";
-import {format, PrintFunc} from "../common/format";
+import {OnHover} from '../context';
+import {PrintFunc, SchemaTextDocument, format} from "../common";
 
 export const onHover: OnHover = (ctx) => async (params) => {
     const {textDocument, position} = params;
