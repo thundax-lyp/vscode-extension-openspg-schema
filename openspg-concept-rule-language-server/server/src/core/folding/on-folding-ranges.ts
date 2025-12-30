@@ -14,6 +14,7 @@ export const onFoldingRanges: OnFoldingRanges = ({documents}: Context) => async 
     ]
 
     const foldingNodes: syntax.SyntaxNode[] = [];
+
     syntax.traverse(document.ast, ({node}) => {
         console.log(node.type + ' ' + (node.type in foldingTypes))
         if (node.type in foldingTypes) {
