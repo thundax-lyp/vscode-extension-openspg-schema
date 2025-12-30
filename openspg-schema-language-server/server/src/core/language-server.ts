@@ -7,6 +7,7 @@ import {onDocumentFormatting} from "./format";
 import {onDefinition, onHover, onReferences} from "./definition";
 import {onDocumentHighlight} from "./highlight";
 import {onSemanticTokens} from "./semantic-tokens";
+import {onFoldingRanges} from "./folding";
 
 const initDocuments = (_: Connection): TextDocuments<SchemaTextDocument> => {
     const documents = new TextDocuments(SchemaTextDocument);
@@ -83,7 +84,7 @@ export const listen = (connection: Connection) => {
 
     // connection.onDocumentColor(onDocumentLinkResolve(context));
     // connection.onColorPresentation(onDocumentLinkResolve(context));
-    // connection.onFoldingRanges(onFoldingRanges(context));
+    connection.onFoldingRanges(onFoldingRanges(context));
     // connection.onSelectionRanges(onDocumentLinkResolve(context));
     // connection.onExecuteCommand(onDocumentLinkResolve(context));
 
