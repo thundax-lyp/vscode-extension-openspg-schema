@@ -1,5 +1,6 @@
 import {ConceptRuleDeclaration} from './concept-rule-declaration';
 import {ConceptRuleHead} from './concept-rule-head';
+// import {ConceptRuleItem} from './concept-rule-item';
 // import {GraphStructure} from './graph-structure';
 import {NamespaceDeclaration} from './namespace-declaration';
 import {NamespaceVariable} from './namespace-variable';
@@ -17,6 +18,7 @@ import {TheRuleHead} from './the-rule-head';
 export {
 	ConceptRuleDeclaration,
 	ConceptRuleHead,
+// 	ConceptRuleItem,
 // 	GraphStructure,
 	NamespaceDeclaration,
 	NamespaceVariable,

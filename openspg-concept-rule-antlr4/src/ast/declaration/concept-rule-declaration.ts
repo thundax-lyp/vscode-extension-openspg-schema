@@ -1,9 +1,7 @@
 import {BaseNode} from "../base";
 import {ConceptRuleDeclarationContext, ConceptRuleParserVisitor} from "../../antlr4";
-import {TheGraphStructureDeclaration} from "./the-graph-structure-declaration";
 import {ConceptRuleHead} from "./concept-rule-head";
-import {TheRuleDeclaration} from "./the-rule-declaration";
-import {TheActionDeclaration} from "./the-action-declaration";
+import {ConceptRuleItemNode} from "./concept-rule-item";
 
 /**
  * ### Grammar:
@@ -12,7 +10,9 @@ import {TheActionDeclaration} from "./the-action-declaration";
  *
  * conceptRuleHead : 'Define' nodePattern fullEdgePointingRight nodePattern ;
  *
- * conceptRuleBody : theGraphStructureDeclaration theRuleDeclaration? theActionDeclaration? ;
+ * conceptRuleBody : conceptRuleItem* ;
+ *
+ * conceptRuleItem : theGraphStructureDeclaration | theRuleDeclaration | theActionDeclaration ;
  * ```
  **/
 export class ConceptRuleDeclaration extends BaseNode {
@@ -21,17 +21,13 @@ export class ConceptRuleDeclaration extends BaseNode {
 
     head: ConceptRuleHead;
 
-    theGraph: TheGraphStructureDeclaration
-    theRule: TheRuleDeclaration | null = null;
-    theAction: TheActionDeclaration | null = null;
+    children: ConceptRuleItemNode[];
 
     constructor(ctx: ConceptRuleDeclarationContext, visitor: ConceptRuleParserVisitor<any>) {
         super(ctx, visitor);
 
         this.head = ctx.conceptRuleHead().accept(visitor)
 
-        this.theGraph = ctx.conceptRuleBody().theGraphStructureDeclaration().accept(visitor)
-        this.theRule = ctx.conceptRuleBody().theRuleDeclaration()?.accept(visitor) ?? null
-        this.theAction = ctx.conceptRuleBody().theActionDeclaration()?.accept(visitor) ?? null
+        this.children = ctx.conceptRuleBody().conceptRuleItem().map(x => x.accept(visitor))
     }
 }

@@ -48,17 +48,13 @@ export class PrinterDeclaration extends BasePrinter implements Record<`print${as
     printRuleWrapperRuleHead: PrintFunc<ast.RuleWrapperRuleHead> = ({node}) => node.text;
 
     // conceptRuleDeclaration : conceptRuleHead LBRACE conceptRuleBody RBRACE ;
-    // conceptRuleBody : theGraphStructureDeclaration theRuleDeclaration? theActionDeclaration? ;
+    // conceptRuleBody : conceptRuleItem* ;
+    // conceptRuleItem : theGraphStructureDeclaration | theRuleDeclaration | theActionDeclaration ;
     printConceptRuleDeclaration: PrintFunc<ast.ConceptRuleDeclaration> = ({node, path, print}) => [
         [path.call(print, 'head'), this.space],
-        this.block([
-            this.builders.join([this.builders.hardline, this.builders.hardline], [
-                path.call(print, 'theGraph'),
-                ...(node.theRule ? [path.call(print, "theRule")] : []),
-                ...(node.theAction ? [path.call(print, "theAction")] : []),
-            ])
-        ], {
-            openTag: "{", closeTag: "}"
+        this.block(
+            this.builders.join([this.builders.hardline, this.builders.hardline], path.map(print, 'children')), {
+            openTag: "{", closeTag: "}", empty: node.children.length === 0,
         })
     ]
 

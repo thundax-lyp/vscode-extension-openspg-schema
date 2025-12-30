@@ -35,11 +35,13 @@ export class ConceptRuleASTBuilder extends parser.ConceptRuleParserVisitor<ast.S
      * Grammar
      *     conceptRuleDeclaration : conceptRuleHead LBRACE conceptRuleBody RBRACE ;
      *     conceptRuleHead : DEFINE_KEYWORD nodePattern fullEdgePointingRight nodePattern ;
-     *     conceptRuleBody : theGraphStructureDeclaration theRuleDeclaration? theActionDeclaration? ;
+     *     conceptRuleBody : conceptRuleItem* ;
+     *     conceptRuleItem : theGraphStructureDeclaration | theRuleDeclaration | theActionDeclaration ;
      */
     visitConceptRuleDeclaration = (ctx: parser.ConceptRuleDeclarationContext) => new ast.ConceptRuleDeclaration(ctx, this);
     visitConceptRuleHead = (ctx: parser.ConceptRuleHeadContext) => new ast.ConceptRuleHead(ctx, this);
     // visitConceptRuleBody?: (ctx: ConceptRuleBodyContext) => Result;
+    // visitConceptRuleItem?: (ctx: ConceptRuleItemContext) => Result;
 
     /**
      * Grammar

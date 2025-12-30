@@ -8,6 +8,7 @@ export const declarationNodeTypes = Object.keys(nodeMap) as DeclarationNodeType[
 
 export * from './concept-rule-declaration';
 export * from './concept-rule-head';
+export * from './concept-rule-item';
 export * from './graph-structure';
 export * from './namespace-declaration';
 export * from './namespace-variable';

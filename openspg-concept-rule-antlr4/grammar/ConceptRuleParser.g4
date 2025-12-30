@@ -39,8 +39,8 @@ ruleWrapperRuleBody : conceptRuleDeclaration* ;
 //}
 conceptRuleDeclaration : conceptRuleHead LBRACE conceptRuleBody RBRACE ;
 conceptRuleHead : DEFINE_KEYWORD nodePattern fullEdgePointingRight nodePattern ;
-conceptRuleBody : theGraphStructureDeclaration theRuleDeclaration? theActionDeclaration? ;
-
+conceptRuleBody : conceptRuleItem* ;
+conceptRuleItem : theGraphStructureDeclaration | theRuleDeclaration | theActionDeclaration ;
 
 //#############################################################################
 // the graph structure 定义部分
