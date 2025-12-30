@@ -5,8 +5,8 @@ options { tokenVocab=ConceptRuleLexer; }
 
 sourceUnit : (namespaceDeclaration | ruleWrapperDeclaration | conceptRuleDeclaration)* ;
 
-namespaceDeclaration: NAMESPACE_KEYWORD namespaceVariable ;
-namespaceVariable: UNESCAPED_SYMBOLIC_NAME | STRING_LITERAL | ESCAPED_SYMBOLIC_NAME ;
+namespaceDeclaration : NAMESPACE_KEYWORD namespaceVariable ;
+namespaceVariable    : UNESCAPED_SYMBOLIC_NAME | STRING_LITERAL | ESCAPED_SYMBOLIC_NAME ;
 
 //#############################################################################
 //`TaxOfRiskUser`/`赌博App开发者`:
@@ -272,7 +272,7 @@ graphAliasElementList : graphAliasWithProperty (COMMA graphAliasWithProperty)*;
 theActionDeclaration : theActionHead LBRACE theActionBody RBRACE ;
 theActionHead : ACTION_KEYWORD ;
 theActionBody : theActionExpression* ;
-theActionExpression: addNodeFunction | addEdgeFunction ;
+theActionExpression : addNodeFunction | addEdgeFunction ;
 
 addNodeFunction : (identifier EQ)? ADD_NODE_KEYWORD LPARENTH typeFunctionParam COMMA objectFunctionParam RPARENTH;
 addEdgeFunction : ADD_EDGE_KEYWORD LPARENTH nodeFunctionParam COMMA nodeFunctionParam COMMA typeFunctionParam COMMA objectFunctionParam RPARENTH;
