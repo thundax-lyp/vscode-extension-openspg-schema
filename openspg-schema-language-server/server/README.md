@@ -50,6 +50,7 @@
 * Hover
 * Formatting
 * Embedded concept rule scripts
+* Folding
 
 ## Installation
 
