@@ -1,0 +1,30 @@
+namespace FoldingRange
+
+# comments
+# another comments
+# triple comments
+
+Chunk(文本块): EntityType
+    desc: A chunk refers to a segment of text.
+    properties:
+        content(内容): Text
+            index: TextAndVector
+        keyword(关键词): Keyword
+            index: TextAndVector
+            constraint: MultiValue
+
+Date(日期): EntityType
+    properties:
+        info(信息): Text
+            index: TextAndVector
+        semanticType(语义类型): Text
+            index: Text
+    rule: [[
+        Define (s: `ProductChain`)-[p: leadTo]->(o) {
+            Structure {
+            }
+        }
+    ]]
+    emptyRule: [[
+    ]]
+    anotherEmptyRule: [[ ]]
