@@ -91,7 +91,7 @@ const testSemanticTokens = async (docUri: vscode.Uri, expectedSemanticTokens: vs
         return result;
     }
 
-    const render = (index: number, item: number[]) => {
+    const render = (item: number[]) => {
         const [ln, col, len, type] = item;
         const tokenTypes = Object.values(SemanticTokenTypes)
         const text = doc.getText(toRange(ln, col, ln, col + len))
@@ -105,6 +105,6 @@ const testSemanticTokens = async (docUri: vscode.Uri, expectedSemanticTokens: vs
     for (let idx = 0; idx < actualSemanticTokens.data.length; idx += 5) {
         const actualItem = actualItems.slice(idx, idx + 5)
         const expectedItem = expectedItems.slice(idx, idx + 5)
-        assert.equal(render(idx / 5, actualItem), render(idx / 5, expectedItem));
+        assert.equal(render(actualItem), render(expectedItem));
     }
 }

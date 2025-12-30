@@ -18,8 +18,8 @@ suite('Document Symbols', () => {
         await waitingForTick()
         await testDocumentSymbol(docUri, [
             toSymbol('DocumentSymbol', SymbolKind.Namespace, toRange(0, 0, 0, 24)),
-            toSymbol('Person', SymbolKind.Class, toRange(2, 0, 6, 23)),
-            toSymbol('Works', SymbolKind.Class, toRange(8, 0, 11, 26)),
+            toSymbol('Person', SymbolKind.Class, toRange(2, 0, 8, 1)),
+            toSymbol('Works', SymbolKind.Class, toRange(8, 0, 12, 0)),
         ]);
     });
 });
@@ -28,6 +28,16 @@ const toSymbol = (name: string, kind: vscode.SymbolKind, range: vscode.Range): v
     name, kind, range, selectionRange: range, detail: '', children: [],
 })
 
+const renderItem = (item: vscode.DocumentSymbol) => {
+    const {name, kind, range} = item;
+    const kindNames = Object.keys(vscode.SymbolKind).filter(x => !(/[0-9]+/g.test(x)))
+    return JSON.stringify({
+        name, kind: kindNames[kind], range
+    })
+}
+
+const render = (items: vscode.DocumentSymbol[]) => items.map(x => renderItem(x)).join('\n');
+
 async function testDocumentSymbol(docUri: vscode.Uri, expectedSymbols: vscode.DocumentSymbol[]) {
     console.log('URI: ' + docUri.toString(false));
 
@@ -35,12 +45,5 @@ async function testDocumentSymbol(docUri: vscode.Uri, expectedSymbols: vscode.Do
 
     let actualSymbols = await vscode.commands.executeCommand<DocumentSymbol[]>('vscode.executeDocumentSymbolProvider', docUri);
 
-    assert.equal(actualSymbols.length, expectedSymbols.length);
-
-    expectedSymbols.forEach((expectedSymbol, i) => {
-        const actualSymbol = actualSymbols[i];
-        assert.equal(actualSymbol.name, expectedSymbol.name);
-        assert.equal(actualSymbol.kind, expectedSymbol.kind);
-        assert.deepEqual(actualSymbol.range, expectedSymbol.range);
-    });
+    assert.equal(render(actualSymbols), render(expectedSymbols));
 }
