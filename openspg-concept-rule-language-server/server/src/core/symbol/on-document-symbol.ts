@@ -44,11 +44,18 @@ export const onDocumentSymbol: OnDocumentSymbol = (ctx) => async ({textDocument}
             kind: SymbolKind.Struct,
             range: document.getNodeRange(ast),
             selectionRange: document.getNodeRange(ast.head),
-            children: [
-                await handleTheGraphStructureDeclaration(ast.theGraph),
-                ast.theRule ? await handleTheRuleDeclaration(ast.theRule) : null,
-                ast.theAction ? await handleTheActionDeclaration(ast.theAction) : null,
-            ].filter(Boolean) as DocumentSymbol[]
+            children: await Promise.all(
+                ast.children.flatMap(x => {
+                    if (x.type === 'TheGraphStructureDeclaration') {
+                        return [handleTheGraphStructureDeclaration(x)]
+                    } else if (x.type === 'TheRuleDeclaration') {
+                        return [handleTheRuleDeclaration(x)]
+                    } else if (x.type === 'TheActionDeclaration') {
+                        return [handleTheActionDeclaration(x)]
+                    }
+                    return []
+                })
+            )
         }
     }
 

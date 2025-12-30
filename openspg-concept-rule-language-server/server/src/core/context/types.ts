@@ -13,6 +13,7 @@ export type OnDocumentHighlight = (ctx: Context) => Parameters<Connection['onDoc
 export type OnSignatureHelp = (ctx: Context) => Parameters<Connection['onSignatureHelp']>[0];
 export type OnImplementation = (ctx: Context) => Parameters<Connection['onImplementation']>[0];
 export type OnDocumentSymbol = (ctx: Context) => Parameters<Connection['onDocumentSymbol']>[0];
+export type OnFoldingRanges = (ctx: Context) => Parameters<Connection['onFoldingRanges']>[0];
 
 export type OnDocumentFormatting = (ctx: Context) => Parameters<Connection['onDocumentFormatting']>[0];
 export type OnDocumentOnTypeFormatting = (ctx: Context) => Parameters<Connection['onDocumentOnTypeFormatting']>[0];

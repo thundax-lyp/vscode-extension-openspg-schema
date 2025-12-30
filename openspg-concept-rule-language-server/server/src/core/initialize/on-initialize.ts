@@ -35,6 +35,7 @@ export const onInitialize = (_: Context): OnInitialize => async () => {
             // definitionProvider: true,
             // referencesProvider: true,
             // hoverProvider: true,
+            foldingRangeProvider: true,
             documentLinkProvider: {
                 resolveProvider: true
             },

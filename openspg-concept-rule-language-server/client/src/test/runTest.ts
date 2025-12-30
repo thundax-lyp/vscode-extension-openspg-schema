@@ -9,9 +9,6 @@ async function main() {
         const extensionDevelopmentPath = path.resolve(__dirname, '../../../');
         console.log(`Running ${extensionDevelopmentPath}`);
 
-        const workspaceFolder = path.resolve(__dirname, '../../testFixture/');
-        console.log(`Workspace ${workspaceFolder}`);
-
         // The path to test runner
         // Passed to --extensionTestsPath
         const extensionTestsPath = path.resolve(__dirname, './index');
@@ -23,7 +20,6 @@ async function main() {
             extensionDevelopmentPath,
             extensionTestsPath,
             version,
-            // launchArgs: [workspaceFolder]
         });
     } catch {
         console.error('Failed to run tests');

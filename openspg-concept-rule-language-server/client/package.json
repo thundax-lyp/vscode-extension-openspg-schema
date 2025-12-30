@@ -1,7 +1,7 @@
 {
-	"name": "openspg-concept-rule-language-client",
+	"name": "openspg-concept-rule-extension",
 	"version": "0.1.2",
-	"description": "Language Client implementation for OpenSPG Concept Rule",
+	"description": "VSCode extension implementation for OpenSPG Concept Rule",
 	"keywords": [
 		"openspg",
 		"language-server",
