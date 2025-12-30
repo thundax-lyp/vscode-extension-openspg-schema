@@ -72,9 +72,6 @@
         "lint": "eslint",
         "test": "sh ./scripts/e2e.sh"
     },
-    "dependencies": {
-        "openspg-schema-antlr4": "file://../openspg-schema-antlr4-0.2.0-dev-0.tgz"
-    },
     "devDependencies": {
         "@eslint/js": "^9.13.0",
         "@stylistic/eslint-plugin": "^2.9.0",
