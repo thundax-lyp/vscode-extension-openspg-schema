@@ -25,22 +25,15 @@ export const onDocumentSymbol: OnDocumentSymbol = (ctx) => async ({textDocument}
         kind: SymbolKind.Class,
         range: document.getNodeRange(ast),
         selectionRange: document.getNodeRange(ast.declaration.name),
-        children: await Promise.all(ast.children.map(x => handleEntityMetaDeclaration(x))),
-    })
-
-    const handleEntityMetaDeclaration = async (ast: syntax.EntityMetaDeclaration): Promise<DocumentSymbol> => ({
-        name: await renderBasicPropertyDeclaration(ast.declaration),
-        kind: SymbolKind.Variable,
-        range: document.getNodeRange(ast),
-        selectionRange: document.getNodeRange(ast.declaration.name.variable),
         children: await Promise.all(ast.children.map(x => handlePropertyDeclaration(x))),
     })
 
     const handlePropertyDeclaration = async (ast: syntax.PropertyDeclaration): Promise<DocumentSymbol> => ({
-        name: await renderBasicStructureDeclaration(ast.declaration),
+        name: await renderBasicPropertyDeclaration(ast.declaration),
         kind: SymbolKind.Property,
         range: document.getNodeRange(ast),
         selectionRange: document.getNodeRange(ast.declaration.name),
+        children: await Promise.all(ast.children.map(x => handleEntityDeclaration(x))),
     })
 
     return (await Promise.all(
