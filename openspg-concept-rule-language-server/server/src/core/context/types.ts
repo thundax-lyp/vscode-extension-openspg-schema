@@ -19,7 +19,8 @@ export type OnDocumentFormatting = (ctx: Context) => Parameters<Connection['onDo
 export type OnDocumentOnTypeFormatting = (ctx: Context) => Parameters<Connection['onDocumentOnTypeFormatting']>[0];
 export type OnDocumentRangeFormatting = (ctx: Context) => Parameters<Connection['onDocumentRangeFormatting']>[0];
 
-export type OnSemanticTokens = Parameters<Connection['languages']['semanticTokens']['on']>[0]
+export type OnSemanticTokens = Parameters<Connection['languages']['semanticTokens']['on']>[0];
+export type OnDiagnostics = Parameters<Connection['languages']['diagnostics']['on']>[0];
 
 export type OnInitialize = Parameters<Connection['onInitialize']>[0];
 export type OnInitialized = Parameters<Connection['onInitialized']>[0];

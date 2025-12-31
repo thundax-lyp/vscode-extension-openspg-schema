@@ -8,6 +8,7 @@ import {onDocumentLinkResolve, onDocumentLinks, onHover} from "./definition";
 import {onDocumentHighlight} from "./highlight";
 import {onSemanticTokens} from "./semantic-token";
 import {onFoldingRanges} from "./folding";
+import {onDiagnostics} from "./diagnostic";
 
 const initDocuments = (_: Connection): TextDocuments<ConceptRuleTextDocument> => {
     const documents = new TextDocuments(ConceptRuleTextDocument);
@@ -94,6 +95,7 @@ export const listen = (connection: Connection) => {
     // connection.onExecuteCommand(onDocumentLinkResolve(context));
 
     connection.languages.semanticTokens.on(onSemanticTokens(context))
+    connection.languages.diagnostics.on(onDiagnostics(context));
 
     documents.listen(connection)
 
