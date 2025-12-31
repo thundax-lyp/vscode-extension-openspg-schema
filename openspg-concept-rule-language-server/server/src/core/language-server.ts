@@ -6,7 +6,7 @@ import {onDocumentSymbol} from "./symbol";
 import {onDocumentFormatting} from "./format";
 import {onDocumentLinkResolve, onDocumentLinks, onHover} from "./definition";
 import {onDocumentHighlight} from "./highlight";
-import {onSemanticTokens} from "./semantic-tokens";
+import {onSemanticTokens} from "./semantic-token";
 import {onFoldingRanges} from "./folding";
 
 const initDocuments = (_: Connection): TextDocuments<ConceptRuleTextDocument> => {
