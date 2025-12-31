@@ -6,7 +6,7 @@
 			"request": "launch",
 			"name": "Launch Client",
 			"runtimeExecutable": "${execPath}",
-			"args": ["--extensionDevelopmentPath=${workspaceRoot}" ],
+			"args": ["--extensionDevelopmentPath=${workspaceRoot}", "${workspaceRoot}/client/testFixture/"],
 			"autoAttachChildProcesses": true,
 			"sourceMaps": true,
 			"outFiles": ["${workspaceRoot}/client/dist/**/*.js"],
