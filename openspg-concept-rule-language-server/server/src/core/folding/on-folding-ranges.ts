@@ -11,13 +11,13 @@ export const onFoldingRanges: OnFoldingRanges = ({documents}: Context) => async 
     const foldingTypes = [
         'RuleWrapperDeclaration', 'RuleWrapperRuleDeclaration', 'ConceptRuleDeclaration',
         'TheGraphStructureDeclaration', 'TheRuleDeclaration', 'TheActionDeclaration',
+        'ObjectFunctionParam',
     ]
 
     const foldingNodes: syntax.SyntaxNode[] = [];
 
     syntax.traverse(document.ast, ({node}) => {
-        console.log(node.type + ' ' + (node.type in foldingTypes))
-        if (node.type in foldingTypes) {
+        if (foldingTypes.includes(node.type)) {
             foldingNodes.push(node)
         }
     })

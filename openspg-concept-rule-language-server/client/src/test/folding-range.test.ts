@@ -1,6 +1,6 @@
 import * as vscode from 'vscode';
 import * as assert from 'assert';
-import {getDocUri, activate, doc, createTicker, sleep} from './helper';
+import {getDocUri, activate, createTicker} from './helper';
 
 
 suite('Folding Ranges', () => {
@@ -8,28 +8,29 @@ suite('Folding Ranges', () => {
     const docUri = getDocUri(fileName);
 
     const {fireTick, waitingForTick} = createTicker()
-    let sourceCode = ''
 
     test(`Open [${fileName}]`, async () => {
         await activate(docUri);
         fireTick();
-        sourceCode = doc.getText();
     });
 
     test(`Folding [All]`, async () => {
         await waitingForTick()
 
         await testFoldingRanges(docUri, [
-            new vscode.FoldingRange(6, 13),
-            new vscode.FoldingRange(8, 13),
-            new vscode.FoldingRange(9, 10),
-            new vscode.FoldingRange(11, 13),
-            new vscode.FoldingRange(15, 29),
-            new vscode.FoldingRange(16, 20),
-            new vscode.FoldingRange(17, 18),
-            new vscode.FoldingRange(19, 20),
-            new vscode.FoldingRange(21, 26),
-            new vscode.FoldingRange(27, 28),
+            new vscode.FoldingRange(2, 12),
+            new vscode.FoldingRange(3, 12),
+            new vscode.FoldingRange(4, 11),
+            new vscode.FoldingRange(5, 6),
+            new vscode.FoldingRange(7, 10),
+            new vscode.FoldingRange(14, 41),
+            new vscode.FoldingRange(15, 41),
+            new vscode.FoldingRange(16, 40),
+            new vscode.FoldingRange(17, 19),
+            new vscode.FoldingRange(20, 22),
+            new vscode.FoldingRange(23, 39),
+            new vscode.FoldingRange(26, 31),
+            new vscode.FoldingRange(37, 38),
         ]);
     });
 
@@ -48,8 +49,6 @@ const testFoldingRanges = async (docUri: vscode.Uri, expectedFoldingRanges: vsco
     console.log('URI: ' + docUri.toString(false));
 
     await activate(docUri);
-
-    await sleep(100000);
 
     let actualFoldingRanges = await vscode.commands.executeCommand<vscode.FoldingRange[]>('vscode.executeFoldingRangeProvider', docUri);
 
