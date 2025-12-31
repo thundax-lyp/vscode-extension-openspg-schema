@@ -1,47 +1,54 @@
-
 import * as vscode from 'vscode';
-import { getDocUri, activate } from './helper';
+import * as assert from 'assert';
+import {getDocUri, activate, createTicker, toRange} from './helper';
 
 suite('Diagnostics', () => {
-    // const docUri = getDocUri('diagnostics.txt');
-    const docUri = getDocUri('sample.schema');
+    const fileName = 'diagnostics.schema';
+    const docUri = getDocUri(fileName);
 
-    test('Diagnoses uppercase texts', async () => {
+    const {fireTick, waitingForTick} = createTicker()
+
+    test(`Open [${fileName}]`, async () => {
+        await activate(docUri);
+        fireTick()
+    });
+
+    test('Diagnoses [Full]', async () => {
+        await waitingForTick()
+
         await testDiagnostics(docUri, [
-            { message: 'ANY is all uppercase.', range: toRange(0, 0, 0, 3), severity: vscode.DiagnosticSeverity.Warning, source: 'ex' },
-            { message: 'ANY is all uppercase.', range: toRange(0, 14, 0, 17), severity: vscode.DiagnosticSeverity.Warning, source: 'ex' },
-            { message: 'OS is all uppercase.', range: toRange(0, 18, 0, 20), severity: vscode.DiagnosticSeverity.Warning, source: 'ex' }
+            toDiagnostic(toRange(19, 0, 19, 23), "Duplicate definition of \"namespace\""),
+            toDiagnostic(toRange(9, 24, 11, 1), "Max level of \"Schema\" is 6"),
+            toDiagnostic(toRange(16, 0, 16, 5), "Cannot redeclare block-scoped schema \"Chunk\""),
+            toDiagnostic(toRange(2, 0, 2, 5), "Cannot redeclare block-scoped schema \"Chunk\""),
+            toDiagnostic(toRange(11, 16, 11, 23), "Cannot redeclare block-scoped schema \"keyword\""),
+            toDiagnostic(toRange(7, 16, 7, 23), "Cannot redeclare block-scoped schema \"keyword\""),
+            toDiagnostic(toRange(16, 26, 16, 39), "Undefined type \"UndefinedType\""),
+            toDiagnostic(toRange(13, 20, 13, 24), "Cannot redeclare block-scoped property \"desc\""),
+            toDiagnostic(toRange(12, 20, 12, 24), "Cannot redeclare block-scoped property \"desc\""),
+            toDiagnostic(toRange(14, 20, 14, 24), "Cannot redeclare block-scoped property \"desc\""),
         ]);
     });
 
 });
 
-
-function toRange(sLine: number, sChar: number, eLine: number, eChar: number) {
-    const start = new vscode.Position(sLine, sChar);
-    const end = new vscode.Position(eLine, eChar);
-    return new vscode.Range(start, end);
+const toDiagnostic = (range: vscode.Range, message: string, severity: vscode.DiagnosticSeverity = vscode.DiagnosticSeverity.Information) => {
+    return new vscode.Diagnostic(range, message, severity);
 }
 
-async function testDiagnostics(docUri: vscode.Uri, expectedDiagnostics: vscode.Diagnostic[]) {
-    console.log('URI: ' + docUri.toString(false));
+const renderItem = (item: vscode.Diagnostic) => {
+    const {range, message} = item;
+    return JSON.stringify({
+        range: `${range.start.line}:${range.start.character} - ${range.end.line}:${range.end.character}`, message
+    })
+}
 
+const render = (items: vscode.Diagnostic[]) => (items || []).map(x => renderItem(x)).join('\n');
+
+async function testDiagnostics(docUri: vscode.Uri, expectedDiagnostics: vscode.Diagnostic[]) {
     await activate(docUri);
 
     const actualDiagnostics = vscode.languages.getDiagnostics(docUri);
-    console.log(JSON.stringify(actualDiagnostics));
 
-    // console.log('test symbols >>>');
-    // const symbols: [] = await vscode.commands.executeCommand('vscode.executeDocumentSymbolProvider', docUri);
-    // console.log(symbols);
-    // console.log('test symbols <<<');
-
-    // assert.equal(actualDiagnostics.length, expectedDiagnostics.length);
-    //
-    // expectedDiagnostics.forEach((expectedDiagnostic, i) => {
-    //     const actualDiagnostic = actualDiagnostics[i];
-    //     assert.equal(actualDiagnostic.message, expectedDiagnostic.message);
-    //     assert.deepEqual(actualDiagnostic.range, expectedDiagnostic.range);
-    //     assert.equal(actualDiagnostic.severity, expectedDiagnostic.severity);
-    // });
+    assert.equal(render(actualDiagnostics), render(expectedDiagnostics));
 }

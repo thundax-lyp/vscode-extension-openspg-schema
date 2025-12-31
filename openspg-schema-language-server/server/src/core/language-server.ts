@@ -6,8 +6,9 @@ import {onDocumentSymbol} from "./symbol";
 import {onDocumentFormatting} from "./format";
 import {onDefinition, onHover, onReferences} from "./definition";
 import {onDocumentHighlight} from "./highlight";
-import {onSemanticTokens} from "./semantic-tokens";
+import {onSemanticTokens} from "./semantic-token";
 import {onFoldingRanges} from "./folding";
+import {onDiagnostics} from "./diagnostic";
 
 const initDocuments = (_: Connection): TextDocuments<SchemaTextDocument> => {
     const documents = new TextDocuments(SchemaTextDocument);
@@ -89,6 +90,7 @@ export const listen = (connection: Connection) => {
     // connection.onExecuteCommand(onDocumentLinkResolve(context));
 
     connection.languages.semanticTokens.on(onSemanticTokens(context))
+    connection.languages.diagnostics.on(onDiagnostics(context));
 
     documents.listen(connection)
 

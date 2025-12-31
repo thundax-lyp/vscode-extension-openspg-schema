@@ -31,6 +31,10 @@ export const onInitialize = (_: Context): OnInitialize => async () => {
                 range: false,
                 full: true,
             },
+            diagnosticProvider: {
+                interFileDependencies: true,
+                workspaceDiagnostics: false,
+            },
             // typeDefinitionProvider: true,
             definitionProvider: true,
             referencesProvider: true,
