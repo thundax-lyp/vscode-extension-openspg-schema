@@ -14,13 +14,23 @@ async function main() {
         const extensionTestsPath = path.resolve(__dirname, './index');
 
         const version = '1.106.3';
-        // const version = '1.96.0';
+
+        const launchArgs: string[] = []
+
+        // reset user-data-dir to make path shorter
+        const userDataDir = process.env['CODE_TESTS_USER_DATA_DIR'];
+        if (userDataDir) {
+            launchArgs.push(`--user-data-dir=${path.resolve(__dirname, userDataDir)}`);
+        }
+
+        console.log(`With args ${JSON.stringify(launchArgs)}`);
 
         // Download VS Code, unzip it and run the integration test
         await runTests({
             extensionDevelopmentPath,
             extensionTestsPath,
             version,
+            launchArgs,
         });
     } catch {
         console.error('Failed to run tests');
