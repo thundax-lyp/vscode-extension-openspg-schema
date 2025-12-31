@@ -117,7 +117,6 @@ export class ConceptRuleTextDocument implements TextDocument {
 
         } catch (error) {
             // ignore
-            console.error(error);
             // globalThis.connection?.sendDiagnostics({
             //     uri: this.uri,
             //     diagnostics: [

@@ -18,7 +18,11 @@ import {
     WillSaveTextDocumentParams,
 } from 'vscode-languageserver';
 import {TextDocument} from 'vscode-languageserver-textdocument';
-import {EVENT_TEXT_DOCUMENTS_ON_CREATE, EVENT_TEXT_DOCUMENTS_ON_DELETE, EVENT_TEXT_DOCUMENTS_ON_SYNC,} from './constants';
+import {
+    EVENT_TEXT_DOCUMENTS_ON_CREATE,
+    EVENT_TEXT_DOCUMENTS_ON_DELETE,
+    EVENT_TEXT_DOCUMENTS_ON_SYNC,
+} from './constants';
 import {ConceptRuleTextDocument} from './text-document';
 
 

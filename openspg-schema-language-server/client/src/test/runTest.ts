@@ -14,6 +14,7 @@ async function main() {
         const extensionTestsPath = path.resolve(__dirname, './index');
 
         const version = '1.106.3';
+        // const version = '1.96.0';
 
         // Download VS Code, unzip it and run the integration test
         await runTests({

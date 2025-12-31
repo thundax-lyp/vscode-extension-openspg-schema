@@ -3,9 +3,6 @@ import {Context, OnInitialize} from '../context';
 
 
 export const onInitialize = (_: Context): OnInitialize => async () => {
-    console.log(`initializing`)
-    // console.log(`${JSON.stringify(params, null, 4)}`)
-
     return {
         serverInfo: {
             name: 'OpenSPG Schema Language Server',
