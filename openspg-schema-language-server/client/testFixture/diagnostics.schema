@@ -1,0 +1,21 @@
+namespace Diagnostics
+
+Chunk(文本块): EntityType
+    desc: A chunk refers to a segment of text.
+    properties:
+        content(内容): Text
+            index: TextAndVector
+                keyword(关键词): Keyword
+                    index: TextAndVector
+                        keyword(关键词): Keyword
+                            desc: depth limited
+                keyword(关键词): Keyword
+                    desc: redeclared entity
+                    desc: redeclared property
+                    desc: another redeclared property
+
+Chunk(文本块) -> EntityType, UndefinedType:
+    desc: undefined type
+
+namespace DuplicateName
+
