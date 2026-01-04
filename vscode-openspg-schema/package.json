@@ -1,7 +1,7 @@
 {
     "name": "vscode-openspg-schema",
     "displayName": "OpenSPG Schema",
-    "version": "0.2.0-dev-0",
+    "version": "0.1.3",
     "description": "OpenSPG Schema Mark Language Support",
     "keywords": [
         "openspg",
@@ -22,7 +22,7 @@
     "publisher": "thundax-lyp",
     "icon": "resources/openspg.png",
     "engines": {
-        "vscode": "^1.106.1"
+        "vscode": "^1.96.0"
     },
     "activationEvents": [
         "onLanguage:schema",
@@ -92,10 +92,10 @@
     },
     "dependencies": {
         "glob": "11.1.0",
-        "openspg-concept-rule-antlr4": "file://./openspg-concept-rule-antlr4-0.2.0-dev-0.tgz",
-        "openspg-concept-rule-language-server": "file://./openspg-concept-rule-language-server-0.2.0-dev-0.tgz",
-        "openspg-schema-antlr4": "file://./openspg-schema-antlr4-0.2.0-dev-0.tgz",
-        "openspg-schema-language-server": "file://./openspg-schema-language-server-0.2.0-dev-0.tgz",
+        "openspg-concept-rule-antlr4": "0.1.3",
+        "openspg-concept-rule-language-server": "0.1.3",
+        "openspg-schema-antlr4": "0.1.3",
+        "openspg-schema-language-server": "0.1.3",
         "prettier": "3.7.0",
         "type-fest": "5.2.0",
         "vscode-languageclient": "9.0.1",
@@ -106,7 +106,7 @@
     "devDependencies": {
         "@types/mocha": "10.0.10",
         "@types/node": "22.19.1",
-        "@types/vscode": "1.106.1",
+        "@types/vscode": "^1.96.0",
         "@vscode/test-cli": "0.0.12",
         "@vscode/test-electron": "2.5.2",
         "colors": "1.4.0",
