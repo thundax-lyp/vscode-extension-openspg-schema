@@ -1,7 +1,7 @@
 {
     "name": "openspg-concept-rule-antlr4",
     "description": "OpenSPG Concept Rule Mark Language Lexer and Parser by official ANTLR4 grammar",
-    "version": "0.2.0",
+    "version": "0.1.3",
     "keywords": [
         "openspg",
         "schema",
@@ -59,7 +59,10 @@
     ],
     "sideEffects": false,
     "author": "thundax <thundax@qq.com>",
-    "repository": "git@github.com:thundax-lyp/openspg-concept-rule-antlr4.git",
+    "repository": {
+        "type": "git",
+        "url": "git+ssh://git@github.com/thundax-lyp/openspg-concept-rule-antlr4.git"
+    },
     "lint-staged": {
         "*.ts": "eslint --quiet --fix",
         "*.{ts}": "prettier --loglevel warn --write"
