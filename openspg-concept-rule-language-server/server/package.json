@@ -38,11 +38,11 @@
         "access": "public"
     },
     "scripts": {
-        "vscode:prepublish": "npm run build",
+        "prepublishOnly": "npm run build",
         "build": "unbuild --clean"
     },
     "dependencies": {
-        "openspg-concept-rule-antlr4": "file://./openspg-concept-rule-antlr4-0.2.0-dev-1.tgz",
+        "openspg-concept-rule-antlr4": "0.1.3",
         "prettier": "^3.6.2",
         "type-fest": "^5.2.0",
         "vscode-languageclient": "^9.0.1",
