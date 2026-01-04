@@ -17,16 +17,16 @@ suite('Diagnostics', () => {
         await waitingForTick()
 
         await testDiagnostics(docUri, [
-            toDiagnostic(toRange(19, 0, 19, 23), "Duplicate definition of \"namespace\""),
-            toDiagnostic(toRange(9, 24, 11, 1), "Max level of \"Schema\" is 6"),
-            toDiagnostic(toRange(16, 0, 16, 5), "Cannot redeclare block-scoped schema \"Chunk\""),
             toDiagnostic(toRange(2, 0, 2, 5), "Cannot redeclare block-scoped schema \"Chunk\""),
-            toDiagnostic(toRange(11, 16, 11, 23), "Cannot redeclare block-scoped schema \"keyword\""),
             toDiagnostic(toRange(7, 16, 7, 23), "Cannot redeclare block-scoped schema \"keyword\""),
-            toDiagnostic(toRange(16, 26, 16, 39), "Undefined type \"UndefinedType\""),
-            toDiagnostic(toRange(13, 20, 13, 24), "Cannot redeclare block-scoped property \"desc\""),
+            toDiagnostic(toRange(9, 24, 11, 1), "Max level of \"Schema\" is 6"),
+            toDiagnostic(toRange(11, 16, 11, 23), "Cannot redeclare block-scoped schema \"keyword\""),
             toDiagnostic(toRange(12, 20, 12, 24), "Cannot redeclare block-scoped property \"desc\""),
+            toDiagnostic(toRange(13, 20, 13, 24), "Cannot redeclare block-scoped property \"desc\""),
             toDiagnostic(toRange(14, 20, 14, 24), "Cannot redeclare block-scoped property \"desc\""),
+            toDiagnostic(toRange(16, 0, 16, 5), "Cannot redeclare block-scoped schema \"Chunk\""),
+            toDiagnostic(toRange(16, 26, 16, 39), "Undefined type \"UndefinedType\""),
+            toDiagnostic(toRange(19, 0, 19, 23), "Duplicate definition of \"namespace\""),
         ]);
     });
 
