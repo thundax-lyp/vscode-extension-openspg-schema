@@ -23,3 +23,4 @@
 * Definition and references
 * Hover information
 * Formatting
+* Diagnostics
