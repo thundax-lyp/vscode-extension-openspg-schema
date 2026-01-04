@@ -15,5 +15,3 @@ https://marketplace.visualstudio.com/items?itemName=thundax-lyp.vscode-openspg-s
 ├── openspg-schema-language-server        # Schema LSP
 └── vscode-openspg-schema                 # vscode extension
 ```
-
-
