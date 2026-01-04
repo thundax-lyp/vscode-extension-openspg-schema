@@ -1,6 +1,6 @@
 {
 	"name": "openspg-schema-extension",
-	"version": "0.1.2",
+	"version": "0.1.3",
 	"description": "VSCode extension implementation for OpenSPG Schema",
 	"keywords": [
 		"openspg",
@@ -13,7 +13,7 @@
 	"author": "Thundax <thundax@qq.com>",
 	"homepage": "https://github.com/thundax-lyp/vscode-extension-openspg-schema/",
 	"engines": {
-		"vscode": "^1.100.0"
+		"vscode": "^1.96.0"
 	},
 	"categories": [
 		"Programming Languages"
@@ -23,7 +23,7 @@
 		"vscode-languageclient": "^9.0.1"
 	},
 	"devDependencies": {
-		"@types/vscode": "^1.100.0",
+		"@types/vscode": "^1.96.0",
 		"@vscode/test-electron": "^2.3.9"
 	}
 }
