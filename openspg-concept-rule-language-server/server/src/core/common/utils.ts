@@ -1,30 +1,14 @@
-// import {MarkupContent, MarkupKind} from 'vscode-languageserver';
-// import {GloballyVariable} from './globally/common';
-//
-// export const markup = (markdown: string): MarkupContent => ({
-//     kind: MarkupKind.Markdown,
-//     value: markdown,
-// });
+import {Position} from "vscode-languageserver";
 
-// export const markupSchema = (schemaContent: string): MarkupContent => ({
-//     kind: MarkupKind.Markdown,
-//     value: '```schema\n' + schemaContent + '\n```',
-// });
-
-// export const markupGlobally = (globallyItem: GloballyVariable): MarkupContent => ({
-//     kind: MarkupKind.Markdown,
-//     value: `\`\`\`schema\n(global) ${globallyItem.detail}\n\`\`\`  \n${globallyItem.documentation}${
-//         globallyItem.url ? ` [view document](${globallyItem.url})` : ''
-//     }`,
-// });
-//
-// // export const getRecursionUri = (uri: string) => {
-// //     const document = documents.get(uri);
-// //     if (!document) return [];
-// //     const imports = document.getImportUris();
-// //     const result = [uri];
-// //     imports.forEach((importUri) => {
-// //         result.push(...getRecursionUri(importUri));
-// //     });
-// //     return [...new Set(result)];
-// // };
+/**
+ * check the second point is after the first point
+ *
+ * @param first position of the first point
+ * @param second position of the second point
+ */
+export const isAfter = (first: Position, second: Position): boolean => {
+    if (first.line !== second.line) {
+        return first.line < second.line;
+    }
+    return first.character < second.character;
+}
