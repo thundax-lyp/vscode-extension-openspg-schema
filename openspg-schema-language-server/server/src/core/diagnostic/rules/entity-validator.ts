@@ -29,7 +29,6 @@ export class EntityValidator implements Validator {
                 displayName: string,
                 repeat: number
             }[] = []
-            const processedIdx: number[] = [];
             nodes.forEach(x => {
                 const {semanticNames, realName} = x.declaration.name.variable;
                 const displayName = [...semanticNames, realName].map(x => x.text).join('#')
