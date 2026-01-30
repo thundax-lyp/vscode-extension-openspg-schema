@@ -9,6 +9,7 @@ import {onDocumentHighlight} from "./highlight";
 import {onSemanticTokens} from "./semantic-token";
 import {onFoldingRanges} from "./folding";
 import {onDiagnostics} from "./diagnostic";
+import {ASTRequest, onAST} from "./ast";
 
 const initDocuments = (_: Connection): TextDocuments<SchemaTextDocument> => {
     const documents = new TextDocuments(SchemaTextDocument);
@@ -91,6 +92,8 @@ export const listen = (connection: Connection) => {
 
     connection.languages.semanticTokens.on(onSemanticTokens(context))
     connection.languages.diagnostics.on(onDiagnostics(context));
+
+    connection.onRequest(ASTRequest, onAST(context))
 
     documents.listen(connection)
 

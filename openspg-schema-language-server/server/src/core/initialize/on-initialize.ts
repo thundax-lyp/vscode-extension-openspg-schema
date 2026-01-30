@@ -52,5 +52,8 @@ export const onInitialize = (_: Context): OnInitialize => async () => {
             // codeActionProvider: true,
             documentFormattingProvider: true,
         },
+        experimental: {
+            ast: true,
+        }
     } as ReturnType<OnInitialize>
 }
