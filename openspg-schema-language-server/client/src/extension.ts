@@ -104,3 +104,7 @@ export const deactivate = (): Thenable<void> | undefined => {
     }
     return client.stop();
 }
+
+export const getLanguageClient = () => {
+    return client;
+}

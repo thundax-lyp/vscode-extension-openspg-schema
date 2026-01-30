@@ -1,0 +1,12 @@
+namespace ASTSample
+
+Chunk(文本块): EntityType
+    desc: A chunk refers to a segment of text.
+    properties:
+        keyword(关键词): Keyword
+            index: TextAndVector
+
+
+Keyword(关键词): EntityType
+    properties:
+        info(信息): Text
