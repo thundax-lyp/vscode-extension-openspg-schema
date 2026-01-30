@@ -1,7 +1,7 @@
 {
     "name": "vscode-openspg-schema",
     "displayName": "OpenSPG Schema",
-    "version": "0.1.3",
+    "version": "0.1.4-dev",
     "description": "OpenSPG Schema Mark Language Support",
     "keywords": [
         "openspg",
