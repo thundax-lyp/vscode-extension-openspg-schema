@@ -1,6 +1,6 @@
 import {ConceptRuleASTBuilder} from '../ast/builder';
 import {SourceUnit, SyntaxNode} from '../ast';
-import {CharStreams, CommonTokenStream, ConceptRuleLexer, ConceptRuleParser, ParseTree} from '../antlr4';
+import {CharStream, CommonTokenStream, ConceptRuleLexer, ConceptRuleParser, ParseTree} from '../antlr4';
 import {ConceptRuleErrorListener, ParseError} from './error-listener';
 
 export interface ParseOptions {
@@ -22,7 +22,7 @@ export const parse = <T extends SyntaxNode = SourceUnit>(
     const listener = new ConceptRuleErrorListener();
 
     try {
-        const input = CharStreams.fromString(source);
+        const input = CharStream.fromString(source);
         const lexer = new ConceptRuleLexer(input);
         const token = new CommonTokenStream(lexer);
         const parser = new ConceptRuleParser(token);

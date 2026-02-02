@@ -1,5 +1,5 @@
-import {CharStreams, ConceptRuleLexer} from '../antlr4';
-import {Position} from '../ast/base';
+import {CharStream, ConceptRuleLexer} from '../antlr4';
+import {Position} from '../ast';
 import {ConceptRuleErrorListener, ParseError} from './error-listener';
 
 export type SyntaxTokenType = (typeof ConceptRuleLexer.symbolicNames)[number];
@@ -25,7 +25,7 @@ export const tokenizer = (source: string, _options: TokenizerOptions = {}): Synt
     const listener = new ConceptRuleErrorListener();
 
     try {
-        const input = CharStreams.fromString(source);
+        const input = CharStream.fromString(source);
         const lexer = new ConceptRuleLexer(input);
         lexer.removeErrorListeners();
         lexer.addErrorListener(listener);

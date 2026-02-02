@@ -2,7 +2,7 @@ import {test} from 'vitest';
 import fs from "node:fs";
 import path from "node:path";
 
-import {CharStreams, CommonTokenStream, ConceptRuleLexer, ConceptRuleParser, ParserRuleContext,} from '../src';
+import {CharStream, CommonTokenStream, ConceptRuleLexer, ConceptRuleParser, ParserRuleContext,} from '../src';
 
 import {SyntaxNode} from '../src';
 import {serialize} from '../src';
@@ -25,7 +25,7 @@ export const parse = (
     callback: (parser: ConceptRuleParser) => ParserRuleContext = (parser) => parser.sourceUnit(),
     afterParse: (ast: SyntaxNode) => any = format,
 ) => {
-    const lexer = new ConceptRuleLexer(CharStreams.fromString(input));
+    const lexer = new ConceptRuleLexer(CharStream.fromString(input));
     const parser = new ConceptRuleParser(new CommonTokenStream(lexer));
     const tree = callback(parser);
     const ast = tree.accept(conceptRuleASTBuilder)!;

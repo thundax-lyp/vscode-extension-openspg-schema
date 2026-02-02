@@ -173,11 +173,11 @@ const newAST = traverse(ast, (path) => {
 > Not recommended, but you can use it if you want.
 
 ```ts
-import {ConceptRuleLexer, ConceptRuleParser, CharStreams, CommonTokenStream} from 'openspg-concept-rule-antlr4';
+import {ConceptRuleLexer, ConceptRuleParser, CharStream, CommonTokenStream} from 'openspg-concept-rule-antlr4';
 
 const code = `...`; // code here
 
-const input = CharStreams.fromString(code);
+const input = CharStream.fromString(code);
 const lexer = new SolidityLexer(input);
 const tokens = new CommonTokenStream(lexer);
 const parser = new SolidityParser(tokens);

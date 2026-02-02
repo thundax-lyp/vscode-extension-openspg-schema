@@ -13,8 +13,9 @@ class PrettierGenerator extends PrettierParser {
 
     public static NAME = 'openspg-concept-rule-prettier-generator';
 
-    public parse = (ast: string, _options: ParserOptions<SyntaxNode>) => JSON.parse(ast);
-
+    public parse = (ast: string, _options: ParserOptions<SyntaxNode>) => {
+        return JSON.parse(ast);
+    }
 }
 
 const generatorPlugin: Plugin = {

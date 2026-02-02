@@ -108,6 +108,8 @@ const buildASTIndex = (rootFolder, moduleFolders: string[]) => {
             + '\n'
             + modules.map(x => `export * from "./${x}";`).join('\n')
             + '\n'
+            + `export * from "./base";`
+            + '\n'
             + ''
 
         const fileName = path.join(rootFolder, "index.ts")
