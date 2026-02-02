@@ -18,7 +18,7 @@ tokens { INDENT, DEDENT}
     private isAfter(tag: string): boolean {
         const end = this.getCharIndex() - this.text.length;
         const start = end - tag.length;
-        return 0 <= start && this.inputStream.getText(new antlr.Interval(start, end - 1)) === tag;
+        return 0 <= start && this.inputStream.getTextFromInterval(new antlr.Interval(start, end - 1)) === tag;
     }
 
     private isAfterEol(): boolean {
@@ -63,8 +63,18 @@ tokens { INDENT, DEDENT}
         } = params;
 
         class EmptyToken extends antlr.CommonToken {
-            constructor(source: [antlr.TokenSource | null, antlr.CharStream | null], type: number, channel: number, start: number) {
-                super(source, type, channel, start, start)
+            constructor(details: {
+                    source: [antlr.TokenSource | null, antlr.CharStream | null];
+                    type: number;
+                    channel?: number;
+                    start?: number;
+                    stop?: number;
+                    text?: string;
+                    line?: number;
+                    tokenIndex?: number;
+                    column?: number;
+                }) {
+                super(details);
             }
 
             get text() {
@@ -72,7 +82,7 @@ tokens { INDENT, DEDENT}
             }
         }
 
-        return new EmptyToken([this, this.inputStream], type, channel, start);
+        return new EmptyToken({source: [this, this.inputStream], type, channel, start, stop: start});
     }
 
     private buildIndent() {

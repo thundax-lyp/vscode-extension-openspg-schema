@@ -1,6 +1,6 @@
 import {SchemaASTBuilder} from '../ast/builder';
 import {SourceUnit, SyntaxNode} from '../ast';
-import {CharStreams, CommonTokenStream, ParseTree, SchemaLexer, SchemaParser} from '../antlr4';
+import {CharStream, CommonTokenStream, ParseTree, SchemaLexer, SchemaParser} from '../antlr4';
 import {SchemaErrorListener, ParseError} from './error-listener';
 
 export interface ParseOptions {
@@ -22,7 +22,7 @@ export const parse = <T extends SyntaxNode = SourceUnit>(
     const listener = new SchemaErrorListener();
 
     try {
-        const input = CharStreams.fromString(source);
+        const input = CharStream.fromString(source);
         const lexer = new SchemaLexer(input);
         const token = new CommonTokenStream(lexer);
         const parser = new SchemaParser(token);

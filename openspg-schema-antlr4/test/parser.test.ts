@@ -28,7 +28,7 @@ Person(人物): EntityType
     }, {
         type: 'ENTITY_TYPE_KEYWORD', text: 'EntityType', range: [31, 40], position: Position.create(4, 12)
     }, {
-        type: 'INDENT', text: '', range: [42, 42], position: Position.create(5, 0)
+        type: 'INDENT', text: '', range: [42, 42], position: Position.create(5, 4)
     }, {
         type: 'DESC_KEYWORD', text: 'desc', range: [46, 49], position: Position.create(5, 4)
     }, {

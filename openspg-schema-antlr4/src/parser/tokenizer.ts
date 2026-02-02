@@ -1,4 +1,4 @@
-import {CharStreams, SchemaLexer} from '../antlr4';
+import {CharStream, SchemaLexer} from '../antlr4';
 import {Position} from '../ast';
 import {ParseError, SchemaErrorListener} from './error-listener';
 
@@ -25,7 +25,7 @@ export const tokenizer = (source: string, _options: TokenizerOptions = {}): Synt
     const listener = new SchemaErrorListener();
 
     try {
-        const input = CharStreams.fromString(source);
+        const input = CharStream.fromString(source);
         const lexer = new SchemaLexer(input);
         lexer.removeErrorListeners();
         lexer.addErrorListener(listener);

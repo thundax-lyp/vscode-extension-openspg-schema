@@ -2,11 +2,11 @@ import {test} from 'vitest';
 import fs from "node:fs";
 import path from "node:path";
 
-import {CharStreams, CommonTokenStream, ParserRuleContext, SchemaLexer, SchemaParser,} from '../src';
+import {CharStream, CommonTokenStream, ParserRuleContext, SchemaLexer, SchemaParser} from '../src';
 
 import {SyntaxNode} from '../src';
 import {serialize} from '../src';
-import {BaseNodeString} from '../src/ast/base';
+import {BaseNodeString} from '../src';
 import {schemaASTBuilder} from "../src/ast/builder";
 
 export const load = (name: string) =>
@@ -25,7 +25,7 @@ export const parse = (
     callback: (parser: SchemaParser) => ParserRuleContext = (parser) => parser.sourceUnit(),
     afterParse: (ast: SyntaxNode) => any = format,
 ) => {
-    const lexer = new SchemaLexer(CharStreams.fromString(input));
+    const lexer = new SchemaLexer(CharStream.fromString(input));
     const parser = new SchemaParser(new CommonTokenStream(lexer));
     const tree = callback(parser);
     const ast = tree.accept(schemaASTBuilder)!;
