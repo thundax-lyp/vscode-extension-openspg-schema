@@ -53,13 +53,16 @@ suite('References', () => {
 
 });
 
+const renderItem = (item: vscode.Location) => {
+    const {start, end} = item.range;
+    return JSON.stringify({
+        start, end,
+    })
+}
+
+const render = (items: vscode.Location[]) => (items || []).map(x => renderItem(x)).join('\n');
+
 const testReferences = async (docUri: vscode.Uri, position: vscode.Position, expectedLocations: vscode.Location[]) => {
     const actualLocations = await vscode.commands.executeCommand<vscode.Location[]>('vscode.executeReferenceProvider', docUri, position);
-
-    assert.equal(actualLocations.length, expectedLocations.length);
-
-    expectedLocations.forEach((expectedLocation, i) => {
-        const actualLocation = actualLocations[i];
-        assert.deepEqual(actualLocation.range, expectedLocation.range);
-    });
+    assert.equal(render(actualLocations), render(expectedLocations));
 }
