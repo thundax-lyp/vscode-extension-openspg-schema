@@ -7,15 +7,15 @@ import {KnowledgeStructureTypeContext, SchemaParserVisitor} from "../../antlr4";
  * knowledgeStructureType : 'EntityType' | 'ConceptType' | 'EventType' | 'IndexType' ;
  * ```
  */
+const KEYWORDS = ['EntityType', 'ConceptType', 'EventType', 'IndexType']
+
 export class KnowledgeStructureType extends BaseNodeString {
 
     type = 'KnowledgeStructureType' as const;
 
-    keywords = ['EntityType', 'ConceptType', 'EventType', 'IndexType']
-
     constructor(ctx: KnowledgeStructureTypeContext, visitor: SchemaParserVisitor<any>) {
         super(ctx, visitor);
-        this.text = this.keywords.find(x => x.toLowerCase() === this.text.toLowerCase()) ?? ''
+        this.text = KEYWORDS.find(x => x.toLowerCase() === this.text.toLowerCase()) ?? ''
     }
 
 }
