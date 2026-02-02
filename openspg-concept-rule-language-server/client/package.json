@@ -1,6 +1,6 @@
 {
 	"name": "openspg-concept-rule-extension",
-	"version": "0.1.3",
+	"version": "0.1.4",
 	"description": "VSCode extension implementation for OpenSPG Concept Rule",
 	"keywords": [
 		"openspg",

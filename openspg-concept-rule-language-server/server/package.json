@@ -1,6 +1,6 @@
 {
     "name": "openspg-concept-rule-language-server",
-    "version": "0.1.3",
+    "version": "0.1.4",
     "description": "Language Server Protocol implementation for OpenSPG Concept Rule",
     "keywords": [
         "openspg",
@@ -42,7 +42,7 @@
         "build": "unbuild --clean"
     },
     "dependencies": {
-        "openspg-concept-rule-antlr4": "0.1.3",
+        "openspg-concept-rule-antlr4": "0.1.4",
         "prettier": "^3.6.2",
         "type-fest": "^5.2.0",
         "vscode-languageclient": "^9.0.1",

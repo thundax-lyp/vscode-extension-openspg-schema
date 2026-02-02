@@ -8,6 +8,7 @@ import {
     TransportKind
 } from 'vscode-languageclient/node';
 
+import {SchemaPreviewPanel} from "./client/preview/schema-preview";
 
 let schemaClient: LanguageClient;
 let conceptRuleClient: LanguageClient;
@@ -15,6 +16,16 @@ let conceptRuleClient: LanguageClient;
 export const activate = (context: vscode.ExtensionContext) => {
     schemaClient = initSchemaLanguageClient(context);
     conceptRuleClient = initConceptRuleLanguageClient(context);
+
+    context.subscriptions.push(vscode.commands.registerCommand("openspg.schema.preview", () => {
+        const editor = vscode.window.activeTextEditor;
+        if (!editor || editor.document.languageId !== "schema") {
+            vscode.window.showWarningMessage("Open a .schema file to preview.");
+            return;
+        }
+
+        SchemaPreviewPanel.show(editor.document, context.extensionUri, vscode.ViewColumn.Beside);
+    }));
 }
 
 
@@ -111,4 +122,12 @@ const initConceptRuleLanguageClient = (context: vscode.ExtensionContext) => {
     })
 
     return client
+}
+
+export const getSchemaClient = () => {
+    return schemaClient;
+}
+
+export const getConceptRuleClient = () => {
+    return conceptRuleClient;
 }

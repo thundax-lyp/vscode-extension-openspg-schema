@@ -42,8 +42,8 @@
         "build": "unbuild --clean"
     },
     "dependencies": {
-        "openspg-concept-rule-antlr4": "0.1.3",
-        "openspg-schema-antlr4": "0.1.3",
+        "openspg-concept-rule-antlr4": "0.1.4",
+        "openspg-schema-antlr4": "0.1.4",
         "prettier": "^3.6.2",
         "type-fest": "^5.2.0",
         "vscode-languageclient": "^9.0.1",

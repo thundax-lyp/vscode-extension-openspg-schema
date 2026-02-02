@@ -26,10 +26,18 @@
     },
     "activationEvents": [
         "onLanguage:schema",
-        "onLanguage:conceptRule"
+        "onLanguage:conceptRule",
+        "onCommand:openspg.schema.preview"
     ],
     "main": "./dist/extension",
     "contributes": {
+        "commands": [
+            {
+                "command": "openspg.schema.preview",
+                "title": "OpenSPG: Preview",
+                "icon": "resources/openspg.svg"
+            }
+        ],
         "languages": [
             {
                 "id": "schema",
@@ -65,7 +73,16 @@
                 "scopeName": "source.conceptRule",
                 "path": "./syntaxes/conceptRule.tmLanguage.json"
             }
-        ]
+        ],
+        "menus": {
+            "editor/title": [
+                {
+                    "command": "openspg.schema.preview",
+                    "when": "resourceLangId == schema",
+                    "group": "navigation"
+                }
+            ]
+        }
     },
     "scripts": {
         "vscode:prepublish": "npm run compile",
@@ -95,7 +112,7 @@
         "openspg-concept-rule-antlr4": "0.1.3",
         "openspg-concept-rule-language-server": "0.1.3",
         "openspg-schema-antlr4": "0.1.3",
-        "openspg-schema-language-server": "0.1.3",
+        "openspg-schema-language-server": "file://./openspg-schema-language-server-0.1.4.tgz",
         "prettier": "3.7.0",
         "type-fest": "5.2.0",
         "vscode-languageclient": "9.0.1",

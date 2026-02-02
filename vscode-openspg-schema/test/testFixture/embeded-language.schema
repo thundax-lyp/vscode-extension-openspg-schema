@@ -1,4 +1,4 @@
-namespace DocumentSymbol
+namespace EmbededLanguageSample
 
 Person(人物): EntityType
     desc: a great name
