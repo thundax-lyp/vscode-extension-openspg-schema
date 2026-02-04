@@ -202,7 +202,6 @@ export class SchemaPreviewPanel {
 
     private async updatePanelData() {
         await this.previewServer.updateContent(
-            this.document.fileName,
             new KGSchema(
                 this.currentNamespace?.meta,
                 this.currentEntities.map((x) => x.meta)
