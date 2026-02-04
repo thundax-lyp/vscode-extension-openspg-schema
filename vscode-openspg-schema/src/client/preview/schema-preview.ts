@@ -81,6 +81,8 @@ export class SchemaPreviewPanel {
 
         this.panel.onDidDispose(() => this.dispose(), null, this.disposables);
 
+        vscode.window.onDidChangeActiveColorTheme(() => this.handleDidChangeActiveColorTheme());
+
         vscode.window.onDidChangeActiveTextEditor(
             (editor) => {
                 if (editor && editor.document.languageId === 'schema') {
@@ -94,6 +96,12 @@ export class SchemaPreviewPanel {
         vscode.workspace.onDidChangeTextDocument((x) => this.handleDidChangeTextDocument(x), null, this.disposables);
 
         void this.initPanel();
+    }
+
+    private async handleDidChangeActiveColorTheme() {
+        if (this.isWebviewReady) {
+            await this.postMessage('refresh-theme');
+        }
     }
 
     private async handleDidChangeTextDocument(event: vscode.TextDocumentChangeEvent): Promise<void> {
