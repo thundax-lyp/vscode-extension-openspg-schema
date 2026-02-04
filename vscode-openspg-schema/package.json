@@ -1,7 +1,7 @@
 {
     "name": "vscode-openspg-schema",
     "displayName": "OpenSPG Schema",
-    "version": "0.1.4-dev",
+    "version": "0.1.4",
     "description": "OpenSPG Schema Mark Language Support",
     "keywords": [
         "openspg",
@@ -91,7 +91,9 @@
         "build:cli": "tsup src/server/server.ts -d dist/cli && node scripts/add_shebang.js dist/cli/server.js && node scripts/add_cmd_wrapper.js",
         "compile": "tsc -b",
         "watch": "tsc -b -w",
-        "test": "vscode-test"
+        "test": "vscode-test",
+        "prettier": "prettier --check \"src/**/*.{ts,tsx,js,jsx,json,css,less,md}\"",
+        "prettier:fix": "prettier --write \"src/**/*.{ts,tsx,js,jsx,json,css,less,md}\""
     },
     "nyc": {
         "extension": [
@@ -109,12 +111,12 @@
     },
     "dependencies": {
         "glob": "11.1.0",
-        "openspg-concept-rule-antlr4": "0.1.3",
-        "openspg-concept-rule-language-server": "0.1.3",
-        "openspg-schema-antlr4": "0.1.3",
-        "openspg-schema-language-server": "file://./openspg-schema-language-server-0.1.4.tgz",
-        "prettier": "3.7.0",
+        "openspg-concept-rule-antlr4": "0.1.4",
+        "openspg-concept-rule-language-server": "0.1.4",
+        "openspg-schema-antlr4": "0.1.4",
+        "openspg-schema-language-server": "0.1.4",
         "type-fest": "5.2.0",
+        "uuid": "13.0.0",
         "vscode-languageclient": "9.0.1",
         "vscode-languageserver": "9.0.1",
         "vscode-languageserver-textdocument": "1.0.12",
@@ -128,6 +130,7 @@
         "@vscode/test-electron": "2.5.2",
         "colors": "1.4.0",
         "mocha": "10.8.2",
+        "prettier": "3.8.0",
         "typescript": "5.9.3",
         "vsce": "2.15.0"
     }
