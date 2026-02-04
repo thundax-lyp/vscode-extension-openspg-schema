@@ -24,3 +24,4 @@
 * Hover information
 * Formatting
 * Diagnostics
+* Schema preview
