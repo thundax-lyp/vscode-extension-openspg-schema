@@ -1,0 +1,36 @@
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8"/>
+    <meta http-equiv="Content-Security-Policy" content="script-src 'nonce-{{nonce}}';">
+    <title>Schema Preview</title>
+    <style>
+        html, body {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        iframe {
+            position: fixed;
+            /*top: 0;*/
+            /*left: 0;*/
+            width: 100vw;
+            height: 100vh;
+            border: none;
+        }
+    </style>
+</head>
+<body>
+<iframe id="openspg-preview-frame" src="{{previewUrl}}"></iframe>
+<script nonce="{{nonce}}">
+    (function () {
+        window.addEventListener("message", (event) => {
+            const iframe = document.getElementById("openspg-preview-frame");
+            iframe?.contentWindow?.postMessage(event.data, "*");
+        });
+    })();
+</script>
+</body>
+</html>
