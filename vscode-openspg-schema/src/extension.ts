@@ -1,14 +1,9 @@
-import * as path from "path";
-import * as vscode from "vscode";
+import * as path from 'path';
+import * as vscode from 'vscode';
 
-import {
-    LanguageClient,
-    LanguageClientOptions,
-    ServerOptions,
-    TransportKind
-} from 'vscode-languageclient/node';
+import { LanguageClient, LanguageClientOptions, ServerOptions, TransportKind } from 'vscode-languageclient/node';
 
-import {SchemaPreviewPanel} from "./client/preview/schema-preview";
+import { SchemaPreviewPanel } from './client/preview/schema-preview';
 
 let schemaClient: LanguageClient;
 let conceptRuleClient: LanguageClient;
@@ -17,27 +12,28 @@ export const activate = (context: vscode.ExtensionContext) => {
     schemaClient = initSchemaLanguageClient(context);
     conceptRuleClient = initConceptRuleLanguageClient(context);
 
-    context.subscriptions.push(vscode.commands.registerCommand("openspg.schema.preview", () => {
-        const editor = vscode.window.activeTextEditor;
-        if (!editor || editor.document.languageId !== "schema") {
-            vscode.window.showWarningMessage("Open a .schema file to preview.");
-            return;
-        }
+    context.subscriptions.push(
+        vscode.commands.registerCommand('openspg.schema.preview', () => {
+            const editor = vscode.window.activeTextEditor;
+            if (!editor || editor.document.languageId !== 'schema') {
+                vscode.window.showWarningMessage('Open a .schema file to preview.');
+                return;
+            }
 
-        SchemaPreviewPanel.show(editor.document, context.extensionUri, vscode.ViewColumn.Beside);
-    }));
-}
-
+            SchemaPreviewPanel.show(editor.document, context.extensionUri, vscode.ViewColumn.Beside);
+        })
+    );
+};
 
 export const deactivate = (): Thenable<void> | undefined => {
     if (schemaClient) {
-        schemaClient.stop()
+        schemaClient.stop();
     }
     if (conceptRuleClient) {
-        conceptRuleClient.stop()
+        conceptRuleClient.stop();
     }
-    return undefined
-}
+    return undefined;
+};
 
 const initSchemaLanguageClient = (context: vscode.ExtensionContext) => {
     const serverModule = path.join(__dirname, 'server', 'schema-server.js');
@@ -45,26 +41,26 @@ const initSchemaLanguageClient = (context: vscode.ExtensionContext) => {
     const serverOptions: ServerOptions = {
         run: {
             module: serverModule,
-            transport: TransportKind.ipc,
+            transport: TransportKind.ipc
         },
         debug: {
             module: serverModule,
             options: {
-                execArgv: ['--nolazy', '--inspect=6009'],
+                execArgv: ['--nolazy', '--inspect=6009']
             },
-            transport: TransportKind.ipc,
+            transport: TransportKind.ipc
         }
     };
 
     const clientOptions: LanguageClientOptions = {
         documentSelector: [
-            {language: 'schema', scheme: 'file'},
-            {language: 'schema', scheme: 'untitled'}
+            { language: 'schema', scheme: 'file' },
+            { language: 'schema', scheme: 'untitled' }
         ],
         synchronize: {
             fileEvents: vscode.workspace.createFileSystemWatcher('**/*.schema')
         },
-        initializationOptions: context.extensionPath,
+        initializationOptions: context.extensionPath
     };
 
     const client = new LanguageClient(
@@ -76,38 +72,36 @@ const initSchemaLanguageClient = (context: vscode.ExtensionContext) => {
 
     client.start().then(() => {
         console.log('OpenSPG Schema Language Server started');
-    })
+    });
 
     return client;
-}
+};
 
 const initConceptRuleLanguageClient = (context: vscode.ExtensionContext) => {
     const serverModule = path.join(__dirname, 'server', 'concept-rule-server.js');
     const serverOptions: ServerOptions = {
         run: {
             module: serverModule,
-            transport: TransportKind.ipc,
+            transport: TransportKind.ipc
         },
         debug: {
             module: serverModule,
             options: {
-                execArgv: ['--nolazy', '--inspect=6010'],
+                execArgv: ['--nolazy', '--inspect=6010']
             },
-            transport: TransportKind.ipc,
+            transport: TransportKind.ipc
         }
     };
 
     const clientOptions: LanguageClientOptions = {
         documentSelector: [
-            {language: 'conceptRule', scheme: 'file'},
-            {language: 'conceptRule', scheme: 'untitled'}
+            { language: 'conceptRule', scheme: 'file' },
+            { language: 'conceptRule', scheme: 'untitled' }
         ],
         synchronize: {
-            fileEvents: [
-                vscode.workspace.createFileSystemWatcher('**/*.rule'),
-            ]
+            fileEvents: [vscode.workspace.createFileSystemWatcher('**/*.rule')]
         },
-        initializationOptions: context.extensionPath,
+        initializationOptions: context.extensionPath
     };
 
     const client = new LanguageClient(
@@ -119,15 +113,15 @@ const initConceptRuleLanguageClient = (context: vscode.ExtensionContext) => {
 
     client.start().then(() => {
         console.log('OpenSPG Concept Rule Language Server started');
-    })
+    });
 
-    return client
-}
+    return client;
+};
 
-export const getSchemaClient = () => {
+export const getSchemaLanguageClient = () => {
     return schemaClient;
-}
+};
 
-export const getConceptRuleClient = () => {
+export const getConceptRuleLanguageClient = () => {
     return conceptRuleClient;
-}
+};
