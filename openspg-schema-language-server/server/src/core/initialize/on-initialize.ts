@@ -1,59 +1,60 @@
-import {SemanticTokenModifiers, SemanticTokenTypes, TextDocumentSyncKind} from 'vscode-languageserver';
-import {Context, OnInitialize} from '../context';
+import { SemanticTokenModifiers, SemanticTokenTypes, TextDocumentSyncKind } from 'vscode-languageserver';
+import { Context, OnInitialize } from '../context';
 
-
-export const onInitialize = (_: Context): OnInitialize => async () => {
-    return {
-        serverInfo: {
-            name: 'OpenSPG Schema Language Server',
-        },
-        capabilities: {
-            textDocumentSync: {
-                save: true,
-                openClose: true,
-                change: TextDocumentSyncKind.Full,
-                willSave: false,
-                willSaveWaitUntil: false,
+export const onInitialize =
+    (_: Context): OnInitialize =>
+    async () => {
+        return {
+            serverInfo: {
+                name: 'OpenSPG Schema Language Server'
             },
-            // Tell the client that this server supports code completion.
-            // completionProvider: {
-            //   triggerCharacters: ['.', '"', `'`, '*', ' '],
-            // },
-            signatureHelpProvider: {
-                triggerCharacters: ['(', ','],
-            },
-            documentSymbolProvider: true,
-            semanticTokensProvider: {
-                legend: {
-                    tokenTypes: Object.values(SemanticTokenTypes),
-                    tokenModifiers: Object.values(SemanticTokenModifiers),
+            capabilities: {
+                textDocumentSync: {
+                    save: true,
+                    openClose: true,
+                    change: TextDocumentSyncKind.Full,
+                    willSave: false,
+                    willSaveWaitUntil: false
                 },
-                range: false,
-                full: true,
+                // Tell the client that this server supports code completion.
+                // completionProvider: {
+                //   triggerCharacters: ['.', '"', `'`, '*', ' '],
+                // },
+                signatureHelpProvider: {
+                    triggerCharacters: ['(', ',']
+                },
+                documentSymbolProvider: true,
+                semanticTokensProvider: {
+                    legend: {
+                        tokenTypes: Object.values(SemanticTokenTypes),
+                        tokenModifiers: Object.values(SemanticTokenModifiers)
+                    },
+                    range: false,
+                    full: true
+                },
+                diagnosticProvider: {
+                    interFileDependencies: true,
+                    workspaceDiagnostics: false
+                },
+                // typeDefinitionProvider: true,
+                definitionProvider: true,
+                referencesProvider: true,
+                hoverProvider: true,
+                foldingRangeProvider: true,
+                // documentLinkProvider: {
+                //     resolveProvider: false
+                // },
+                // codeLensProvider: {
+                //   resolveProvider: false,
+                //   workDoneProgress: false,
+                // },
+                // implementationProvider: true,
+                // renameProvider: true,
+                // codeActionProvider: true,
+                documentFormattingProvider: true
             },
-            diagnosticProvider: {
-                interFileDependencies: true,
-                workspaceDiagnostics: false,
-            },
-            // typeDefinitionProvider: true,
-            definitionProvider: true,
-            referencesProvider: true,
-            hoverProvider: true,
-            foldingRangeProvider: true,
-            // documentLinkProvider: {
-            //     resolveProvider: false
-            // },
-            // codeLensProvider: {
-            //   resolveProvider: false,
-            //   workDoneProgress: false,
-            // },
-            // implementationProvider: true,
-            // renameProvider: true,
-            // codeActionProvider: true,
-            documentFormattingProvider: true,
-        },
-        experimental: {
-            ast: true,
-        }
-    } as ReturnType<OnInitialize>
-}
+            experimental: {
+                ast: true
+            }
+        } as ReturnType<OnInitialize>;
+    };
