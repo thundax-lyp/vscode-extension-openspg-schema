@@ -1,6 +1,6 @@
 import * as path from 'path';
 
-import {runTests} from '@vscode/test-electron';
+import { runTests } from '@vscode/test-electron';
 
 async function main() {
     try {
@@ -15,7 +15,7 @@ async function main() {
 
         const version = '1.106.3';
 
-        const launchArgs: string[] = []
+        const launchArgs: string[] = [];
 
         // reset user-data-dir to make path shorter
         const userDataDir = process.env['CODE_TESTS_USER_DATA_DIR'];
@@ -30,7 +30,7 @@ async function main() {
             extensionDevelopmentPath,
             extensionTestsPath,
             version,
-            launchArgs,
+            launchArgs
         });
     } catch {
         console.error('Failed to run tests');

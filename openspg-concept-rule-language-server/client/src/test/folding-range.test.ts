@@ -1,13 +1,12 @@
 import * as vscode from 'vscode';
 import * as assert from 'assert';
-import {getDocUri, activate, createTicker} from './helper';
-
+import { getDocUri, activate, createTicker } from './helper';
 
 suite('Folding Ranges', () => {
     const fileName = 'folding-range.concept.rule';
     const docUri = getDocUri(fileName);
 
-    const {fireTick, waitingForTick} = createTicker()
+    const { fireTick, waitingForTick } = createTicker();
 
     test(`Open [${fileName}]`, async () => {
         await activate(docUri);
@@ -15,7 +14,7 @@ suite('Folding Ranges', () => {
     });
 
     test(`Folding [All]`, async () => {
-        await waitingForTick()
+        await waitingForTick();
 
         await testFoldingRanges(docUri, [
             new vscode.FoldingRange(2, 12),
@@ -30,27 +29,30 @@ suite('Folding Ranges', () => {
             new vscode.FoldingRange(20, 22),
             new vscode.FoldingRange(23, 39),
             new vscode.FoldingRange(26, 31),
-            new vscode.FoldingRange(37, 38),
+            new vscode.FoldingRange(37, 38)
         ]);
     });
-
 });
 
 const renderItem = (item: vscode.FoldingRange) => {
-    const {start, end} = item;
+    const { start, end } = item;
     return JSON.stringify({
-        start, end,
-    })
-}
+        start,
+        end
+    });
+};
 
-const render = (items: vscode.FoldingRange[]) => (items || []).map(x => renderItem(x)).join('\n');
+const render = (items: vscode.FoldingRange[]) => (items || []).map((x) => renderItem(x)).join('\n');
 
 const testFoldingRanges = async (docUri: vscode.Uri, expectedFoldingRanges: vscode.FoldingRange[]) => {
     console.log('URI: ' + docUri.toString(false));
 
     await activate(docUri);
 
-    let actualFoldingRanges = await vscode.commands.executeCommand<vscode.FoldingRange[]>('vscode.executeFoldingRangeProvider', docUri);
+    let actualFoldingRanges = await vscode.commands.executeCommand<vscode.FoldingRange[]>(
+        'vscode.executeFoldingRangeProvider',
+        docUri
+    );
 
     assert.equal(render(actualFoldingRanges), render(expectedFoldingRanges));
-}
+};

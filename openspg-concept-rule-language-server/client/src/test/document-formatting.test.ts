@@ -1,21 +1,22 @@
 import * as vscode from 'vscode';
 import * as assert from 'assert';
-import {getDocUri, activate, createTicker, editor} from './helper';
+import { getDocUri, activate, createTicker, editor } from './helper';
 
 suite('Document Formatting', () => {
     const fileName = 'document-formatting.concept.rule';
     const docUri = getDocUri(fileName);
 
-    const {fireTick, waitingForTick} = createTicker()
+    const { fireTick, waitingForTick } = createTicker();
 
     test(`Open [${fileName}]`, async () => {
         await activate(docUri);
-        fireTick()
+        fireTick();
     });
 
     test('Formatting document-formatting.concept.rule', async () => {
-        await waitingForTick()
-        const expectedText = '' +
+        await waitingForTick();
+        const expectedText =
+            '' +
             'namespace DocumentFormatting\n' +
             '\n' +
             '`TaxOfProdEvent`/`价格上涨`:\n' +
@@ -24,8 +25,8 @@ suite('Document Formatting', () => {
             '      Structure {}\n' +
             '\n' +
             '      Constraint {\n' +
-            '        R1: e.index==\'价格\'\n' +
-            '        R2: e.trend==\'上涨\'\n' +
+            "        R1: e.index=='价格'\n" +
+            "        R2: e.trend=='上涨'\n" +
             '      }\n' +
             '    }\n' +
             '  ]]\n' +
@@ -65,18 +66,21 @@ suite('Document Formatting', () => {
     });
 });
 
-
 async function testDocumentFormatting(docUri: vscode.Uri, expectedText: string) {
     const options: vscode.FormattingOptions = {
         tabSize: 2,
         insertSpaces: true,
         singleQuote: false
-    }
+    };
 
-    const actualTextEdits = await vscode.commands.executeCommand<vscode.TextEdit[]>('vscode.executeFormatDocumentProvider', docUri, options);
+    const actualTextEdits = await vscode.commands.executeCommand<vscode.TextEdit[]>(
+        'vscode.executeFormatDocumentProvider',
+        docUri,
+        options
+    );
 
-    await editor.edit(editBuilder => (actualTextEdits || []).forEach(x => editBuilder.replace(x.range, x.newText)));
-    const actualText = editor.document.getText()
+    await editor.edit((editBuilder) => (actualTextEdits || []).forEach((x) => editBuilder.replace(x.range, x.newText)));
+    const actualText = editor.document.getText();
 
     assert.equal(actualText, expectedText);
 }

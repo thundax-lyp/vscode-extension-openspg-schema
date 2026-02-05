@@ -24,7 +24,7 @@ export async function activate(docUri: vscode.Uri) {
 }
 
 export async function sleep(ms: number) {
-    return new Promise(resolve => setTimeout(resolve, ms));
+    return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
 export const getDocPath = (p: string) => {
@@ -36,48 +36,46 @@ export const getDocUri = (p: string) => {
 };
 
 export async function setTestContent(content: string): Promise<boolean> {
-    const all = new vscode.Range(
-        doc.positionAt(0),
-        doc.positionAt(doc.getText().length)
-    );
-    return editor.edit(eb => eb.replace(all, content));
+    const all = new vscode.Range(doc.positionAt(0), doc.positionAt(doc.getText().length));
+    return editor.edit((eb) => eb.replace(all, content));
 }
 
 export const toRange = (startLine: number, startChar: number, endLine: number, endChar: number) =>
-    new vscode.Range(
-        new vscode.Position(startLine, startChar), new vscode.Position(endLine, endChar),
-    );
+    new vscode.Range(new vscode.Position(startLine, startChar), new vscode.Position(endLine, endChar));
 
 export const center = (range: vscode.Range) =>
-    new vscode.Position(Math.ceil((range.start.line + range.end.line) / 2), Math.ceil((range.start.character + range.end.character) / 2))
+    new vscode.Position(
+        Math.ceil((range.start.line + range.end.line) / 2),
+        Math.ceil((range.start.character + range.end.character) / 2)
+    );
 
-export const toLocation = (uri: vscode.Uri, range: vscode.Range) =>
-    new vscode.Location(uri, range)
+export const toLocation = (uri: vscode.Uri, range: vscode.Range) => new vscode.Location(uri, range);
 
 export const findKeywordRange = (document: vscode.TextDocument, keyword: string, index: number = 1) => {
     const source = document.getText();
-    let searchOffset = 0, nextOffset = 0;
+    let searchOffset = 0,
+        nextOffset = 0;
     for (let i = 0; i < index; i++) {
-        searchOffset = source.indexOf(keyword, nextOffset)
+        searchOffset = source.indexOf(keyword, nextOffset);
         if (searchOffset < 0) {
             throw new Error('cannot find keyword: ' + keyword);
         }
         nextOffset = searchOffset + keyword.length;
     }
-    const start = document.positionAt(searchOffset)
-    return new vscode.Range(start, start.translate(0, keyword.length))
-}
+    const start = document.positionAt(searchOffset);
+    return new vscode.Range(start, start.translate(0, keyword.length));
+};
 
 export const createTicker = (interval = 100) => {
-    let fired = false
+    let fired = false;
     return {
         fireTick: () => {
-            fired = true
+            fired = true;
         },
         waitingForTick: async () => {
             while (!fired) {
-                await sleep(interval)
+                await sleep(interval);
             }
         }
-    }
-}
+    };
+};
