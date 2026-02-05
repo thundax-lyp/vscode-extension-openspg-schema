@@ -1,10 +1,10 @@
-import {OnHover} from '../context';
+import { OnHover } from '../context';
 
 export const onHover: OnHover = (ctx) => async (params) => {
-    const {textDocument, position} = params;
+    const { textDocument, position } = params;
 
     const document = ctx.documents.get(textDocument.uri);
-    if (!document || !document.ast) {
+    if (!document || !(await document.isReady())) {
         return null;
     }
 

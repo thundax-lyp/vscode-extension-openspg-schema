@@ -1,12 +1,11 @@
-import {Validator} from "./validator";
+import { Validator } from './validator';
 
-import {ConceptRuleTextDocument} from "../../common";
+import { ConceptRuleTextDocument } from '../../common';
 
-import {NamespaceValidator} from "./namespace-validator"
-import {ConceptRuleDeclarationValidator} from "./concept-rule-declaration-validator"
+import { NamespaceValidator } from './namespace-validator';
+import { ConceptRuleDeclarationValidator } from './concept-rule-declaration-validator';
 
 export class FullValidator implements Validator {
-
     validators: Validator[] = [];
 
     constructor() {
@@ -15,6 +14,6 @@ export class FullValidator implements Validator {
     }
 
     validate(document: ConceptRuleTextDocument) {
-        return this.validators.flatMap(x => x.validate(document));
+        return this.validators.flatMap((x) => x.validate(document));
     }
 }
