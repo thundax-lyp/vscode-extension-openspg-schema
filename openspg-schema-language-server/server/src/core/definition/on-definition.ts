@@ -1,21 +1,17 @@
 import { Location } from 'vscode-languageserver';
-import { StructureName, TraversePath } from 'openspg-schema-antlr4';
+import * as syntax from 'openspg-schema-antlr4';
 import { OnDefinition } from '../context';
 import { SchemaTextDocument } from '../common';
 
 export const onDefinition: OnDefinition = (ctx) => async (params) => {
     const { textDocument, position } = params;
     const document = ctx.documents.get(textDocument.uri);
-    if (!document) {
-        return null;
-    }
-    await document.promiseReady;
-    if (!document.ast) {
+    if (!document || !(await document.isReady())) {
         return null;
     }
 
     const createSelector = document.createPositionSelector(position);
-    const selectedPath = document.getPathAt<StructureName>(createSelector('StructureName'));
+    const selectedPath = document.getPathAt<syntax.StructureName>(createSelector('StructureName'));
     if (!selectedPath) {
         return null;
     }
@@ -28,7 +24,7 @@ export const onDefinition: OnDefinition = (ctx) => async (params) => {
     }
 };
 
-const handleStructureName = (document: SchemaTextDocument, selectedPath: TraversePath<StructureName>) => {
+const handleStructureName = (document: SchemaTextDocument, selectedPath: syntax.TraversePath<syntax.StructureName>) => {
     const selectedParts = selectedPath.path.split('.');
     if (!selectedParts.includes('BasicStructureTypeExpression')) {
         return null;

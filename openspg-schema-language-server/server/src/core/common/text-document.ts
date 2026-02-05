@@ -81,6 +81,11 @@ export class SchemaTextDocument implements TextDocument {
         this.promiseReady = this.init();
     }
 
+    public async isReady(): Promise<boolean> {
+        await this.promiseReady;
+        return !!this.ast;
+    }
+
     public update(changes: TextDocumentContentChangeEvent[], version: number): void {
         (this._textDocument as any).update(changes, version); // trick
         this.promiseReady = this.init();

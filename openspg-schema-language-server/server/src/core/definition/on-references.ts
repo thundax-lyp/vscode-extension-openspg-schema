@@ -1,21 +1,17 @@
 import { Location } from 'vscode-languageserver';
+import * as syntax from 'openspg-schema-antlr4';
 import { OnReferences } from '../context';
-import { StructureNameExpression, traverse } from 'openspg-schema-antlr4';
 import { SchemaTextDocument } from '../common';
 
 export const onReferences: OnReferences = (ctx) => async (params) => {
     const { textDocument, position } = params;
     const document = ctx.documents.get(textDocument.uri);
-    if (!document) {
-        return null;
-    }
-    await document.promiseReady;
-    if (!document.ast) {
+    if (!document || !(await document.isReady())) {
         return null;
     }
 
     const createSelector = document.createPositionSelector(position);
-    const selectedPath = document.getPathAt<StructureNameExpression>(createSelector('StructureNameExpression'));
+    const selectedPath = document.getPathAt<syntax.StructureNameExpression>(createSelector('StructureNameExpression'));
     if (!selectedPath) {
         return null;
     }
@@ -30,7 +26,7 @@ export const onReferences: OnReferences = (ctx) => async (params) => {
 
 const handleStructureNameExpression = (document: SchemaTextDocument, name: string) => {
     const locations: Location[] = [];
-    traverse(document.ast!, (path) => {
+    syntax.traverse(document.ast!, (path) => {
         if (path.node.type === 'StructureName' && path.node.realName.text === name) {
             const parts = path.path.split('.');
             if (parts.includes('BasicStructureTypeExpression') || parts.includes('InheritedStructureTypeExpression')) {
