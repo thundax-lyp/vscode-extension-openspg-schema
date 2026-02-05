@@ -20,9 +20,9 @@ export const onInitialize =
                 // completionProvider: {
                 //   triggerCharacters: ['.', '"', `'`, '*', ' '],
                 // },
-                signatureHelpProvider: {
-                    triggerCharacters: ['(', ',']
-                },
+                // signatureHelpProvider: {
+                //     triggerCharacters: ['(', ',']
+                // },
                 documentSymbolProvider: true,
                 semanticTokensProvider: {
                     legend: {
