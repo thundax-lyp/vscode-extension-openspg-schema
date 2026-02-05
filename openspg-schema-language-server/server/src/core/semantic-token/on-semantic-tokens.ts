@@ -8,11 +8,7 @@ export const onSemanticTokens =
         const builder = new SemanticTokensBuilder();
 
         const document = ctx.documents.get(textDocument.uri);
-        if (!document) {
-            return builder.build();
-        }
-        await document.promiseReady;
-        if (!document.ast) {
+        if (!document || !(await document.isReady())) {
             return builder.build();
         }
 
@@ -50,7 +46,7 @@ export const onSemanticTokens =
             );
         };
 
-        syntax.visit(document.ast, {
+        syntax.visit(document.ast!, {
             NamespaceDeclaration: ({ node }) => emitPrefixKeyword(node, 'namespace'),
             NamespaceVariable: ({ node }) => emit(node, SemanticTokenTypes.variable),
 

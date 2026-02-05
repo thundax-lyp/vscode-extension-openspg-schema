@@ -7,11 +7,7 @@ export const onDocumentSymbol: OnDocumentSymbol =
     (ctx) =>
     async ({ textDocument }) => {
         const document = ctx.documents.get(textDocument.uri);
-        if (!document) {
-            return null;
-        }
-        await document.promiseReady;
-        if (!document.ast) {
+        if (!document || !(await document.isReady())) {
             return null;
         }
 
@@ -42,7 +38,7 @@ export const onDocumentSymbol: OnDocumentSymbol =
 
         return (
             await Promise.all(
-                document.ast.nodes.map((node) =>
+                document.ast!.nodes.map((node) =>
                     (async () => {
                         switch (node.type) {
                             case 'NamespaceDeclaration':

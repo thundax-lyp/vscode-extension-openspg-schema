@@ -6,11 +6,7 @@ export const onFoldingRanges: OnFoldingRanges =
     ({ documents }: Context) =>
     async ({ textDocument }) => {
         const document = documents.get(textDocument.uri);
-        if (!document) {
-            return null;
-        }
-        await document.promiseReady;
-        if (!document.ast) {
+        if (!document || !(await document.isReady())) {
             return null;
         }
 
@@ -25,7 +21,7 @@ export const onFoldingRanges: OnFoldingRanges =
 
         const foldingRanges: FoldingRange[] = [];
 
-        syntax.visit(document.ast, {
+        syntax.visit(document.ast!, {
             EntityDeclaration: ({ node }) => {
                 if (node.children && node.children.length > 0) {
                     const range = trimRange(node.range);

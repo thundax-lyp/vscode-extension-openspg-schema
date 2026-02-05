@@ -6,11 +6,7 @@ export const onDocumentHighlight: OnDocumentHighlight =
     ({ documents }: Context) =>
     async ({ textDocument, position }) => {
         const document = documents.get(textDocument.uri);
-        if (!document) {
-            return null;
-        }
-        await document.promiseReady;
-        if (!document.ast) {
+        if (!document || !(await document.isReady())) {
             return null;
         }
 
