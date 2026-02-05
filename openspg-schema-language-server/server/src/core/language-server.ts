@@ -1,32 +1,32 @@
-import {Connection} from "vscode-languageserver";
-import {SchemaTextDocument, TextDocuments} from "./common";
-import {Context} from "./context";
-import {onExit, onInitialize, onInitialized} from "./initialize";
-import {onDocumentSymbol} from "./symbol";
-import {onDocumentFormatting} from "./format";
-import {onDefinition, onHover, onReferences} from "./definition";
-import {onDocumentHighlight} from "./highlight";
-import {onSemanticTokens} from "./semantic-token";
-import {onFoldingRanges} from "./folding";
-import {onDiagnostics} from "./diagnostic";
-import {ASTRequest, onAST} from "./ast";
+import { Connection } from 'vscode-languageserver';
+import { SchemaTextDocument, TextDocuments } from './common';
+import { Context } from './context';
+import { onExit, onInitialize, onInitialized } from './initialize';
+import { onDocumentSymbol } from './symbol';
+import { onDocumentFormatting } from './format';
+import { onDefinition, onHover, onReferences } from './definition';
+import { onDocumentHighlight } from './highlight';
+import { onSemanticTokens } from './semantic-token';
+import { onFoldingRanges } from './folding';
+import { onDiagnostics } from './diagnostic';
+import { ASTRequest, onAST } from './ast';
 
 const initDocuments = (_: Connection): TextDocuments<SchemaTextDocument> => {
     const documents = new TextDocuments(SchemaTextDocument);
     documents.onDidOpen(() => {
         // connection.console.log('documents.onDidOpen()');
-    })
+    });
 
     documents.onDidClose(() => {
         // connection.console.log('documents.onDidClose()');
-    })
+    });
 
     documents.onDidChangeContent(() => {
         // connection.console.log('documents.onDidChangeContent()');
     });
 
     return documents;
-}
+};
 
 export const listen = (connection: Connection) => {
     const documents = initDocuments(connection);
@@ -65,7 +65,6 @@ export const listen = (connection: Connection) => {
 
     connection.onDocumentSymbol(onDocumentSymbol(context));
 
-
     // connection.onWorkspaceSymbol(onSignatureHelp(context));
     // connection.onWorkspaceSymbolResolve(onSignatureHelp(context));
 
@@ -90,12 +89,12 @@ export const listen = (connection: Connection) => {
     // connection.onSelectionRanges(onDocumentLinkResolve(context));
     // connection.onExecuteCommand(onDocumentLinkResolve(context));
 
-    connection.languages.semanticTokens.on(onSemanticTokens(context))
+    connection.languages.semanticTokens.on(onSemanticTokens(context));
     connection.languages.diagnostics.on(onDiagnostics(context));
 
-    connection.onRequest(ASTRequest, onAST(context))
+    connection.onRequest(ASTRequest, onAST(context));
 
-    documents.listen(connection)
+    documents.listen(connection);
 
-    connection.listen()
-}
+    connection.listen();
+};
