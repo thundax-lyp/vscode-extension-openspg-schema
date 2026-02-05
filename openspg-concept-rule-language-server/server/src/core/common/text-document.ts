@@ -1,18 +1,15 @@
 import * as vscodeUri from 'vscode-uri';
-import {Connection, Position, Range, TextDocumentContentChangeEvent} from 'vscode-languageserver';
-import {TextDocument} from 'vscode-languageserver-textdocument';
-import * as syntax from 'openspg-concept-rule-antlr4'
-import {checkNode, QueryFilter} from './parser';
-import {documents} from './text-documents';
-import {EVENT_TEXT_DOCUMENTS_READ_CONTENT} from "./constants";
+import { Connection, Position, Range, TextDocumentContentChangeEvent } from 'vscode-languageserver';
+import { TextDocument } from 'vscode-languageserver-textdocument';
+import * as syntax from 'openspg-concept-rule-antlr4';
+import { checkNode, QueryFilter } from './parser';
+import { documents } from './text-documents';
+import { EVENT_TEXT_DOCUMENTS_READ_CONTENT } from './constants';
 
 export interface ConceptRuleExportItem {
-    name: string
-    uri: string
-    node:
-        | syntax.NamespaceDeclaration
-        | syntax.RuleWrapperDeclaration
-        | syntax.ConceptRuleDeclaration
+    name: string;
+    uri: string;
+    node: syntax.NamespaceDeclaration | syntax.RuleWrapperDeclaration | syntax.ConceptRuleDeclaration;
 }
 
 export interface ConceptRuleImportItem extends ConceptRuleExportItem {
@@ -20,26 +17,21 @@ export interface ConceptRuleImportItem extends ConceptRuleExportItem {
 }
 
 export class ConceptRuleTextDocument implements TextDocument {
-    public static create(
-        uri: string,
-        languageId: string,
-        version: number,
-        content: string,
-    ): ConceptRuleTextDocument {
+    public static create(uri: string, languageId: string, version: number, content: string): ConceptRuleTextDocument {
         return new ConceptRuleTextDocument(uri, languageId, version, content);
     }
 
     public static update(
         document: ConceptRuleTextDocument,
         changes: TextDocumentContentChangeEvent[],
-        version: number,
+        version: number
     ): ConceptRuleTextDocument {
         if (document instanceof ConceptRuleTextDocument) {
             document.update(changes, version);
             return document;
         } else {
             throw new Error(
-                'ConceptRuleTextDocument.update: document must be created by ConceptRuleTextDocument.create',
+                'ConceptRuleTextDocument.update: document must be created by ConceptRuleTextDocument.create'
             );
         }
     }
@@ -91,6 +83,11 @@ export class ConceptRuleTextDocument implements TextDocument {
         this.promiseReady = this.init();
     }
 
+    public async isReady(): Promise<boolean> {
+        await this.promiseReady;
+        return !!this.ast;
+    }
+
     public update(changes: TextDocumentContentChangeEvent[], version: number): void {
         (this._textDocument as any).update(changes, version); // trick
         this.promiseReady = this.init();
@@ -106,15 +103,14 @@ export class ConceptRuleTextDocument implements TextDocument {
             if (!content) return;
 
             // parse ast and tokens
-            this.ast = syntax.parse<syntax.SourceUnit>(content, {tolerant: true});
-            this.tokens = syntax.tokenizer(content, {tolerant: true});
+            this.ast = syntax.parse<syntax.SourceUnit>(content, { tolerant: true });
+            this.tokens = syntax.tokenizer(content, { tolerant: true });
             if (!this.ast) {
                 return;
             }
 
             // get export items
             // this.exports = this.getExportItems();
-
         } catch (error) {
             // ignore
             // globalThis.connection?.sendDiagnostics({
@@ -152,7 +148,7 @@ export class ConceptRuleTextDocument implements TextDocument {
     public getNodeRange<T extends syntax.SyntaxNode>(node?: T): Range {
         return {
             start: this.positionAt(node?.range[0] ?? 0),
-            end: this.positionAt((node?.range[1] ?? 0) + 1),
+            end: this.positionAt((node?.range[1] ?? 0) + 1)
         };
     }
 
@@ -166,7 +162,7 @@ export class ConceptRuleTextDocument implements TextDocument {
      */
     public getNodesAt<T extends syntax.SyntaxNode = syntax.SyntaxNode>(
         position: Position,
-        filters: QueryFilter[] = [],
+        filters: QueryFilter[] = []
     ) {
         const offset = this.offsetAt(position);
         const paths: syntax.TraversePath<T>[] = [];
@@ -192,7 +188,7 @@ export class ConceptRuleTextDocument implements TextDocument {
      */
     public getNodeAt<T extends syntax.SyntaxNode = syntax.SyntaxNode>(
         position: Position,
-        filters: QueryFilter[] = [],
+        filters: QueryFilter[] = []
     ): syntax.TraversePath<T> | null {
         const paths = this.getNodesAt<T>(position, filters);
         const target = paths[paths.length - 1];
@@ -207,13 +203,21 @@ export class ConceptRuleTextDocument implements TextDocument {
     public getPathsAt<T extends syntax.SyntaxNode = syntax.SyntaxNode>(
         ...selectors: syntax.Selector[]
     ): syntax.TraversePath<T>[] {
-        return syntax.query<T>(this.ast!, selectors, {queryAll: true, order: 'asc'});
+        return syntax.query<T>(this.ast!, selectors, {
+            queryAll: true,
+            order: 'asc'
+        });
     }
 
     public getPathAt<T extends syntax.SyntaxNode = syntax.SyntaxNode>(
         ...selectors: syntax.Selector[]
     ): syntax.TraversePath<T> | null {
-        return syntax.query<T>(this.ast!, selectors, {queryAll: true, order: 'desc'})?.[0] ?? null;
+        return (
+            syntax.query<T>(this.ast!, selectors, {
+                queryAll: true,
+                order: 'desc'
+            })?.[0] ?? null
+        );
     }
 
     public resolvePath = (target: string): vscodeUri.URI => {
