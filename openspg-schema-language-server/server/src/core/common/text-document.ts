@@ -1,17 +1,15 @@
 import * as vscodeUri from 'vscode-uri';
-import {Connection, Position, Range, TextDocumentContentChangeEvent} from 'vscode-languageserver';
-import {TextDocument} from 'vscode-languageserver-textdocument';
-import * as syntax from 'openspg-schema-antlr4'
-import {checkNode, QueryFilter} from './parser';
-import {documents} from './text-documents';
-import {EVENT_TEXT_DOCUMENTS_READ_CONTENT} from "./constants";
+import { Connection, Position, Range, TextDocumentContentChangeEvent } from 'vscode-languageserver';
+import { TextDocument } from 'vscode-languageserver-textdocument';
+import * as syntax from 'openspg-schema-antlr4';
+import { checkNode, QueryFilter } from './parser';
+import { documents } from './text-documents';
+import { EVENT_TEXT_DOCUMENTS_READ_CONTENT } from './constants';
 
 export interface SchemaExportItem {
-    name: string
-    uri: string
-    node:
-        | syntax.NamespaceDeclaration
-        | syntax.EntityDeclaration
+    name: string;
+    uri: string;
+    node: syntax.NamespaceDeclaration | syntax.EntityDeclaration;
 }
 
 export interface SchemaImportItem extends SchemaExportItem {
@@ -19,27 +17,20 @@ export interface SchemaImportItem extends SchemaExportItem {
 }
 
 export class SchemaTextDocument implements TextDocument {
-    public static create(
-        uri: string,
-        languageId: string,
-        version: number,
-        content: string,
-    ): SchemaTextDocument {
+    public static create(uri: string, languageId: string, version: number, content: string): SchemaTextDocument {
         return new SchemaTextDocument(uri, languageId, version, content);
     }
 
     public static update(
         document: SchemaTextDocument,
         changes: TextDocumentContentChangeEvent[],
-        version: number,
+        version: number
     ): SchemaTextDocument {
         if (document instanceof SchemaTextDocument) {
             document.update(changes, version);
             return document;
         } else {
-            throw new Error(
-                'SchemaTextDocument.update: document must be created by SchemaTextDocument.create',
-            );
+            throw new Error('SchemaTextDocument.update: document must be created by SchemaTextDocument.create');
         }
     }
 
@@ -105,15 +96,14 @@ export class SchemaTextDocument implements TextDocument {
             if (!content) return;
 
             // parse ast and tokens
-            this.ast = syntax.parse<syntax.SourceUnit>(content, {tolerant: true});
-            this.tokens = syntax.tokenizer(content, {tolerant: true});
+            this.ast = syntax.parse<syntax.SourceUnit>(content, { tolerant: true });
+            this.tokens = syntax.tokenizer(content, { tolerant: true });
             if (!this.ast) {
                 return;
             }
 
             // get export items
             // this.exports = this.getExportItems();
-
         } catch (error) {
             // ignore
             // globalThis.connection?.sendDiagnostics({
@@ -151,7 +141,7 @@ export class SchemaTextDocument implements TextDocument {
     public getNodeRange<T extends syntax.SyntaxNode>(node?: T): Range {
         return {
             start: this.positionAt(node?.range[0] ?? 0),
-            end: this.positionAt((node?.range[1] ?? 0) + 1),
+            end: this.positionAt((node?.range[1] ?? 0) + 1)
         };
     }
 
@@ -165,7 +155,7 @@ export class SchemaTextDocument implements TextDocument {
      */
     public getNodesAt<T extends syntax.SyntaxNode = syntax.SyntaxNode>(
         position: Position,
-        filters: QueryFilter[] = [],
+        filters: QueryFilter[] = []
     ) {
         const offset = this.offsetAt(position);
         const paths: syntax.TraversePath<T>[] = [];
@@ -191,7 +181,7 @@ export class SchemaTextDocument implements TextDocument {
      */
     public getNodeAt<T extends syntax.SyntaxNode = syntax.SyntaxNode>(
         position: Position,
-        filters: QueryFilter[] = [],
+        filters: QueryFilter[] = []
     ): syntax.TraversePath<T> | null {
         const paths = this.getNodesAt<T>(position, filters);
         const target = paths[paths.length - 1];
@@ -206,13 +196,13 @@ export class SchemaTextDocument implements TextDocument {
     public getPathsAt<T extends syntax.SyntaxNode = syntax.SyntaxNode>(
         ...selectors: syntax.Selector[]
     ): syntax.TraversePath<T>[] {
-        return syntax.query<T>(this.ast!, selectors, {queryAll: true, order: 'asc'});
+        return syntax.query<T>(this.ast!, selectors, { queryAll: true, order: 'asc' });
     }
 
     public getPathAt<T extends syntax.SyntaxNode = syntax.SyntaxNode>(
         ...selectors: syntax.Selector[]
     ): syntax.TraversePath<T> | null {
-        return syntax.query<T>(this.ast!, selectors, {queryAll: true, order: 'desc'})?.[0] ?? null;
+        return syntax.query<T>(this.ast!, selectors, { queryAll: true, order: 'desc' })?.[0] ?? null;
     }
 
     public resolvePath = (target: string): vscodeUri.URI => {

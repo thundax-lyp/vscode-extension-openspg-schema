@@ -1,4 +1,4 @@
-import {Position} from "vscode-languageserver";
+import { Position } from 'vscode-languageserver';
 
 /**
  * check the second point is after the first point
@@ -11,4 +11,4 @@ export const isAfter = (first: Position, second: Position): boolean => {
         return first.line < second.line;
     }
     return first.character < second.character;
-}
+};

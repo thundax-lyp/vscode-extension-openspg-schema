@@ -1,11 +1,10 @@
-import {SyntaxNode, SyntaxNodeType} from "openspg-schema-antlr4";
+import { SyntaxNode, SyntaxNodeType } from 'openspg-schema-antlr4';
 
 export type PrintFunc<T extends SyntaxNode = SyntaxNode> = (node: T, path: SyntaxNodeType[]) => string | string[];
 
 export type MixinPrinter = Record<string, PrintFunc<any>>;
 
 export const format = (node: SyntaxNode | null, mixin: MixinPrinter): string => {
-
     const formatInner = (n: SyntaxNode, path: SyntaxNodeType[]) => {
         const printerName = `print${n.type}`;
         const printer = mixin[printerName];
@@ -14,8 +13,8 @@ export const format = (node: SyntaxNode | null, mixin: MixinPrinter): string => 
         }
 
         const result = printer(n, [...path, n.type]);
-        return typeof result === "string" ? result : result.join('');
-    }
+        return typeof result === 'string' ? result : result.join('');
+    };
 
     return node ? formatInner(node!, []) : '';
-}
+};

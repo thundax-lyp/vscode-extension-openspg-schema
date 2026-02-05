@@ -1,4 +1,4 @@
-import * as syntax from "openspg-schema-antlr4";
+import * as syntax from 'openspg-schema-antlr4';
 
 // node-to-text
 export const node2markdown = (node?: syntax.SyntaxNode | null): string => {
@@ -7,4 +7,3 @@ export const node2markdown = (node?: syntax.SyntaxNode | null): string => {
     }
     return '';
 };
-
