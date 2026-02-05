@@ -161,9 +161,8 @@ export class TextDocuments<T extends TextDocument> {
             connection.onDidOpenTextDocument((event: DidOpenTextDocumentParams) => {
                 const { uri, languageId, version, text } = event.textDocument;
                 const document = this._configuration.create(uri, languageId, version, text);
-                const decodedUri = decodeURIComponent(uri);
 
-                this._syncedDocuments.set(decodedUri, document);
+                this._syncedDocuments.set(uri, document);
                 const toFire = Object.freeze({ document });
                 this._onDidOpen.fire(toFire);
                 this._onDidChangeContent.fire(toFire);
@@ -171,21 +170,22 @@ export class TextDocuments<T extends TextDocument> {
         );
         disposables.push(
             connection.onDidChangeTextDocument((event: DidChangeTextDocumentParams) => {
-                const td = event.textDocument;
-                const changes = event.contentChanges;
-                if (changes.length === 0) {
+                const { textDocument, contentChanges } = event;
+                if (contentChanges.length === 0) {
                     return;
                 }
 
-                const { version } = td;
+                const { version } = textDocument;
                 if (version === null || version === undefined) {
-                    throw new Error(`Received document change event for ${td.uri} without valid version identifier`);
+                    throw new Error(
+                        `Received document change event for ${textDocument.uri} without valid version identifier`
+                    );
                 }
 
-                let syncedDocument = this._syncedDocuments.get(td.uri);
+                let syncedDocument = this._syncedDocuments.get(textDocument.uri);
                 if (syncedDocument !== undefined) {
-                    syncedDocument = this._configuration.update(syncedDocument, changes, version);
-                    this._syncedDocuments.set(td.uri, syncedDocument);
+                    syncedDocument = this._configuration.update(syncedDocument, contentChanges, version);
+                    this._syncedDocuments.set(textDocument.uri, syncedDocument);
                     this._onDidChangeContent.fire(Object.freeze({ document: syncedDocument }));
                 }
             })
@@ -235,19 +235,20 @@ export class TextDocuments<T extends TextDocument> {
             connection.onNotification(EVENT_TEXT_DOCUMENTS_ON_SYNC, (event: SyncTextDocumentParams) => {
                 const documents = event.documents;
                 this._syncedDocuments.clear();
-                Object.entries(documents).forEach(([, td]) => {
-                    const document = this._configuration.create(td.uri, td.languageId, td.version, td.text);
-                    this._syncedDocuments.set(td.uri, document);
+                Object.entries(documents).forEach(([, textDocument]) => {
+                    const { uri, languageId, version, text } = textDocument;
+                    const document = this._configuration.create(uri, languageId, version, text);
+                    this._syncedDocuments.set(uri, document);
                 });
                 this._onSync.fire(Object.freeze({ documents: this._syncedDocuments }));
             })
         );
         disposables.push(
             connection.onNotification(EVENT_TEXT_DOCUMENTS_ON_CREATE, (event: DidOpenTextDocumentParams) => {
-                const td = event.textDocument;
+                const { uri, languageId, version, text } = event.textDocument;
 
-                const document = this._configuration.create(td.uri, td.languageId, td.version, td.text);
-                this._syncedDocuments.set(td.uri, document);
+                const document = this._configuration.create(uri, languageId, version, text);
+                this._syncedDocuments.set(uri, document);
                 const toFire = Object.freeze({ document });
                 this._onCreate.fire(toFire);
                 this._onDidOpen.fire(toFire);

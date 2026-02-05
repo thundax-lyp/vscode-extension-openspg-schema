@@ -12,7 +12,7 @@ export const onInitialize =
                 textDocumentSync: {
                     save: true,
                     openClose: true,
-                    change: TextDocumentSyncKind.Full,
+                    change: TextDocumentSyncKind.Incremental,
                     willSave: false,
                     willSaveWaitUntil: false
                 },
