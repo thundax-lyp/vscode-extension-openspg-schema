@@ -9,6 +9,10 @@ export const onDocumentHighlight: OnDocumentHighlight =
         if (!document) {
             return null;
         }
+        await document.promiseReady;
+        if (!document.ast) {
+            return null;
+        }
 
         const createSelector = document.createPositionSelector(position);
         const selectedPath = document.getPathAt<syntax.SyntaxNode>(createSelector('*'));

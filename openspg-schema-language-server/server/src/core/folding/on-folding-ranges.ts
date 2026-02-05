@@ -6,7 +6,11 @@ export const onFoldingRanges: OnFoldingRanges =
     ({ documents }: Context) =>
     async ({ textDocument }) => {
         const document = documents.get(textDocument.uri);
-        if (!document || !document.ast) {
+        if (!document) {
+            return null;
+        }
+        await document.promiseReady;
+        if (!document.ast) {
             return null;
         }
 

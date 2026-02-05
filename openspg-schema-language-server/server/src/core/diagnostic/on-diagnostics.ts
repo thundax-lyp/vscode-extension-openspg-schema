@@ -6,7 +6,14 @@ export const onDiagnostics =
     (ctx: Context): OnDiagnostics =>
     async ({ textDocument }) => {
         const document = ctx.documents.get(textDocument.uri);
-        if (!document || !document.ast) {
+        if (!document) {
+            return {
+                kind: DocumentDiagnosticReportKind.Full,
+                items: []
+            } as FullDocumentDiagnosticReport;
+        }
+        await document.promiseReady;
+        if (!document.ast) {
             return {
                 kind: DocumentDiagnosticReportKind.Full,
                 items: []

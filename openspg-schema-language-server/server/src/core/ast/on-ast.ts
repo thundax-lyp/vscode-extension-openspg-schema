@@ -4,7 +4,11 @@ import { ASTParams, ASTResult } from './types';
 export const onAST = (ctx: Context) => async (params: ASTParams) => {
     const { textDocument } = params;
     const document = ctx.documents.get(textDocument.uri);
-    if (!document || !document.ast) {
+    if (!document) {
+        return null;
+    }
+    await document.promiseReady;
+    if (!document.ast) {
         return null;
     }
 

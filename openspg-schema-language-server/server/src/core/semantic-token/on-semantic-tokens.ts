@@ -8,7 +8,11 @@ export const onSemanticTokens =
         const builder = new SemanticTokensBuilder();
 
         const document = ctx.documents.get(textDocument.uri);
-        if (!document || !document.ast) {
+        if (!document) {
+            return builder.build();
+        }
+        await document.promiseReady;
+        if (!document.ast) {
             return builder.build();
         }
 

@@ -17,7 +17,11 @@ export const onHover: OnHover = (ctx) => async (params) => {
     const { textDocument, position } = params;
 
     const document = ctx.documents.get(textDocument.uri);
-    if (!document || !document.ast) {
+    if (!document) {
+        return null;
+    }
+    await document.promiseReady;
+    if (!document.ast) {
         return null;
     }
 
