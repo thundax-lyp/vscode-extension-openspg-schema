@@ -1,6 +1,6 @@
 import * as path from 'path';
 import * as Mocha from 'mocha';
-import {glob} from 'glob';
+import { glob } from 'glob';
 
 export function run(): Promise<void> {
     // Create the mocha test
@@ -11,20 +11,20 @@ export function run(): Promise<void> {
     mocha.timeout(100000);
 
     const testsRoot = __dirname;
-    console.log('Test Root: ' + testsRoot)
+    console.log('Test Root: ' + testsRoot);
 
-    return glob.glob('**.test.js', {cwd: testsRoot}).then(async files => {
-        console.log(`find ${files.length} test files`)
+    return glob.glob('**.test.js', { cwd: testsRoot }).then(async (files) => {
+        console.log(`find ${files.length} test files`);
         console.log(files);
         // Add files to the test suite
         files
             // .filter(x => x.includes('ast'))
-            .forEach(x => mocha.addFile(path.resolve(testsRoot, x)));
+            .forEach((x) => mocha.addFile(path.resolve(testsRoot, x)));
 
         try {
             // Run the mocha test
             await new Promise<void>((resolve, reject) => {
-                mocha.run(failures => {
+                mocha.run((failures) => {
                     if (failures > 0) {
                         reject(`${failures} tests failed.`);
                     } else {

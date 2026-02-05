@@ -1,21 +1,22 @@
 import * as vscode from 'vscode';
 import * as assert from 'assert';
-import {getDocUri, activate, createTicker, editor} from './helper';
+import { getDocUri, activate, createTicker, editor } from './helper';
 
 suite('Document Formatting', () => {
     const fileName = 'document-formatting.schema';
     const docUri = getDocUri(fileName);
 
-    const {fireTick, waitingForTick} = createTicker()
+    const { fireTick, waitingForTick } = createTicker();
 
     test(`Open [${fileName}]`, async () => {
         await activate(docUri);
-        fireTick()
+        fireTick();
     });
 
     test('document-formatting.schema', async () => {
-        await waitingForTick()
-        const expectedText = '' +
+        await waitingForTick();
+        const expectedText =
+            '' +
             'namespace DocumentFormatting\n' +
             '\n' +
             'Person(人物): EntityType\n' +
@@ -33,18 +34,21 @@ suite('Document Formatting', () => {
     });
 });
 
-
 async function testDocumentFormatting(docUri: vscode.Uri, expectedText: string) {
     const options: vscode.FormattingOptions = {
         tabSize: 4,
         insertSpaces: true,
         singleQuote: false
-    }
+    };
 
-    const actualTextEdits = await vscode.commands.executeCommand<vscode.TextEdit[]>('vscode.executeFormatDocumentProvider', docUri, options);
+    const actualTextEdits = await vscode.commands.executeCommand<vscode.TextEdit[]>(
+        'vscode.executeFormatDocumentProvider',
+        docUri,
+        options
+    );
 
-    await editor.edit(editBuilder => actualTextEdits.forEach(x => editBuilder.replace(x.range, x.newText)));
-    const actualText = editor.document.getText()
+    await editor.edit((editBuilder) => actualTextEdits.forEach((x) => editBuilder.replace(x.range, x.newText)));
+    const actualText = editor.document.getText();
 
     assert.equal(actualText, expectedText);
 }
