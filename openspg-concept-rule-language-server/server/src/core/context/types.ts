@@ -1,5 +1,5 @@
-import type {Connection} from 'vscode-languageserver';
-import type {Context} from './context';
+import type { Connection } from 'vscode-languageserver';
+import type { Context } from './context';
 
 export type OnDefinition = (ctx: Context) => Parameters<Connection['onDefinition']>[0];
 export type OnTypeDefinition = (ctx: Context) => Parameters<Connection['onTypeDefinition']>[0];
