@@ -70,7 +70,9 @@
         "watch": "tsc -b -w",
         "build": "unbuild --clean",
         "lint": "eslint",
-        "test": "sh ./scripts/e2e.sh"
+        "test": "sh ./scripts/e2e.sh",
+        "prettier": "prettier --check \"{server,client}/src/**/*.{ts,tsx,js,jsx,json,css,less,md}\"",
+        "prettier:fix": "prettier --write \"{server,client}/src/**/*.{ts,tsx,js,jsx,json,css,less,md}\""
     },
     "devDependencies": {
         "@eslint/js": "^9.13.0",
@@ -79,6 +81,7 @@
         "@types/node": "^22",
         "eslint": "^9.13.0",
         "mocha": "^10.3.0",
+        "prettier": "3.8.0",
         "typescript": "^5.9.2",
         "typescript-eslint": "^8.39.0",
         "unbuild": "^3.6.1"
