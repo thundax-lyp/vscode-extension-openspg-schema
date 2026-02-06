@@ -1,5 +1,3 @@
-import {Identifier} from './identifier';
+import { Identifier } from "./identifier";
 
-export {
-	Identifier,
-}
+export { Identifier };

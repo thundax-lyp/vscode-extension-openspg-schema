@@ -1,4 +1,4 @@
-import {BaseNodeString} from '../base';
+import { BaseNodeString } from "../base";
 
 /**
  * ### Grammar:
@@ -7,7 +7,5 @@ import {BaseNodeString} from '../base';
  * ```
  **/
 export class NamespaceVariable extends BaseNodeString {
-
-    type = 'NamespaceVariable' as const;
-
+    type = "NamespaceVariable" as const;
 }

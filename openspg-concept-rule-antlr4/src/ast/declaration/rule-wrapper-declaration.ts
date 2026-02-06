@@ -1,7 +1,7 @@
-import {BaseNode} from '../base';
-import {ConceptRuleParserVisitor, RuleWrapperDeclarationContext} from '../../antlr4';
-import {RuleWrapperHead} from "./rule-wrapper-head";
-import {RuleWrapperRuleDeclaration} from "./rule-wrapper-rule-declaration";
+import { BaseNode } from "../base";
+import { ConceptRuleParserVisitor, RuleWrapperDeclarationContext } from "../../antlr4";
+import { RuleWrapperHead } from "./rule-wrapper-head";
+import { RuleWrapperRuleDeclaration } from "./rule-wrapper-rule-declaration";
 
 /**
  * ### Grammar:
@@ -14,8 +14,7 @@ import {RuleWrapperRuleDeclaration} from "./rule-wrapper-rule-declaration";
  * ```
  **/
 export class RuleWrapperDeclaration extends BaseNode {
-
-    type = 'RuleWrapperDeclaration' as const;
+    type = "RuleWrapperDeclaration" as const;
 
     head: RuleWrapperHead;
     rules: RuleWrapperRuleDeclaration[];
@@ -23,8 +22,9 @@ export class RuleWrapperDeclaration extends BaseNode {
     constructor(ctx: RuleWrapperDeclarationContext, visitor: ConceptRuleParserVisitor<any>) {
         super(ctx, visitor);
         this.head = ctx.ruleWrapperHead().accept(visitor);
-        this.rules = ctx.ruleWrapperBody().ruleWrapperRuleDeclaration().map(x => x.accept(visitor))
+        this.rules = ctx
+            .ruleWrapperBody()
+            .ruleWrapperRuleDeclaration()
+            .map((x) => x.accept(visitor));
     }
-
 }
-

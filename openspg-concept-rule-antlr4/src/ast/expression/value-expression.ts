@@ -1,9 +1,6 @@
-import {BaseNodeString} from "../base";
+import { BaseNodeString } from "../base";
 
 // valueExpression : logicValueExpression | projectValueExpression;
 export class ValueExpression extends BaseNodeString {
-
-    type = 'ValueExpression' as const;
-
+    type = "ValueExpression" as const;
 }
-

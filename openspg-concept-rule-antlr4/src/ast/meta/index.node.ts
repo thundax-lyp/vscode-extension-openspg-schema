@@ -1,5 +1,3 @@
-import {SourceUnit} from './source-unit';
+import { SourceUnit } from "./source-unit";
 
-export {
-	SourceUnit,
-}
+export { SourceUnit };

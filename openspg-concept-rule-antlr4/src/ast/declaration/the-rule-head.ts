@@ -1,6 +1,5 @@
-import {BaseNodeString} from "../base";
-import {ConceptRuleParserVisitor, TheRuleHeadContext} from "../../antlr4";
-
+import { BaseNodeString } from "../base";
+import { ConceptRuleParserVisitor, TheRuleHeadContext } from "../../antlr4";
 
 /**
  * ### Grammar:
@@ -9,11 +8,10 @@ import {ConceptRuleParserVisitor, TheRuleHeadContext} from "../../antlr4";
  * ```
  **/
 export class TheRuleHead extends BaseNodeString {
-
-    type = 'TheRuleHead' as const;
+    type = "TheRuleHead" as const;
 
     constructor(ctx: TheRuleHeadContext, visitor: ConceptRuleParserVisitor<any>) {
         super(ctx, visitor);
-        this.text = ctx.getText().toLowerCase() === 'rule' ? 'Rule' : 'Constraint'
+        this.text = ctx.getText().toLowerCase() === "rule" ? "Rule" : "Constraint";
     }
 }

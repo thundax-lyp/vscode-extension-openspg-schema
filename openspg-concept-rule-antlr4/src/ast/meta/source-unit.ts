@@ -1,12 +1,8 @@
-import {BaseNode} from '../base';
-import {ConceptRuleParserVisitor, SourceUnitContext} from '../../antlr4';
-import {ConceptRuleDeclaration, NamespaceDeclaration, RuleWrapperDeclaration,} from '../declaration';
+import { BaseNode } from "../base";
+import { ConceptRuleParserVisitor, SourceUnitContext } from "../../antlr4";
+import { ConceptRuleDeclaration, NamespaceDeclaration, RuleWrapperDeclaration } from "../declaration";
 
-export type SourceUnitNode =
-    | NamespaceDeclaration
-    | RuleWrapperDeclaration
-    | ConceptRuleDeclaration
-    ;
+export type SourceUnitNode = NamespaceDeclaration | RuleWrapperDeclaration | ConceptRuleDeclaration;
 
 /**
  * ### Grammar:
@@ -15,8 +11,7 @@ export type SourceUnitNode =
  * ```
  */
 export class SourceUnit extends BaseNode {
-
-    type = 'SourceUnit' as const;
+    type = "SourceUnit" as const;
 
     /**
      * ```typescript
@@ -36,5 +31,4 @@ export class SourceUnit extends BaseNode {
         super(ctx, visitor);
         this.nodes = (ctx.children || []).map((child) => visitor.visit(child)!).filter(Boolean);
     }
-
 }

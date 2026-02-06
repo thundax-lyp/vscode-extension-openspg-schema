@@ -1,7 +1,5 @@
-import {BaseNodeString} from "../base";
+import { BaseNodeString } from "../base";
 
 export class ConceptInstanceId extends BaseNodeString {
-
-    type = 'ConceptInstanceId' as const;
-
+    type = "ConceptInstanceId" as const;
 }
