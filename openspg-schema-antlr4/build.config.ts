@@ -1,22 +1,22 @@
-import {defineBuildConfig} from 'unbuild';
+import { defineBuildConfig } from "unbuild";
 
 export default defineBuildConfig({
     entries: [
         {
-            builder: 'mkdist',
-            input: './src/',
-            format: 'esm',
-            ext: 'js',
-            declaration: true,
+            builder: "mkdist",
+            input: "./src/",
+            format: "esm",
+            ext: "js",
+            declaration: true
         },
         {
-            builder: 'mkdist',
-            input: './src/',
-            format: 'cjs',
-            ext: 'cjs',
-            declaration: false,
-        },
+            builder: "mkdist",
+            input: "./src/",
+            format: "cjs",
+            ext: "cjs",
+            declaration: false
+        }
     ],
     clean: true,
-    failOnWarn: false,
+    failOnWarn: false
 });
