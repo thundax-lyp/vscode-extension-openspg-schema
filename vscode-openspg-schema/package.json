@@ -92,8 +92,9 @@
         "compile": "tsc -b",
         "watch": "tsc -b -w",
         "test": "vscode-test",
-        "prettier": "prettier --check \"src/**/*.{ts,tsx,js,jsx,json,css,less,md}\"",
-        "prettier:fix": "prettier --write \"src/**/*.{ts,tsx,js,jsx,json,css,less,md}\""
+        "lint": "pnpm run \"/^lint:.+/\"",
+        "lint:eslint": "eslint --quiet --fix --ext .ts ./src",
+        "lint:prettier": "prettier --write \"src/**/*.{ts,tsx,js,jsx,json,css,less,md}\" --log-level warn"
     },
     "nyc": {
         "extension": [
@@ -126,11 +127,12 @@
         "@types/mocha": "10.0.10",
         "@types/node": "22.19.1",
         "@types/vscode": "^1.96.0",
+        "@typescript-eslint/parser": "^8.22.0",
         "@vscode/test-cli": "0.0.12",
         "@vscode/test-electron": "2.5.2",
         "colors": "1.4.0",
         "mocha": "10.8.2",
-        "prettier": "3.8.0",
+        "prettier": "^3.8.1",
         "typescript": "5.9.3",
         "vsce": "2.15.0"
     }
