@@ -1,12 +1,9 @@
-import {SyntaxNode} from '../ast';
-import {traverse, TraversePath} from './traverse';
+import { SyntaxNode } from "../ast";
+import { traverse, TraversePath } from "./traverse";
 
 export type SerializeHandler = (path: TraversePath<SyntaxNode>) => any;
 
-export const serialize = <T extends SyntaxNode = SyntaxNode>(
-    _ast: T,
-    handler?: SerializeHandler,
-): T => {
+export const serialize = <T extends SyntaxNode = SyntaxNode>(_ast: T, handler?: SerializeHandler): T => {
     return traverse(_ast, (p) => {
         if (handler) p.rewrite(handler(p));
     });
