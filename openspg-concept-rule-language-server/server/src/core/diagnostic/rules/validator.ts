@@ -1,6 +1,6 @@
-import { Diagnostic } from 'vscode-languageserver-types';
+import { Diagnostic } from "vscode-languageserver-types";
 
-import { ConceptRuleTextDocument } from '../../common';
+import { ConceptRuleTextDocument } from "../../common";
 
 export interface Validator {
     validate: (document: ConceptRuleTextDocument) => Diagnostic[];

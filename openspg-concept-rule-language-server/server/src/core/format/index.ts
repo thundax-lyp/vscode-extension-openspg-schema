@@ -1,1 +1,1 @@
-export * from './on-document-formatting';
+export * from "./on-document-formatting";

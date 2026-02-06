@@ -1,4 +1,4 @@
-import { OnHover } from '../context';
+import { OnHover } from "../context";
 
 export const onHover: OnHover = (ctx) => async (params) => {
     const { textDocument, position } = params;

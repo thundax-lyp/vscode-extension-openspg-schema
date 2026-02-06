@@ -1,1 +1,1 @@
-export * from './on-folding-ranges';
+export * from "./on-folding-ranges";

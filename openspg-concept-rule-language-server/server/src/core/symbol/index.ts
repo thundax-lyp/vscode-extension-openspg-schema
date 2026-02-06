@@ -1,1 +1,1 @@
-export * from './on-document-symbol';
+export * from "./on-document-symbol";
