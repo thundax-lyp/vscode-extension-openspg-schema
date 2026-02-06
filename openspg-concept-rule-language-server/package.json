@@ -69,19 +69,20 @@
         "compile": "tsc -b",
         "watch": "tsc -b -w",
         "build": "unbuild --clean",
-        "lint": "eslint",
         "test": "sh ./scripts/e2e.sh",
-        "prettier": "prettier --check \"{server,client}/src/**/*.{ts,tsx,js,jsx,json,css,less,md}\"",
-        "prettier:fix": "prettier --write \"{server,client}/src/**/*.{ts,tsx,js,jsx,json,css,less,md}\""
+        "lint": "pnpm run \"/^lint:.+/\"",
+        "lint:eslint": "eslint --fix --ext .ts ./server/ ./client/",
+        "lint:prettier": "prettier --write \"{server,client}/src/**/*.{ts,tsx,js,jsx,json,css,less,md}\" --log-level warn"
     },
     "devDependencies": {
         "@eslint/js": "^9.13.0",
         "@stylistic/eslint-plugin": "^2.9.0",
         "@types/mocha": "^10.0.6",
         "@types/node": "^22",
-        "eslint": "^9.13.0",
+        "@typescript-eslint/parser": "^8.22.0",
+        "eslint": "^9.39.2",
         "mocha": "^10.3.0",
-        "prettier": "3.8.0",
+        "prettier": "^3.8.1",
         "typescript": "^5.9.2",
         "typescript-eslint": "^8.39.0",
         "unbuild": "^3.6.1"
