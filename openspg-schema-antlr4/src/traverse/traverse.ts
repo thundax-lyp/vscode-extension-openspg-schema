@@ -1,7 +1,7 @@
-import {clone, matches as lodashMatches} from 'lodash-es';
-import {SyntaxNode} from '../ast';
-import {isSyntaxNode, isSyntaxNodeList, keysInNode} from '../ast/base';
-import {PartialDeep} from 'type-fest';
+import { clone, matches as lodashMatches } from "lodash-es";
+import { SyntaxNode } from "../ast";
+import { isSyntaxNode, isSyntaxNodeList, keysInNode } from "../ast";
+import { PartialDeep } from "type-fest";
 
 export type TraverseMatchFilter<N extends SyntaxNode = SyntaxNode> = PartialDeep<N>;
 
@@ -57,10 +57,7 @@ export type TraverseCallback = (path: TraversePath) => void | (() => void);
  * @param callback like Array.map, but it will traverse the tree
  * @returns The new AST, the original AST will not be modified
  */
-export function traverse<T extends SyntaxNode>(
-    ast: T | TraversePath<T>,
-    callback: TraverseCallback,
-): T;
+export function traverse<T extends SyntaxNode>(ast: T | TraversePath<T>, callback: TraverseCallback): T;
 export function traverse<T extends SyntaxNode>(astOrPath: any, callback: TraverseCallback): T {
     let ast: T;
     let globalParentPath: TraversePath<any> | null = null;
@@ -77,10 +74,7 @@ export function traverse<T extends SyntaxNode>(astOrPath: any, callback: Travers
     };
 
     // inner recursion function
-    const traverseInner = <U extends SyntaxNode>(
-        tree: U | U[],
-        parentPath: TraversePath<any> | null,
-    ): U | U[] => {
+    const traverseInner = <U extends SyntaxNode>(tree: U | U[], parentPath: TraversePath<any> | null): U | U[] => {
         const depth = parentPath?.depth !== undefined ? parentPath.depth + 1 : 0;
         if (isSyntaxNodeList(tree)) {
             // Map format node list
@@ -92,13 +86,11 @@ export function traverse<T extends SyntaxNode>(astOrPath: any, callback: Travers
             return nodeList;
         } else if (isSyntaxNode(tree)) {
             let node = clone(tree);
-            const rewrite: TraversePath['rewrite'] = (newNode: any) => {
+            const rewrite: TraversePath["rewrite"] = (newNode: any) => {
                 node = newNode;
             };
-            const matches: TraversePath['matches'] = (filter) => lodashMatches(filter)(node);
-            const getFlattenParents: TraversePath['getFlattenParents'] = (
-                maxDepth = Number.MAX_SAFE_INTEGER,
-            ) => {
+            const matches: TraversePath["matches"] = (filter) => lodashMatches(filter)(node);
+            const getFlattenParents: TraversePath["getFlattenParents"] = (maxDepth = Number.MAX_SAFE_INTEGER) => {
                 const nodes: any[] = [];
                 const recursion = (p: TraversePath) => {
                     if (p.parentPath && nodes.length < maxDepth) {
@@ -106,17 +98,16 @@ export function traverse<T extends SyntaxNode>(astOrPath: any, callback: Travers
                         recursion(p.parentPath);
                     }
                 };
-                // eslint-disable-next-line @typescript-eslint/no-use-before-define
                 recursion(path);
                 return nodes;
             };
-            const checkOffset: TraversePath['checkOffset'] = (offset) => {
+            const checkOffset: TraversePath["checkOffset"] = (offset) => {
                 if (offset === undefined) return true;
                 return node.range[0] <= offset && offset <= node.range[1];
             };
 
             const path: TraversePath = {
-                path: [parentPath?.path, node.type].filter((t) => t !== undefined && t !== null).join('.'),
+                path: [parentPath?.path, node.type].filter((t) => t !== undefined && t !== null).join("."),
                 depth,
                 node,
                 parentPath,
@@ -124,7 +115,7 @@ export function traverse<T extends SyntaxNode>(astOrPath: any, callback: Travers
                 rewrite,
                 getFlattenParents,
                 matches,
-                checkOffset,
+                checkOffset
             };
 
             const exitCallback = callback(path);
@@ -143,7 +134,7 @@ export function traverse<T extends SyntaxNode>(astOrPath: any, callback: Travers
             }
 
             // Exit callback executes after all
-            if (exitCallback && typeof exitCallback === 'function') exitCallback();
+            if (exitCallback && typeof exitCallback === "function") exitCallback();
             return node;
         }
         return tree;

@@ -1,6 +1,6 @@
-import {LookUp} from '../ast/base';
-import {SyntaxNode, SyntaxNodeType} from '../ast';
-import {traverse, TraversePath} from './traverse';
+import { LookUp } from "../ast";
+import { SyntaxNode, SyntaxNodeType } from "../ast";
+import { traverse, TraversePath } from "./traverse";
 
 export type VisitListener<T extends SyntaxNode = SyntaxNode> = (path: TraversePath<T>) => void;
 
@@ -25,13 +25,13 @@ export const visit = <T extends SyntaxNode>(ast: T, handlers: VisitHandlers): vo
 
 export const visitNodes = <T extends SyntaxNode = SyntaxNode>(
     ast: SyntaxNode,
-    callback: (p: TraversePath) => boolean,
+    callback: (p: TraversePath) => boolean
 ): T[] => {
     const nodes: T[] = [];
     visit(ast, {
         enter(path) {
             if (callback(path)) nodes.push(path.node as any);
-        },
+        }
     });
     return nodes;
 };

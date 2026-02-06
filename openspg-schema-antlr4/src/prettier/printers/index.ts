@@ -1,22 +1,22 @@
-import type {Printer} from 'prettier';
-import * as ast from '../../ast';
-import {PrintFunc} from './base';
+import type { Printer } from "prettier";
+import * as ast from "../../ast";
+import { PrintFunc } from "./base";
 
-import {PrinterDeclaration} from './declaration';
-import {PrinterMeta} from './meta';
-import {PrinterExpression} from "./expression";
-import {PrinterLiteral} from "./literal";
+import { PrinterDeclaration } from "./declaration";
+import { PrinterMeta } from "./meta";
+import { PrinterExpression } from "./expression";
+import { PrinterLiteral } from "./literal";
 
-export * from './comment';
+export * from "./comment";
 
-export const print: Printer<any>['print'] = (path, options, _print) => {
+export const print: Printer<any>["print"] = (path, options, _print) => {
     const node = path.node;
 
     if (node === null) {
-        return '';
+        return "";
     }
 
-    if (typeof node === 'string') {
+    if (typeof node === "string") {
         return node;
     }
 
@@ -30,7 +30,7 @@ export const print: Printer<any>['print'] = (path, options, _print) => {
         new PrinterDeclaration(options, _print),
         new PrinterExpression(options, _print),
         new PrinterLiteral(options, _print),
-        new PrinterMeta(options, _print),
+        new PrinterMeta(options, _print)
     );
 
     const printer = mixin[printerName];
@@ -38,5 +38,5 @@ export const print: Printer<any>['print'] = (path, options, _print) => {
         throw new Error(`missing printer for node type "${node.type}"`);
     }
 
-    return printer({path, options, print: _print, node});
+    return printer({ path, options, print: _print, node });
 };

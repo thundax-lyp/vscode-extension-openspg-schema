@@ -1,7 +1,7 @@
-import {SchemaASTBuilder} from '../ast/builder';
-import {SourceUnit, SyntaxNode} from '../ast';
-import {CharStream, CommonTokenStream, ParseTree, SchemaLexer, SchemaParser} from '../antlr4';
-import {SchemaErrorListener, ParseError} from './error-listener';
+import { SchemaASTBuilder } from "../ast/builder";
+import { SourceUnit, SyntaxNode } from "../ast";
+import { CharStream, CommonTokenStream, ParseTree, SchemaLexer, SchemaParser } from "../antlr4";
+import { SchemaErrorListener, ParseError } from "./error-listener";
 
 export interface ParseOptions {
     tolerant?: boolean;
@@ -10,13 +10,10 @@ export interface ParseOptions {
 
 export const defaultParseOption: ParseOptions = {
     tolerant: false,
-    selector: (parser) => parser.sourceUnit(),
+    selector: (parser) => parser.sourceUnit()
 };
 
-export const parse = <T extends SyntaxNode = SourceUnit>(
-    source: string,
-    _options?: ParseOptions,
-): T => {
+export const parse = <T extends SyntaxNode = SourceUnit>(source: string, _options?: ParseOptions): T => {
     let syntaxTree: T;
     const options: ParseOptions = Object.assign({}, defaultParseOption, _options);
     const listener = new SchemaErrorListener();
@@ -32,11 +29,10 @@ export const parse = <T extends SyntaxNode = SourceUnit>(
         const visitor = new SchemaASTBuilder();
         const parseTree = options.selector!(parser);
         syntaxTree = parseTree.accept(visitor)! as T;
-
     } catch (error) {
         if (error instanceof ParseError) {
         } else {
-            listener.errors.push(new ParseError((error as any).message || 'unknown error'));
+            listener.errors.push(new ParseError((error as any).message || "unknown error"));
         }
     }
 

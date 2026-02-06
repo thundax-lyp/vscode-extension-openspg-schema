@@ -1,6 +1,6 @@
-import {PartialDeep} from "type-fest"
-import {SyntaxNode, SyntaxNodeType} from "../ast"
-import {traverse, TraversePath} from "./traverse"
+import { PartialDeep } from "type-fest";
+import { SyntaxNode, SyntaxNodeType } from "../ast";
+import { traverse, TraversePath } from "./traverse";
 
 export interface QueryOptions {
     // return all matched nodes when `true`
@@ -8,29 +8,29 @@ export interface QueryOptions {
     // asc: ascending, depth from 0 to n
     // desc: descending, depth from n to 0
     // default: asc
-    order?: 'asc' | 'desc';
+    order?: "asc" | "desc";
 }
 
 export enum SelectorCombinator {
-    Child = '>',
-    Inside = ' ',
+    Child = ">",
+    Inside = " "
     // After = '+',
     // Before = '~',
 }
 
 const getPathKey = (path: TraversePath<SyntaxNode>) => `${path.path}#${JSON.stringify(path.node)}`;
 
-export type SelectorFilter = '*' | SyntaxNodeType | PartialDeep<SyntaxNode>;
+export type SelectorFilter = "*" | SyntaxNodeType | PartialDeep<SyntaxNode>;
 
 export class Selector {
     public static create = (filter: SelectorFilter, _offset?: number): Selector => {
-        let target: PartialDeep<SyntaxNode> = {};
-        if (typeof filter !== 'string') {
+        let target: PartialDeep<SyntaxNode>;
+        if (typeof filter !== "string") {
             target = filter;
-        } else if (filter === '*') {
+        } else if (filter === "*") {
             target = {};
         } else {
-            target = {type: filter as any};
+            target = { type: filter as any };
         }
         return new Selector(target, _offset);
     };
@@ -40,20 +40,15 @@ export class Selector {
 
     private constructor(
         public filter: PartialDeep<SyntaxNode>,
-        public _offset?: number,
-    ) {
-    }
+        public _offset?: number
+    ) {}
 
     public _prev?: Selector;
     public _getStartSelector = (): Selector => {
         return this._prev ? this._prev._getStartSelector() : this;
     };
 
-    private chain = (
-        combinator: SelectorCombinator,
-        f: SelectorFilter,
-        _offset?: number,
-    ): Selector => {
+    private chain = (combinator: SelectorCombinator, f: SelectorFilter, _offset?: number): Selector => {
         this.combinator = combinator;
         const next = Selector.create(f, _offset || this._offset);
         next._prev = this;
@@ -72,7 +67,7 @@ export class Selector {
     /** @inner */
     public query = <T extends SyntaxNode = SyntaxNode>(
         node: SyntaxNode | null,
-        options: QueryOptions = {},
+        options: QueryOptions = {}
     ): Record<string, TraversePath<T>> => {
         if (!node) return {};
         const result: Record<string, TraversePath<T>> = {};
@@ -87,7 +82,7 @@ export class Selector {
     /** @inner */
     public recursion = <T extends SyntaxNode = SyntaxNode>(
         path: TraversePath<SyntaxNode>,
-        options: QueryOptions = {},
+        options: QueryOptions = {}
     ): Record<string, TraversePath<T>> => {
         if (!path.matches(this.filter)) return {};
         if (!path.checkOffset(this._offset)) return {};
@@ -118,7 +113,7 @@ export const createSelector = Selector.create;
 export const query = <T extends SyntaxNode = SyntaxNode>(
     ast: SyntaxNode | null,
     selector: Selector | Selector[],
-    options: QueryOptions = {},
+    options: QueryOptions = {}
 ): TraversePath<T>[] => {
     if (!ast) return [];
 
@@ -131,7 +126,7 @@ export const query = <T extends SyntaxNode = SyntaxNode>(
         Object.assign(result, startSelector.query<T>(ast, options));
     }
     return Object.values(result).sort((current, next) => {
-        if (options.order === 'desc') {
+        if (options.order === "desc") {
             return next.depth - current.depth;
         }
         return current.depth - next.depth;
@@ -140,14 +135,14 @@ export const query = <T extends SyntaxNode = SyntaxNode>(
 
 export const querySelector = <T extends SyntaxNode = SyntaxNode>(
     ast: SyntaxNode | null,
-    selector: Selector | Selector[],
+    selector: Selector | Selector[]
 ): TraversePath<T> | null => {
-    return query<T>(ast, selector, {queryAll: false})?.[0] ?? null;
+    return query<T>(ast, selector, { queryAll: false })?.[0] ?? null;
 };
 
 export const querySelectorAll = <T extends SyntaxNode = SyntaxNode>(
     ast: SyntaxNode | null,
-    selector: Selector | Selector[],
+    selector: Selector | Selector[]
 ): TraversePath<T>[] => {
-    return query<T>(ast, selector, {queryAll: true});
+    return query<T>(ast, selector, { queryAll: true });
 };
