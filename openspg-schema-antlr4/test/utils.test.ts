@@ -1,16 +1,16 @@
-import {test} from 'vitest';
+import { test } from "vitest";
 import fs from "node:fs";
 import path from "node:path";
 
-import {CharStream, CommonTokenStream, ParserRuleContext, SchemaLexer, SchemaParser} from '../src';
+import { CharStream, CommonTokenStream, ParserRuleContext, SchemaLexer, SchemaParser } from "../src";
 
-import {SyntaxNode} from '../src';
-import {serialize} from '../src';
-import {BaseNodeString} from '../src';
-import {schemaASTBuilder} from "../src/ast/builder";
+import { SyntaxNode } from "../src";
+import { serialize } from "../src";
+import { BaseNodeString } from "../src";
+import { schemaASTBuilder } from "../src/ast/builder";
 
 export const load = (name: string) =>
-    fs.readFileSync(path.join(__dirname, `./__files__/${name}`), {encoding: 'utf-8'}).toString();
+    fs.readFileSync(path.join(__dirname, `./__files__/${name}`), { encoding: "utf-8" }).toString();
 
 export const format = (ast: SyntaxNode) =>
     serialize(ast, (p) => {
@@ -23,7 +23,7 @@ export const format = (ast: SyntaxNode) =>
 export const parse = (
     input: string,
     callback: (parser: SchemaParser) => ParserRuleContext = (parser) => parser.sourceUnit(),
-    afterParse: (ast: SyntaxNode) => any = format,
+    afterParse: (ast: SyntaxNode) => any = format
 ) => {
     const lexer = new SchemaLexer(CharStream.fromString(input));
     const parser = new SchemaParser(new CommonTokenStream(lexer));
@@ -34,14 +34,12 @@ export const parse = (
 
 export const createParse = (
     callback: (parser: SchemaParser) => ParserRuleContext = (parser) => parser.sourceUnit(),
-    afterParse: (ast: SyntaxNode) => any = format,
+    afterParse: (ast: SyntaxNode) => any = format
 ) => {
     return (input: string) => parse(input, callback, afterParse);
 };
 
-export const createLog = (
-    callback: (parser: SchemaParser) => ParserRuleContext = (parser) => parser.sourceUnit(),
-) => {
+export const createLog = (callback: (parser: SchemaParser) => ParserRuleContext = (parser) => parser.sourceUnit()) => {
     return (input: string) =>
         parse(input, callback, (ast) => {
             const newAST = serialize(ast, (p) => {
@@ -57,5 +55,4 @@ export const createLog = (
 
 export const visitor = schemaASTBuilder;
 
-test('utils', () => {
-});
+test("utils", () => {});
