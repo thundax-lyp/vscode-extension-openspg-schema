@@ -25,7 +25,7 @@ export default [
             "max-len": [
                 "error",
                 {
-                    code: 120,
+                    code: 160,
                     ignoreStrings: true,
                     ignoreTemplateLiterals: true,
                     ignoreRegExpLiterals: true,
