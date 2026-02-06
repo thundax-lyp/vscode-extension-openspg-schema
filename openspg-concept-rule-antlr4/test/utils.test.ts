@@ -1,16 +1,16 @@
-import {test} from 'vitest';
+import { test } from "vitest";
 import fs from "node:fs";
 import path from "node:path";
 
-import {CharStream, CommonTokenStream, ConceptRuleLexer, ConceptRuleParser, ParserRuleContext,} from '../src';
+import { CharStream, CommonTokenStream, ConceptRuleLexer, ConceptRuleParser, ParserRuleContext } from "../src";
 
-import {SyntaxNode} from '../src';
-import {serialize} from '../src';
-import {BaseNodeString} from '../src/ast/base';
-import {conceptRuleASTBuilder} from "../src/ast/builder";
+import { SyntaxNode } from "../src";
+import { serialize } from "../src";
+import { BaseNodeString } from "../src";
+import { conceptRuleASTBuilder } from "../src/ast/builder";
 
 export const load = (name: string) =>
-    fs.readFileSync(path.join(__dirname, `./__files__/${name}`), {encoding: 'utf-8'}).toString();
+    fs.readFileSync(path.join(__dirname, `./__files__/${name}`), { encoding: "utf-8" }).toString();
 
 export const format = (ast: SyntaxNode) =>
     serialize(ast, (p) => {
@@ -23,7 +23,7 @@ export const format = (ast: SyntaxNode) =>
 export const parse = (
     input: string,
     callback: (parser: ConceptRuleParser) => ParserRuleContext = (parser) => parser.sourceUnit(),
-    afterParse: (ast: SyntaxNode) => any = format,
+    afterParse: (ast: SyntaxNode) => any = format
 ) => {
     const lexer = new ConceptRuleLexer(CharStream.fromString(input));
     const parser = new ConceptRuleParser(new CommonTokenStream(lexer));
@@ -34,13 +34,13 @@ export const parse = (
 
 export const createParse = (
     callback: (parser: ConceptRuleParser) => ParserRuleContext = (parser) => parser.sourceUnit(),
-    afterParse: (ast: SyntaxNode) => any = format,
+    afterParse: (ast: SyntaxNode) => any = format
 ) => {
     return (input: string) => parse(input, callback, afterParse);
 };
 
 export const createLog = (
-    callback: (parser: ConceptRuleParser) => ParserRuleContext = (parser) => parser.sourceUnit(),
+    callback: (parser: ConceptRuleParser) => ParserRuleContext = (parser) => parser.sourceUnit()
 ) => {
     return (input: string) =>
         parse(input, callback, (ast) => {
@@ -57,5 +57,4 @@ export const createLog = (
 
 export const visitor = conceptRuleASTBuilder;
 
-test('utils', () => {
-});
+test("utils", () => {});

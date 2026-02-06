@@ -1,6 +1,6 @@
-import {expect, test} from 'vitest';
-import {parse} from '../src';
-import {createSelector, querySelector, querySelectorAll, traverse, visit,} from '../src';
+import { expect, test } from "vitest";
+import { parse } from "../src";
+import { createSelector, querySelector, querySelectorAll, traverse, visit } from "../src";
 
 const code = `
 // SPDX-License-Identifier: MIT
@@ -44,52 +44,62 @@ namespace Sample
             }
         }
     ]]
-    `
+    `;
 
-test('traverse', () => {
+test("traverse", () => {
     const ast = parse(code);
 
     const enterNames: string[] = [];
     const exitNames: string[] = [];
 
     visit(ast, {
-        enter: ({node}) => {
-            if (node.type === 'NamespaceDeclaration' || node.type === 'RuleWrapperDeclaration') {
+        enter: ({ node }) => {
+            if (node.type === "NamespaceDeclaration" || node.type === "RuleWrapperDeclaration") {
                 enterNames.push(node.type);
             }
         },
-        exit: ({node}) => {
-            if (node.type === 'NamespaceDeclaration' || node.type === 'RuleWrapperDeclaration') {
+        exit: ({ node }) => {
+            if (node.type === "NamespaceDeclaration" || node.type === "RuleWrapperDeclaration") {
                 exitNames.push(node.type);
             }
-        },
+        }
     });
 
-    expect(enterNames).toEqual(['NamespaceDeclaration', 'RuleWrapperDeclaration', 'RuleWrapperDeclaration', 'RuleWrapperDeclaration']);
-    expect(exitNames).toEqual(['NamespaceDeclaration', 'RuleWrapperDeclaration', 'RuleWrapperDeclaration', 'RuleWrapperDeclaration']);
+    expect(enterNames).toEqual([
+        "NamespaceDeclaration",
+        "RuleWrapperDeclaration",
+        "RuleWrapperDeclaration",
+        "RuleWrapperDeclaration"
+    ]);
+    expect(exitNames).toEqual([
+        "NamespaceDeclaration",
+        "RuleWrapperDeclaration",
+        "RuleWrapperDeclaration",
+        "RuleWrapperDeclaration"
+    ]);
 
     traverse(ast, (path) => {
-        if (path.node.type === 'RuleWrapperDeclaration') {
+        if (path.node.type === "RuleWrapperDeclaration") {
             expect(path.getFlattenParents().length).toBe(1);
             expect(path.getFlattenParents(1).length).toBe(1);
         }
     });
-
 });
 
-test('selector', () => {
+test("selector", () => {
     const ast = parse(code);
 
-    expect(querySelector(ast, createSelector('*'))!.node).toMatchObject({type: 'SourceUnit'});
-    expect(querySelectorAll(ast, createSelector('RuleWrapperDeclaration')).length).toBe(3);
+    expect(querySelector(ast, createSelector("*"))!.node).toMatchObject({ type: "SourceUnit" });
+    expect(querySelectorAll(ast, createSelector("RuleWrapperDeclaration")).length).toBe(3);
 
-    expect(
-        querySelectorAll(ast, createSelector('NamespaceDeclaration')),
-    ).toMatchObject([{
-        node: {
-            type: 'NamespaceDeclaration', variable: {
-                text: 'Sample'
+    expect(querySelectorAll(ast, createSelector("NamespaceDeclaration"))).toMatchObject([
+        {
+            node: {
+                type: "NamespaceDeclaration",
+                variable: {
+                    text: "Sample"
+                }
             }
         }
-    }]);
+    ]);
 });
