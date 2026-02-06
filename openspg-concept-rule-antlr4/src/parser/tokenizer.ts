@@ -1,6 +1,6 @@
-import {CharStream, ConceptRuleLexer} from '../antlr4';
-import {Position} from '../ast';
-import {ConceptRuleErrorListener, ParseError} from './error-listener';
+import { CharStream, ConceptRuleLexer } from "../antlr4";
+import { Position } from "../ast";
+import { ConceptRuleErrorListener, ParseError } from "./error-listener";
 
 export type SyntaxTokenType = (typeof ConceptRuleLexer.symbolicNames)[number];
 
@@ -16,7 +16,7 @@ export interface TokenizerOptions {
 }
 
 export const defaultTokenizerOption: TokenizerOptions = {
-    tolerant: false,
+    tolerant: false
 };
 
 export const tokenizer = (source: string, _options: TokenizerOptions = {}): SyntaxToken[] => {
@@ -35,13 +35,13 @@ export const tokenizer = (source: string, _options: TokenizerOptions = {}): Synt
                 text: token.text!,
                 type: ConceptRuleLexer.symbolicNames[token.type]!,
                 range: [token.start, token.stop],
-                position: Position.create(token.line, token.column),
+                position: Position.create(token.line, token.column)
             };
         });
     } catch (error) {
         if (error instanceof ParseError) {
         } else {
-            listener.errors.push(new ParseError((error as any).message || 'unknown error'));
+            listener.errors.push(new ParseError((error as any).message || "unknown error"));
         }
     }
 

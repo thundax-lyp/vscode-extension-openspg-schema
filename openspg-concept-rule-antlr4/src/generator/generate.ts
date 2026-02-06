@@ -1,28 +1,27 @@
-import type {Options, ParserOptions, Plugin} from 'prettier';
-import * as prettier from 'prettier/standalone';
-import {plugin} from '../prettier';
-import {SyntaxNode} from '../ast';
-import {getCommentTokens, PrettierParser} from '../prettier/parser';
-import {SyntaxToken} from '../parser';
+import type { Options, ParserOptions, Plugin } from "prettier";
+import * as prettier from "prettier/standalone";
+import { plugin } from "../prettier";
+import { SyntaxNode } from "../ast";
+import { getCommentTokens, PrettierParser } from "../prettier/parser";
+import { SyntaxToken } from "../parser";
 
 export interface GenerateOptions extends Options {
     tokens?: SyntaxToken[];
 }
 
 class PrettierGenerator extends PrettierParser {
-
-    public static NAME = 'openspg-concept-rule-prettier-generator';
+    public static NAME = "openspg-concept-rule-prettier-generator";
 
     public parse = (ast: string, _options: ParserOptions<SyntaxNode>) => {
         return JSON.parse(ast);
-    }
+    };
 }
 
 const generatorPlugin: Plugin = {
     ...plugin,
     parsers: {
-        [PrettierGenerator.NAME]: new PrettierGenerator(),
-    },
+        [PrettierGenerator.NAME]: new PrettierGenerator()
+    }
 };
 
 export const generate = async (ast: SyntaxNode, options: GenerateOptions = {}): Promise<string> => {
@@ -32,6 +31,6 @@ export const generate = async (ast: SyntaxNode, options: GenerateOptions = {}): 
     return prettier.format(JSON.stringify(ast), {
         ...options,
         parser: PrettierGenerator.NAME,
-        plugins: [...(options.plugins ?? []), generatorPlugin],
+        plugins: [...(options.plugins ?? []), generatorPlugin]
     });
 };
