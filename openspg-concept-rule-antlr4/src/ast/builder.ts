@@ -1,10 +1,9 @@
-import * as parser from '../antlr4';
-import * as ast from './index';
+import * as parser from "../antlr4";
+import * as ast from "./index";
 
 export type Result = ast.SyntaxNode;
 
 export class ConceptRuleASTBuilder extends parser.ConceptRuleParserVisitor<ast.SyntaxNode | any> {
-
     visitSourceUnit = (ctx: parser.SourceUnitContext) => new ast.SourceUnit(ctx, this);
 
     /**
@@ -24,10 +23,12 @@ export class ConceptRuleASTBuilder extends parser.ConceptRuleParserVisitor<ast.S
      *     ruleWrapperRuleHead : WRAPPER_RULE_KEYWORD ;
      *     ruleWrapperRuleBody : conceptRuleDeclaration* ;
      */
-    visitRuleWrapperDeclaration = (ctx: parser.RuleWrapperDeclarationContext) => new ast.RuleWrapperDeclaration(ctx, this);
+    visitRuleWrapperDeclaration = (ctx: parser.RuleWrapperDeclarationContext) =>
+        new ast.RuleWrapperDeclaration(ctx, this);
     visitRuleWrapperHead = (ctx: parser.RuleWrapperHeadContext) => new ast.RuleWrapperHead(ctx, this);
     // visitRuleWrapperBody?: (ctx: RuleWrapperBodyContext) => Result;
-    visitRuleWrapperRuleDeclaration = (ctx: parser.RuleWrapperRuleDeclarationContext) => new ast.RuleWrapperRuleDeclaration(ctx, this);
+    visitRuleWrapperRuleDeclaration = (ctx: parser.RuleWrapperRuleDeclarationContext) =>
+        new ast.RuleWrapperRuleDeclaration(ctx, this);
     visitRuleWrapperRuleHead = (ctx: parser.RuleWrapperRuleHeadContext) => new ast.RuleWrapperRuleHead(ctx, this);
     // visitRuleWrapperRuleBody = (ctx: RuleWrapperRuleBodyContext) => new ast.RuleWrapperRuleDeclaration(ctx, this);;
 
@@ -38,7 +39,8 @@ export class ConceptRuleASTBuilder extends parser.ConceptRuleParserVisitor<ast.S
      *     conceptRuleBody : conceptRuleItem* ;
      *     conceptRuleItem : theGraphStructureDeclaration | theRuleDeclaration | theActionDeclaration ;
      */
-    visitConceptRuleDeclaration = (ctx: parser.ConceptRuleDeclarationContext) => new ast.ConceptRuleDeclaration(ctx, this);
+    visitConceptRuleDeclaration = (ctx: parser.ConceptRuleDeclarationContext) =>
+        new ast.ConceptRuleDeclaration(ctx, this);
     visitConceptRuleHead = (ctx: parser.ConceptRuleHeadContext) => new ast.ConceptRuleHead(ctx, this);
     // visitConceptRuleBody?: (ctx: ConceptRuleBodyContext) => Result;
     // visitConceptRuleItem?: (ctx: ConceptRuleItemContext) => Result;
@@ -50,7 +52,8 @@ export class ConceptRuleASTBuilder extends parser.ConceptRuleParserVisitor<ast.S
      *     theGraphStructureBody : graphStructureList | pathPatternList ;
      *     graphStructureList : graphStructure+;
      */
-    visitTheGraphStructureDeclaration = (ctx: parser.TheGraphStructureDeclarationContext) => new ast.TheGraphStructureDeclaration(ctx, this);
+    visitTheGraphStructureDeclaration = (ctx: parser.TheGraphStructureDeclarationContext) =>
+        new ast.TheGraphStructureDeclaration(ctx, this);
     visitTheGraphStructureHead = (ctx: parser.TheGraphStructureHeadContext) => new ast.TheGraphStructureHead(ctx, this);
     // visitTheGraphStructureBody?: (ctx: GraphStructureBodyContext) => Result;
     // visitGraphStructureList?: (ctx: GraphStructureListContext) => Result;
@@ -85,7 +88,6 @@ export class ConceptRuleASTBuilder extends parser.ConceptRuleParserVisitor<ast.S
     visitVertexExpression = (ctx: parser.VertexExpressionContext) => new ast.VertexExpression(ctx, this);
     // visitVertexName?: (ctx: VertexNameContext) => Result;
 
-
     /**
      * Grammar
      *     labelPropertyList : (labelNameList | propertyExpression) (COMMA propertyExpression)*;
@@ -100,7 +102,6 @@ export class ConceptRuleASTBuilder extends parser.ConceptRuleParserVisitor<ast.S
     // visitPropertyKey?: (ctx: PropertyKeyContext) => Result;
     // visitPropertyValue?: (ctx: PropertyValueContext) => Result;
 
-
     /**
      * Grammar
      *     pathPatternList : pathPattern+;
@@ -113,7 +114,6 @@ export class ConceptRuleASTBuilder extends parser.ConceptRuleParserVisitor<ast.S
     // visitPathCondition?: (ctx: PathConditionContext) => Result;
     // visitPathVariable?: (ctx: PathVariableContext) => Result;
 
-
     /**
      * Grammar
      *     elementPatternList : elementPattern (COMMA elementPattern)*;
@@ -124,7 +124,8 @@ export class ConceptRuleASTBuilder extends parser.ConceptRuleParserVisitor<ast.S
      */
     visitElementPatternList = (ctx: parser.ElementPatternListContext) => new ast.ElementPatternList(ctx, this);
     visitElementPattern = (ctx: parser.ElementPatternContext) => new ast.ElementPattern(ctx, this);
-    visitElementPatternAddition = (ctx: parser.ElementPatternAdditionContext) => new ast.ElementPatternAddition(ctx, this);
+    visitElementPatternAddition = (ctx: parser.ElementPatternAdditionContext) =>
+        new ast.ElementPatternAddition(ctx, this);
     visitNodePattern = (ctx: parser.NodePatternContext) => new ast.NodePattern(ctx, this);
     visitEdgePattern = (ctx: parser.EdgePatternContext) => new ast.EdgePattern(ctx, this);
 
@@ -148,12 +149,13 @@ export class ConceptRuleASTBuilder extends parser.ConceptRuleParserVisitor<ast.S
      *     elementVariable : identifier;
      *     linkedEdge : functionExpr;
      */
-    visitElementPatternDeclarationAndFiller = (ctx: parser.ElementPatternDeclarationAndFillerContext) => new ast.ElementPatternDeclarationAndFiller(ctx, this);
+    visitElementPatternDeclarationAndFiller = (ctx: parser.ElementPatternDeclarationAndFillerContext) =>
+        new ast.ElementPatternDeclarationAndFiller(ctx, this);
     visitElementLookup = (ctx: parser.ElementLookupContext) => new ast.ElementLookup(ctx, this);
-    visitElementVariableDeclaration = (ctx: parser.ElementVariableDeclarationContext) => new ast.ElementVariableDeclaration(ctx, this);
+    visitElementVariableDeclaration = (ctx: parser.ElementVariableDeclarationContext) =>
+        new ast.ElementVariableDeclaration(ctx, this);
     // visitElementVariable?: (ctx: ElementVariableContext) => Result;
     // visitLinkedEdge?: (ctx: LinkedEdgeContext) => Result;
-
 
     /**
      * Grammar
@@ -169,15 +171,14 @@ export class ConceptRuleASTBuilder extends parser.ConceptRuleParserVisitor<ast.S
     visitConceptName = (ctx: parser.ConceptNameContext) => new ast.ConceptName(ctx, this);
     visitConceptInstanceId = (ctx: parser.ConceptInstanceIdContext) => new ast.ConceptInstanceId(ctx, this);
 
-
     /**
      * Grammar
      *     elementPatternWhereClause : WHERE_KEYWORD searchCondition;
      *     searchCondition : logicValueExpression;
      */
-    visitElementPatternWhereClause = (ctx: parser.ElementPatternWhereClauseContext) => new ast.ElementPatternWhereClause(ctx, this);
+    visitElementPatternWhereClause = (ctx: parser.ElementPatternWhereClauseContext) =>
+        new ast.ElementPatternWhereClause(ctx, this);
     // visitSearchCondition?: (ctx: SearchConditionContext) => Result;
-
 
     /**
      * Grammar
@@ -189,7 +190,6 @@ export class ConceptRuleASTBuilder extends parser.ConceptRuleParserVisitor<ast.S
     visitTheRuleHead = (ctx: parser.TheRuleHeadContext) => new ast.TheRuleHead(ctx, this);
     // visitTheRuleBody?: (ctx: TheRuleBodyContext) => Result;
     visitTheRuleExpression = (ctx: parser.TheRuleExpressionContext) => new ast.TheRuleExpression(ctx, this);
-
 
     /**
      * Grammar
@@ -289,8 +289,6 @@ export class ConceptRuleASTBuilder extends parser.ConceptRuleParserVisitor<ast.S
     // visitNumericLiteral?: (ctx: NumericLiteralContext) => Result;
 
     visitIdentifier = (ctx: parser.IdentifierContext) => new ast.Identifier(ctx, this);
-
-
 }
 
 export const conceptRuleASTBuilder = new ConceptRuleASTBuilder();
