@@ -1,5 +1,5 @@
-import {BaseNodeString} from '../base';
-import {BuiltinPropertyValueContext, SchemaParserVisitor} from "../../antlr4";
+import { BaseNodeString } from "../base";
+import { BuiltinPropertyValueContext, SchemaParserVisitor } from "../../antlr4";
 
 /**
  * ### Grammar:
@@ -8,17 +8,23 @@ import {BuiltinPropertyValueContext, SchemaParserVisitor} from "../../antlr4";
  * ```
  */
 const KEYWORDS = [
-    'isA', 'locateAt', 'mannerOf', 'text', 'vector', 'textAndVector',
-    'sparseVector', 'textAndSparseVector', 'notNull', 'multiValue',
-]
+    "isA",
+    "locateAt",
+    "mannerOf",
+    "text",
+    "vector",
+    "textAndVector",
+    "sparseVector",
+    "textAndSparseVector",
+    "notNull",
+    "multiValue"
+];
 
 export class BuiltinPropertyValue extends BaseNodeString {
-
-    type = 'BuiltinPropertyValue' as const;
+    type = "BuiltinPropertyValue" as const;
 
     constructor(ctx: BuiltinPropertyValueContext, visitor: SchemaParserVisitor<any>) {
         super(ctx, visitor);
-        this.text = KEYWORDS.find(x => x.toLowerCase() === this.text.toLowerCase()) ?? ''
+        this.text = KEYWORDS.find((x) => x.toLowerCase() === this.text.toLowerCase()) ?? "";
     }
-
 }

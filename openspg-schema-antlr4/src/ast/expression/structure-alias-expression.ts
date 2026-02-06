@@ -1,6 +1,6 @@
-import {BaseNode} from '../base';
-import {SchemaParserVisitor, StructureAliasExpressionContext} from '../../antlr4';
-import {StructureAlias} from "./structure-alias";
+import { BaseNode } from "../base";
+import { SchemaParserVisitor, StructureAliasExpressionContext } from "../../antlr4";
+import { StructureAlias } from "./structure-alias";
 
 /**
  * ### Grammar:
@@ -9,14 +9,12 @@ import {StructureAlias} from "./structure-alias";
  * ```
  */
 export class StructureAliasExpression extends BaseNode {
+    type = "StructureAliasExpression" as const;
 
-    type = 'StructureAliasExpression' as const;
-
-    variable: StructureAlias
+    variable: StructureAlias;
 
     constructor(ctx: StructureAliasExpressionContext, visitor: SchemaParserVisitor<any>) {
         super(ctx, visitor);
-        this.variable = ctx.structureAlias().accept(visitor)
+        this.variable = ctx.structureAlias().accept(visitor);
     }
-
 }

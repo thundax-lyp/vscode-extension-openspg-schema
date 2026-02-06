@@ -1,5 +1,5 @@
-import {BaseNodeString} from '../base';
-import {SchemaParserVisitor, StructureAliasContext} from "../../antlr4";
+import { BaseNodeString } from "../base";
+import { SchemaParserVisitor, StructureAliasContext } from "../../antlr4";
 
 /**
  * ### Grammar:
@@ -8,12 +8,10 @@ import {SchemaParserVisitor, StructureAliasContext} from "../../antlr4";
  * ```
  */
 export class StructureAlias extends BaseNodeString {
-
-    type = 'StructureAlias' as const;
+    type = "StructureAlias" as const;
 
     constructor(ctx: StructureAliasContext, visitor: SchemaParserVisitor<any>) {
         super(ctx, visitor);
-        this.text = (ctx.children || []).map(x => x.getText()).join(' ')
+        this.text = (ctx.children || []).map((x) => x.getText()).join(" ");
     }
-
 }

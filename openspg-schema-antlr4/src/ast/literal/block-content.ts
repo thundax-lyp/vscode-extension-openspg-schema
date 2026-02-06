@@ -1,8 +1,5 @@
-import {BaseNodeString} from '../base';
-
+import { BaseNodeString } from "../base";
 
 export class BlockContent extends BaseNodeString {
-
-    type = 'BlockContent' as const;
-
+    type = "BlockContent" as const;
 }

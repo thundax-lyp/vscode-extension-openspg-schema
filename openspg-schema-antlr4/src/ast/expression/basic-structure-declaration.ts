@@ -1,8 +1,8 @@
-import {BaseNode} from '../base';
-import {BasicStructureDeclarationContext, SchemaParserVisitor} from '../../antlr4';
-import {StructureNameExpression} from "./structure-name-expression";
-import {StructureAliasExpression} from "./structure-alias-expression";
-import {StructureTypeExpressionNode} from "./structure-type-expression";
+import { BaseNode } from "../base";
+import { BasicStructureDeclarationContext, SchemaParserVisitor } from "../../antlr4";
+import { StructureNameExpression } from "./structure-name-expression";
+import { StructureAliasExpression } from "./structure-alias-expression";
+import { StructureTypeExpressionNode } from "./structure-type-expression";
 
 /**
  * ### Grammar:
@@ -15,11 +15,10 @@ import {StructureTypeExpressionNode} from "./structure-type-expression";
  * ```
  */
 export class BasicStructureDeclaration extends BaseNode {
+    type = "BasicStructureDeclaration" as const;
 
-    type = 'BasicStructureDeclaration' as const;
-
-    name: StructureNameExpression
-    alias: StructureAliasExpression
+    name: StructureNameExpression;
+    alias: StructureAliasExpression;
 
     /**
      * ```typescript
@@ -31,13 +30,12 @@ export class BasicStructureDeclaration extends BaseNode {
      * > - {@link BasicStructureTypeExpression}
      * > - {@link InheritedStructureTypeExpression}
      */
-    structureType: StructureTypeExpressionNode
+    structureType: StructureTypeExpressionNode;
 
     constructor(ctx: BasicStructureDeclarationContext, visitor: SchemaParserVisitor<any>) {
         super(ctx, visitor);
-        this.name = ctx.structureNameExpression().accept(visitor)
-        this.alias = ctx.structureAliasExpression().accept(visitor)
-        this.structureType = ctx.structureTypeExpression().accept(visitor)
+        this.name = ctx.structureNameExpression().accept(visitor);
+        this.alias = ctx.structureAliasExpression().accept(visitor);
+        this.structureType = ctx.structureTypeExpression().accept(visitor);
     }
-
 }

@@ -1,6 +1,6 @@
-import {BaseNode} from '../base';
-import {BlockPropertyValueContext, SchemaParserVisitor} from "../../antlr4";
-import {BlockContent} from "../literal";
+import { BaseNode } from "../base";
+import { BlockPropertyValueContext, SchemaParserVisitor } from "../../antlr4";
+import { BlockContent } from "../literal";
 
 /**
  * ### Grammar:
@@ -9,14 +9,12 @@ import {BlockContent} from "../literal";
  * ```
  */
 export class BlockPropertyValue extends BaseNode {
+    type = "BlockPropertyValue" as const;
 
-    type = 'BlockPropertyValue' as const;
-
-    content: BlockContent
+    content: BlockContent;
 
     constructor(ctx: BlockPropertyValueContext, visitor: SchemaParserVisitor<any>) {
         super(ctx, visitor);
         this.content = ctx.blockContent().accept(visitor);
     }
-
 }

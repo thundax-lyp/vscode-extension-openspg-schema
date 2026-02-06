@@ -1,4 +1,4 @@
-import {BaseNodeString} from '../base';
+import { BaseNodeString } from "../base";
 
 /**
  * ### Grammar:
@@ -7,7 +7,5 @@ import {BaseNodeString} from '../base';
  * ```
  */
 export class StructureRealName extends BaseNodeString {
-
-    type = 'StructureRealName' as const;
-
+    type = "StructureRealName" as const;
 }

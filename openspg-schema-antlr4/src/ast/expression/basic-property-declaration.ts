@@ -1,7 +1,7 @@
-import {BaseNode} from '../base';
-import {BasicPropertyDeclarationContext, SchemaParserVisitor} from '../../antlr4';
-import {PropertyNameExpression} from "./property-name-expression";
-import {PropertyValueExpression} from "./property-value-expression";
+import { BaseNode } from "../base";
+import { BasicPropertyDeclarationContext, SchemaParserVisitor } from "../../antlr4";
+import { PropertyNameExpression } from "./property-name-expression";
+import { PropertyValueExpression } from "./property-value-expression";
 
 /**
  * ### Grammar:
@@ -18,16 +18,14 @@ import {PropertyValueExpression} from "./property-value-expression";
  * ```
  **/
 export class BasicPropertyDeclaration extends BaseNode {
+    type = "BasicPropertyDeclaration" as const;
 
-    type = 'BasicPropertyDeclaration' as const;
-
-    name: PropertyNameExpression
-    value: PropertyValueExpression | null
+    name: PropertyNameExpression;
+    value: PropertyValueExpression | null;
 
     constructor(ctx: BasicPropertyDeclarationContext, visitor: SchemaParserVisitor<any>) {
         super(ctx, visitor);
-        this.name = ctx.propertyNameExpression().accept(visitor)
-        this.value = ctx.propertyValueExpression()?.accept(visitor) ?? null
+        this.name = ctx.propertyNameExpression().accept(visitor);
+        this.value = ctx.propertyValueExpression()?.accept(visitor) ?? null;
     }
-
 }

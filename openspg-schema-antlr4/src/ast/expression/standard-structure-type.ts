@@ -1,5 +1,5 @@
-import {BaseNodeString} from '../base';
-import {SchemaParserVisitor, StandardStructureTypeContext} from "../../antlr4";
+import { BaseNodeString } from "../base";
+import { SchemaParserVisitor, StandardStructureTypeContext } from "../../antlr4";
 
 /**
  * ### Grammar:
@@ -8,16 +8,14 @@ import {SchemaParserVisitor, StandardStructureTypeContext} from "../../antlr4";
  * ```
  */
 export class StandardStructureType extends BaseNodeString {
-
-    type = 'StandardStructureType' as const;
+    type = "StandardStructureType" as const;
 
     constructor(ctx: StandardStructureTypeContext, visitor: SchemaParserVisitor<any>) {
         super(ctx, visitor);
-        const parts = this.text.split('.')
+        const parts = this.text.split(".");
         if (parts.length > 1) {
-            parts[0] = 'StandardType'
+            parts[0] = "StandardType";
         }
-        this.text = parts.join('.')
+        this.text = parts.join(".");
     }
-
 }

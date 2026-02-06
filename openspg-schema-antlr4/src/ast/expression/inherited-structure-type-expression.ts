@@ -1,6 +1,6 @@
-import {BaseNode} from '../base';
-import {InheritedStructureTypeExpressionContext, SchemaParserVisitor} from '../../antlr4';
-import {InheritedStructureTypeVariableNode} from "./inherited-structure-type-variable";
+import { BaseNode } from "../base";
+import { InheritedStructureTypeExpressionContext, SchemaParserVisitor } from "../../antlr4";
+import { InheritedStructureTypeVariableNode } from "./inherited-structure-type-variable";
 
 /**
  * ### Grammar:
@@ -13,8 +13,7 @@ import {InheritedStructureTypeVariableNode} from "./inherited-structure-type-var
  * ```
  */
 export class InheritedStructureTypeExpression extends BaseNode {
-
-    type = 'InheritedStructureTypeExpression' as const;
+    type = "InheritedStructureTypeExpression" as const;
 
     /**
      * ```typescript
@@ -31,11 +30,10 @@ export class InheritedStructureTypeExpression extends BaseNode {
      * > - {@link StandardStructureType}
      * > - {@link StructureName}
      */
-    variables: InheritedStructureTypeVariableNode[]
+    variables: InheritedStructureTypeVariableNode[];
 
     constructor(ctx: InheritedStructureTypeExpressionContext, visitor: SchemaParserVisitor<any>) {
         super(ctx, visitor);
-        this.variables = ctx.inheritedStructureTypeVariable().map(x => x.accept(visitor))
+        this.variables = ctx.inheritedStructureTypeVariable().map((x) => x.accept(visitor));
     }
-
 }

@@ -1,6 +1,6 @@
-import {BaseNode} from '../base';
-import {SchemaParserVisitor, StructureNameExpressionContext} from '../../antlr4';
-import {StructureName} from "./structure-name";
+import { BaseNode } from "../base";
+import { SchemaParserVisitor, StructureNameExpressionContext } from "../../antlr4";
+import { StructureName } from "./structure-name";
 
 /**
  * ### Grammar:
@@ -9,14 +9,12 @@ import {StructureName} from "./structure-name";
  * ```
  */
 export class StructureNameExpression extends BaseNode {
+    type = "StructureNameExpression" as const;
 
-    type = 'StructureNameExpression' as const;
-
-    variable: StructureName
+    variable: StructureName;
 
     constructor(ctx: StructureNameExpressionContext, visitor: SchemaParserVisitor<any>) {
         super(ctx, visitor);
         this.variable = ctx.structureName().accept(visitor);
     }
-
 }

@@ -1,6 +1,6 @@
-import {BaseNode} from '../base';
-import {BasicStructureTypeExpressionContext, SchemaParserVisitor} from '../../antlr4';
-import {BasicStructureTypeVariableNode} from "./basic-structure-type-variable";
+import { BaseNode } from "../base";
+import { BasicStructureTypeExpressionContext, SchemaParserVisitor } from "../../antlr4";
+import { BasicStructureTypeVariableNode } from "./basic-structure-type-variable";
 
 /**
  * ### Grammar:
@@ -9,8 +9,7 @@ import {BasicStructureTypeVariableNode} from "./basic-structure-type-variable";
  * ```
  */
 export class BasicStructureTypeExpression extends BaseNode {
-
-    type = 'BasicStructureTypeExpression' as const;
+    type = "BasicStructureTypeExpression" as const;
 
     /**
      * ```typescript
@@ -24,11 +23,10 @@ export class BasicStructureTypeExpression extends BaseNode {
      * > - {@link StandardStructureType}
      * > - {@link StructureName}
      */
-    variable: BasicStructureTypeVariableNode
+    variable: BasicStructureTypeVariableNode;
 
     constructor(ctx: BasicStructureTypeExpressionContext, visitor: SchemaParserVisitor<any>) {
         super(ctx, visitor);
-        this.variable = ctx.basicStructureTypeVariable().accept(visitor)
+        this.variable = ctx.basicStructureTypeVariable().accept(visitor);
     }
-
 }

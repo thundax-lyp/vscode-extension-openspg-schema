@@ -1,7 +1,6 @@
-import {BaseNode} from '../base';
-import {PropertyValueExpressionContext, SchemaParserVisitor} from '../../antlr4';
-import {PropertyValueVariableNode} from "./property-value-variable";
-
+import { BaseNode } from "../base";
+import { PropertyValueExpressionContext, SchemaParserVisitor } from "../../antlr4";
+import { PropertyValueVariableNode } from "./property-value-variable";
 
 /**
  * ### Grammar:
@@ -12,8 +11,7 @@ import {PropertyValueVariableNode} from "./property-value-variable";
  * ```
  */
 export class PropertyValueExpression extends BaseNode {
-
-    type = 'PropertyValueExpression' as const;
+    type = "PropertyValueExpression" as const;
 
     /**
      * ```typescript
@@ -33,5 +31,4 @@ export class PropertyValueExpression extends BaseNode {
         super(ctx, visitor);
         this.variable = ctx.propertyValueVariable().accept(visitor);
     }
-
 }

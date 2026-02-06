@@ -1,18 +1,14 @@
-import {BaseNode} from '../base';
-import {SchemaParserVisitor, SourceUnitContext} from '../../antlr4';
-import {EntityDeclaration, NamespaceDeclaration} from '../declaration';
+import { BaseNode } from "../base";
+import { SchemaParserVisitor, SourceUnitContext } from "../../antlr4";
+import { EntityDeclaration, NamespaceDeclaration } from "../declaration";
 
-export type SourceUnitNode =
-    | NamespaceDeclaration
-    | EntityDeclaration
-    ;
+export type SourceUnitNode = NamespaceDeclaration | EntityDeclaration;
 
 /**
  * AST Root Element
  */
 export class SourceUnit extends BaseNode {
-
-    type = 'SourceUnit' as const;
+    type = "SourceUnit" as const;
 
     /**
      * ```typescript
@@ -30,5 +26,4 @@ export class SourceUnit extends BaseNode {
         super(ctx, visitor);
         this.nodes = (ctx.children || []).map((child) => visitor.visit(child)!).filter(Boolean);
     }
-
 }
