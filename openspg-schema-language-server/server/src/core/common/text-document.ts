@@ -1,10 +1,10 @@
-import * as vscodeUri from 'vscode-uri';
-import { Connection, Position, Range, TextDocumentContentChangeEvent } from 'vscode-languageserver';
-import { TextDocument } from 'vscode-languageserver-textdocument';
-import * as syntax from 'openspg-schema-antlr4';
-import { checkNode, QueryFilter } from './parser';
-import { documents } from './text-documents';
-import { EVENT_TEXT_DOCUMENTS_READ_CONTENT } from './constants';
+import * as vscodeUri from "vscode-uri";
+import { Connection, Position, Range, TextDocumentContentChangeEvent } from "vscode-languageserver";
+import { TextDocument } from "vscode-languageserver-textdocument";
+import * as syntax from "openspg-schema-antlr4";
+import { checkNode, QueryFilter } from "./parser";
+import { documents } from "./text-documents";
+import { EVENT_TEXT_DOCUMENTS_READ_CONTENT } from "./constants";
 
 export interface SchemaExportItem {
     name: string;
@@ -30,7 +30,7 @@ export class SchemaTextDocument implements TextDocument {
             document.update(changes, version);
             return document;
         } else {
-            throw new Error('SchemaTextDocument.update: document must be created by SchemaTextDocument.create');
+            throw new Error("SchemaTextDocument.update: document must be created by SchemaTextDocument.create");
         }
     }
 
@@ -201,28 +201,28 @@ export class SchemaTextDocument implements TextDocument {
     public getPathsAt<T extends syntax.SyntaxNode = syntax.SyntaxNode>(
         ...selectors: syntax.Selector[]
     ): syntax.TraversePath<T>[] {
-        return syntax.query<T>(this.ast!, selectors, { queryAll: true, order: 'asc' });
+        return syntax.query<T>(this.ast!, selectors, { queryAll: true, order: "asc" });
     }
 
     public getPathAt<T extends syntax.SyntaxNode = syntax.SyntaxNode>(
         ...selectors: syntax.Selector[]
     ): syntax.TraversePath<T> | null {
-        return syntax.query<T>(this.ast!, selectors, { queryAll: true, order: 'desc' })?.[0] ?? null;
+        return syntax.query<T>(this.ast!, selectors, { queryAll: true, order: "desc" })?.[0] ?? null;
     }
 
     public resolvePath = (target: string): vscodeUri.URI => {
         let resultUri: vscodeUri.URI;
-        if (target.startsWith('.')) {
+        if (target.startsWith(".")) {
             // `./xxx` or `../xxx` etc. means relative path
             const dirUri = vscodeUri.Utils.dirname(this.parsedUri);
             resultUri = vscodeUri.Utils.resolvePath(dirUri, target);
-        } else if (target.startsWith('http:') || target.startsWith('https:')) {
+        } else if (target.startsWith("http:") || target.startsWith("https:")) {
             // means online path
             resultUri = vscodeUri.URI.parse(target);
-        } else if (target.startsWith('/')) {
+        } else if (target.startsWith("/")) {
             // means absolute path
-            throw new Error('absolute path import is not supported yet');
-        } else if (target.startsWith('file:/')) {
+            throw new Error("absolute path import is not supported yet");
+        } else if (target.startsWith("file:/")) {
             resultUri = vscodeUri.URI.parse(target);
         } else {
             // means from module manager, such as `node_modules`
@@ -238,21 +238,21 @@ export class SchemaTextDocument implements TextDocument {
         }
 
         let content: string;
-        if (uri.startsWith('https://')) {
+        if (uri.startsWith("https://")) {
             content = await fetch(uri)
                 .then((resp) => resp.text())
                 .catch((error) => {
                     throw error;
                 });
-        } else if (uri.startsWith('file:///')) {
+        } else if (uri.startsWith("file:///")) {
             // @ts-ignore
             const connection: Connection = globalThis.connection;
             content = await connection.sendRequest(EVENT_TEXT_DOCUMENTS_READ_CONTENT, uri);
-        } else if (uri.startsWith('http://')) {
+        } else if (uri.startsWith("http://")) {
             throw new Error("only support 'https://'");
         } else {
             throw new Error(`invalid uri: ${uri}`);
         }
-        return documents.patchDocument(uri, 'schema', 1, content);
+        return documents.patchDocument(uri, "schema", 1, content);
     };
 }

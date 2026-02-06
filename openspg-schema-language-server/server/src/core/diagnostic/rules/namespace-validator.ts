@@ -1,10 +1,10 @@
-import { Diagnostic, DiagnosticSeverity } from 'vscode-languageserver';
-import { SchemaTextDocument } from '../../common';
-import { Validator } from './validator';
+import { Diagnostic, DiagnosticSeverity } from "vscode-languageserver";
+import { SchemaTextDocument } from "../../common";
+import { Validator } from "./validator";
 
 export class NamespaceValidator implements Validator {
     public validate(document: SchemaTextDocument) {
-        const declarations = document.ast!.nodes.filter((x) => x.type == 'NamespaceDeclaration');
+        const declarations = document.ast!.nodes.filter((x) => x.type == "NamespaceDeclaration");
         if (declarations.length === 0) {
             return [
                 Diagnostic.create(
@@ -21,7 +21,7 @@ export class NamespaceValidator implements Validator {
         const diagnostics: Diagnostic[] = [];
 
         const firstNode = document.ast!.nodes[0];
-        if (firstNode.type != 'NamespaceDeclaration') {
+        if (firstNode.type != "NamespaceDeclaration") {
             diagnostics.push(
                 Diagnostic.create(
                     document.getNodeRange(firstNode),

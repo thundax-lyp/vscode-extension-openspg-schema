@@ -1,10 +1,10 @@
-import { Validator } from './validator';
+import { Validator } from "./validator";
 
-import { SchemaTextDocument } from '../../common';
+import { SchemaTextDocument } from "../../common";
 
-import { NamespaceValidator } from './namespace-validator';
-import { EntityValidator } from './entity-validator';
-import { PropertyValidator } from './property-validator';
+import { NamespaceValidator } from "./namespace-validator";
+import { EntityValidator } from "./entity-validator";
+import { PropertyValidator } from "./property-validator";
 
 export class FullValidator implements Validator {
     validators: Validator[] = [];

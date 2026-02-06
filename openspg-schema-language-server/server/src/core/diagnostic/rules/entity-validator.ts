@@ -1,7 +1,7 @@
-import { Diagnostic, DiagnosticSeverity } from 'vscode-languageserver';
-import * as syntax from 'openspg-schema-antlr4';
-import { SchemaTextDocument } from '../../common';
-import { Validator } from './validator';
+import { Diagnostic, DiagnosticSeverity } from "vscode-languageserver";
+import * as syntax from "openspg-schema-antlr4";
+import { SchemaTextDocument } from "../../common";
+import { Validator } from "./validator";
 
 export class EntityValidator implements Validator {
     private readonly MAX_ENTITY_LEVEL = 3;
@@ -12,7 +12,7 @@ export class EntityValidator implements Validator {
         // check entity level
         syntax.visit(document.ast!, {
             EntityDeclaration: ({ node, path }) => {
-                const parts = path.split('.').filter((x) => x === 'EntityDeclaration');
+                const parts = path.split(".").filter((x) => x === "EntityDeclaration");
                 if (parts.length > this.MAX_ENTITY_LEVEL) {
                     diagnostics.push(
                         Diagnostic.create(
@@ -33,7 +33,7 @@ export class EntityValidator implements Validator {
             }[] = [];
             nodes.forEach((x) => {
                 const { semanticNames, realName } = x.declaration.name.variable;
-                const displayName = [...semanticNames, realName].map((x) => x.text).join('#');
+                const displayName = [...semanticNames, realName].map((x) => x.text).join("#");
                 const existName = existNames.find((x) => x.displayName === displayName);
                 if (existName) {
                     diagnostics.push(
@@ -63,21 +63,21 @@ export class EntityValidator implements Validator {
             });
         };
 
-        checkRedeclaredName(document.ast!.nodes.filter((x) => x.type === 'EntityDeclaration'));
+        checkRedeclaredName(document.ast!.nodes.filter((x) => x.type === "EntityDeclaration"));
         syntax.visit(document.ast!, {
             PropertyDeclaration: ({ node }) => checkRedeclaredName(node.children)
         });
 
         const checkUndefinedEntityTypes = () => {
             const globalTypes = document
-                .ast!.nodes.filter((x) => x.type === 'EntityDeclaration')
+                .ast!.nodes.filter((x) => x.type === "EntityDeclaration")
                 .map((x) => x.declaration.name.variable.realName.text);
 
             syntax.visit(document.ast!, {
                 StructureName: ({ node, path }) => {
-                    const parts = path.split('.');
+                    const parts = path.split(".");
                     if (
-                        parts.includes('InheritedStructureTypeExpression') &&
+                        parts.includes("InheritedStructureTypeExpression") &&
                         !globalTypes.includes(node.realName.text)
                     ) {
                         diagnostics.push(

@@ -1,7 +1,7 @@
-import { Hover, MarkupKind } from 'vscode-languageserver';
-import * as syntax from 'openspg-schema-antlr4';
-import { OnHover } from '../context';
-import { PrintFunc, SchemaTextDocument, format } from '../common';
+import { Hover, MarkupKind } from "vscode-languageserver";
+import * as syntax from "openspg-schema-antlr4";
+import { OnHover } from "../context";
+import { PrintFunc, SchemaTextDocument, format } from "../common";
 
 export const onHover: OnHover = (ctx) => async (params) => {
     const { textDocument, position } = params;
@@ -12,13 +12,13 @@ export const onHover: OnHover = (ctx) => async (params) => {
     }
 
     const createSelector = document.createPositionSelector(position);
-    const selectedPath = document.getPathAt<syntax.StructureName>(createSelector('StructureName'));
+    const selectedPath = document.getPathAt<syntax.StructureName>(createSelector("StructureName"));
     if (!selectedPath) {
         return null;
     }
 
     switch (selectedPath.node.type) {
-        case 'StructureName':
+        case "StructureName":
             return handleStructureName(document, selectedPath);
         default:
             return null;
@@ -26,16 +26,16 @@ export const onHover: OnHover = (ctx) => async (params) => {
 };
 
 const handleStructureName = (document: SchemaTextDocument, selectedPath: syntax.TraversePath<syntax.StructureName>) => {
-    const selectedParts = selectedPath.path.split('.');
+    const selectedParts = selectedPath.path.split(".");
     if (
-        !selectedParts.includes('BasicStructureTypeExpression') &&
-        !selectedParts.includes('InheritedStructureTypeExpression')
+        !selectedParts.includes("BasicStructureTypeExpression") &&
+        !selectedParts.includes("InheritedStructureTypeExpression")
     ) {
         return null;
     }
 
     const targetNode = document.ast?.nodes
-        .filter((node) => node.type === 'EntityDeclaration')
+        .filter((node) => node.type === "EntityDeclaration")
         .find((node) => node.declaration.name.variable.realName.text === selectedPath.node.realName.text);
     if (!targetNode) {
         return null;
@@ -60,7 +60,7 @@ class Printer implements Record<string, PrintFunc<any>> {
     printEntityDeclaration: PrintFunc<syntax.EntityDeclaration> = (node) => {
         const title = format(node.declaration, this);
         const properties = (
-            node.children.filter((x) => x.declaration.name.variable.text === 'properties')?.[0]?.children || []
+            node.children.filter((x) => x.declaration.name.variable.text === "properties")?.[0]?.children || []
         )
             .map((x) => format(x.declaration, this))
             .map((x) => `- ${x}`);
@@ -68,7 +68,7 @@ class Printer implements Record<string, PrintFunc<any>> {
         if (properties.length === 0) {
             return title;
         }
-        return [title + '\n', ...properties].join('\n');
+        return [title + "\n", ...properties].join("\n");
     };
 
     printBasicStructureDeclaration: PrintFunc<syntax.BasicStructureDeclaration> = (node) =>
@@ -76,10 +76,10 @@ class Printer implements Record<string, PrintFunc<any>> {
             format(node.name.variable, this),
             this.italic(node.alias.variable.text),
             format(node.structureType, this)
-        ].join(' ');
+        ].join(" ");
 
     printStructureName: PrintFunc<syntax.StructureName> = (node) =>
-        [...node.semanticNames.map((x) => x.text), node.realName.text].map((x) => this.bold(x)).join('#');
+        [...node.semanticNames.map((x) => x.text), node.realName.text].map((x) => this.bold(x)).join("#");
 
     printBasicStructureTypeExpression: PrintFunc<syntax.BasicStructureTypeExpression> = (node) =>
         this.italic(format(node.variable, this));
@@ -91,5 +91,5 @@ class Printer implements Record<string, PrintFunc<any>> {
     printStandardStructureType: PrintFunc<syntax.StandardStructureType> = (node) => this.bold(node.text);
 
     printInheritedStructureTypeExpression: PrintFunc<syntax.InheritedStructureTypeExpression> = (node) =>
-        node.variables.map((x) => this.italic(format(x, this))).join(',');
+        node.variables.map((x) => this.italic(format(x, this))).join(",");
 }

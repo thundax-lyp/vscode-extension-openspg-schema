@@ -1,5 +1,5 @@
-import { RequestType, TextDocumentIdentifier } from 'vscode-languageserver-protocol';
-import * as antlr from 'openspg-schema-antlr4';
+import { RequestType, TextDocumentIdentifier } from "vscode-languageserver-protocol";
+import * as antlr from "openspg-schema-antlr4";
 
 export interface ASTParams {
     textDocument: TextDocumentIdentifier;
@@ -7,4 +7,4 @@ export interface ASTParams {
 
 export type ASTResult = antlr.SourceUnitNode[];
 
-export const ASTRequest = new RequestType<ASTParams, ASTResult | null, void>('openspg-schema/ast');
+export const ASTRequest = new RequestType<ASTParams, ASTResult | null, void>("openspg-schema/ast");

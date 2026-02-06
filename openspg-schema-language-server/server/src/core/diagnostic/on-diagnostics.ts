@@ -1,6 +1,6 @@
-import { Diagnostic, FullDocumentDiagnosticReport, DocumentDiagnosticReportKind } from 'vscode-languageserver';
-import { Context, OnDiagnostics } from '../context';
-import { FullValidator } from './rules';
+import { Diagnostic, FullDocumentDiagnosticReport, DocumentDiagnosticReportKind } from "vscode-languageserver";
+import { Context, OnDiagnostics } from "../context";
+import { FullValidator } from "./rules";
 
 export const onDiagnostics =
     (ctx: Context): OnDiagnostics =>

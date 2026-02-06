@@ -1,6 +1,6 @@
-import { FoldingRange, Range } from 'vscode-languageserver';
-import * as syntax from 'openspg-schema-antlr4';
-import { Context, OnFoldingRanges } from '../context';
+import { FoldingRange, Range } from "vscode-languageserver";
+import * as syntax from "openspg-schema-antlr4";
+import { Context, OnFoldingRanges } from "../context";
 
 export const onFoldingRanges: OnFoldingRanges =
     ({ documents }: Context) =>

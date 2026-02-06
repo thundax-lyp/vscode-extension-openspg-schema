@@ -1,5 +1,5 @@
-import { Connection } from 'vscode-languageserver';
-import { SchemaTextDocument, TextDocuments } from '../common';
+import { Connection } from "vscode-languageserver";
+import { SchemaTextDocument, TextDocuments } from "../common";
 
 export class Context {
     public constructor(

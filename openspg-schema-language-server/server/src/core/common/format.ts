@@ -1,4 +1,4 @@
-import * as syntax from 'openspg-schema-antlr4';
+import * as syntax from "openspg-schema-antlr4";
 
 export type PrintFunc<T extends syntax.SyntaxNode = syntax.SyntaxNode> = (
     node: T,
@@ -16,8 +16,8 @@ export const format = (node: syntax.SyntaxNode | null, mixin: MixinPrinter): str
         }
 
         const result = printer(n, [...path, n.type]);
-        return typeof result === 'string' ? result : result.join('');
+        return typeof result === "string" ? result : result.join("");
     };
 
-    return node ? formatInner(node!, []) : '';
+    return node ? formatInner(node!, []) : "";
 };

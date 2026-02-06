@@ -1,7 +1,7 @@
-import { Diagnostic, DiagnosticSeverity } from 'vscode-languageserver';
-import * as syntax from 'openspg-schema-antlr4';
-import { SchemaTextDocument } from '../../common';
-import { Validator } from './validator';
+import { Diagnostic, DiagnosticSeverity } from "vscode-languageserver";
+import * as syntax from "openspg-schema-antlr4";
+import { SchemaTextDocument } from "../../common";
+import { Validator } from "./validator";
 
 export class PropertyValidator implements Validator {
     public validate(document: SchemaTextDocument) {

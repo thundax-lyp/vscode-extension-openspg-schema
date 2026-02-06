@@ -1,12 +1,12 @@
-import { PartialDeep } from 'type-fest';
-import * as syntax from 'openspg-schema-antlr4';
+import { PartialDeep } from "type-fest";
+import * as syntax from "openspg-schema-antlr4";
 
 // visit nodes
-export const visitEnter = (ast: syntax.SyntaxNode, enter: syntax.VisitHandlers['enter']) =>
+export const visitEnter = (ast: syntax.SyntaxNode, enter: syntax.VisitHandlers["enter"]) =>
     syntax.visit(ast, { enter });
 
 // visit nodes when exit
-export const visitExit = (ast: syntax.SyntaxNode, exit: syntax.VisitHandlers['exit']) => syntax.visit(ast, { exit });
+export const visitExit = (ast: syntax.SyntaxNode, exit: syntax.VisitHandlers["exit"]) => syntax.visit(ast, { exit });
 
 export type QueryFilter = PartialDeep<syntax.SyntaxNode> | syntax.SyntaxNodeType;
 
@@ -30,7 +30,7 @@ export const getNodes = <T extends syntax.SyntaxNode = syntax.SyntaxNode>(
  */
 export const checkNode = <T extends syntax.SyntaxNode>(_path: syntax.TraversePath<T>, _filters: QueryFilter[]) => {
     const filters = _filters.map((filter) =>
-        typeof filter === 'string' ? { type: filter } : filter
+        typeof filter === "string" ? { type: filter } : filter
     ) as PartialDeep<syntax.SyntaxNode>[];
 
     if (!filters.length) {
