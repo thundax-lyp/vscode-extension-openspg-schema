@@ -1,10 +1,10 @@
-import * as vscode from 'vscode';
-import * as assert from 'assert';
-import { getDocUri, activate, doc, findKeywordRange, createTicker, toRange } from './helper';
-import { SemanticTokenTypes } from 'vscode-languageclient';
+import * as vscode from "vscode";
+import * as assert from "assert";
+import { getDocUri, activate, doc, findKeywordRange, createTicker, toRange } from "./helper";
+import { SemanticTokenTypes } from "vscode-languageclient";
 
-suite('Document Semantic Tokens', () => {
-    const fileName = 'document-semantic-tokens.concept.rule';
+suite("Document Semantic Tokens", () => {
+    const fileName = "document-semantic-tokens.concept.rule";
     const docUri = getDocUri(fileName);
 
     const { fireTick, waitingForTick } = createTicker();
@@ -14,66 +14,66 @@ suite('Document Semantic Tokens', () => {
         fireTick();
     });
 
-    test(`Semantic Tokens [All]`, async () => {
+    test("Semantic Tokens [All]", async () => {
         await waitingForTick();
 
         await testSemanticTokens(
             docUri,
             toSemanticTokens([
                 {
-                    range: findKeywordRange(doc, 'namespace', 1),
+                    range: findKeywordRange(doc, "namespace", 1),
                     tokenType: SemanticTokenTypes.keyword
                 },
                 {
-                    range: findKeywordRange(doc, 'DocumentSemanticTokens', 1),
+                    range: findKeywordRange(doc, "DocumentSemanticTokens", 1),
                     tokenType: SemanticTokenTypes.variable
                 },
                 {
-                    range: findKeywordRange(doc, '`TaxOfRiskApp`', 1),
+                    range: findKeywordRange(doc, "`TaxOfRiskApp`", 1),
                     tokenType: SemanticTokenTypes.class
                 },
                 {
-                    range: findKeywordRange(doc, '`赌博应用`', 1),
+                    range: findKeywordRange(doc, "`赌博应用`", 1),
                     tokenType: SemanticTokenTypes.class
                 },
                 {
-                    range: findKeywordRange(doc, 'rule', 1),
+                    range: findKeywordRange(doc, "rule", 1),
                     tokenType: SemanticTokenTypes.keyword
                 },
                 {
-                    range: findKeywordRange(doc, 'Define', 1),
+                    range: findKeywordRange(doc, "Define", 1),
                     tokenType: SemanticTokenTypes.keyword
                 },
                 {
-                    range: findKeywordRange(doc, 'subject', 1),
+                    range: findKeywordRange(doc, "subject", 1),
                     tokenType: SemanticTokenTypes.variable
                 },
                 {
-                    range: findKeywordRange(doc, 'App', 2),
+                    range: findKeywordRange(doc, "App", 2),
                     tokenType: SemanticTokenTypes.variable
                 },
                 {
-                    range: findKeywordRange(doc, 'object', 1),
+                    range: findKeywordRange(doc, "object", 1),
                     tokenType: SemanticTokenTypes.variable
                 },
                 {
-                    range: findKeywordRange(doc, '`TaxOfRiskApp`', 2),
+                    range: findKeywordRange(doc, "`TaxOfRiskApp`", 2),
                     tokenType: SemanticTokenTypes.variable
                 },
                 {
-                    range: findKeywordRange(doc, '`赌博应用`', 2),
+                    range: findKeywordRange(doc, "`赌博应用`", 2),
                     tokenType: SemanticTokenTypes.variable
                 },
                 {
-                    range: findKeywordRange(doc, 'Structure', 1),
+                    range: findKeywordRange(doc, "Structure", 1),
                     tokenType: SemanticTokenTypes.keyword
                 },
                 {
-                    range: findKeywordRange(doc, 'Rule', 1),
+                    range: findKeywordRange(doc, "Rule", 1),
                     tokenType: SemanticTokenTypes.keyword
                 },
                 {
-                    range: findKeywordRange(doc, 'Action', 1),
+                    range: findKeywordRange(doc, "Action", 1),
                     tokenType: SemanticTokenTypes.keyword
                 }
             ])
@@ -98,11 +98,11 @@ const toSemanticTokens = (records: { range: vscode.Range; tokenType: SemanticTok
 
 const testSemanticTokens = async (docUri: vscode.Uri, expectedSemanticTokens: vscode.SemanticTokens) => {
     const actualSemanticTokens = await vscode.commands.executeCommand<vscode.SemanticTokens>(
-        'vscode.provideDocumentSemanticTokens',
+        "vscode.provideDocumentSemanticTokens",
         docUri
     );
 
-    assert(actualSemanticTokens?.data, 'no response returned');
+    assert(actualSemanticTokens?.data, "no response returned");
 
     const decode = (data: Uint32Array) => {
         let lastX = 0,
@@ -146,7 +146,7 @@ const testSemanticTokens = async (docUri: vscode.Uri, expectedSemanticTokens: vs
                     text
                 });
             })
-            .join('\n');
+            .join("\n");
     };
 
     assert.equal(render(actualSemanticTokens), render(expectedSemanticTokens));

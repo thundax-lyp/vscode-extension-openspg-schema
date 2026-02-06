@@ -1,9 +1,9 @@
-import * as vscode from 'vscode';
-import * as assert from 'assert';
-import { getDocUri, activate, createTicker } from './helper';
+import * as vscode from "vscode";
+import * as assert from "assert";
+import { getDocUri, activate, createTicker } from "./helper";
 
-suite('Folding Ranges', () => {
-    const fileName = 'folding-range.concept.rule';
+suite("Folding Ranges", () => {
+    const fileName = "folding-range.concept.rule";
     const docUri = getDocUri(fileName);
 
     const { fireTick, waitingForTick } = createTicker();
@@ -13,7 +13,7 @@ suite('Folding Ranges', () => {
         fireTick();
     });
 
-    test(`Folding [All]`, async () => {
+    test("Folding [All]", async () => {
         await waitingForTick();
 
         await testFoldingRanges(docUri, [
@@ -42,15 +42,15 @@ const renderItem = (item: vscode.FoldingRange) => {
     });
 };
 
-const render = (items: vscode.FoldingRange[]) => (items || []).map((x) => renderItem(x)).join('\n');
+const render = (items: vscode.FoldingRange[]) => (items || []).map((x) => renderItem(x)).join("\n");
 
 const testFoldingRanges = async (docUri: vscode.Uri, expectedFoldingRanges: vscode.FoldingRange[]) => {
-    console.log('URI: ' + docUri.toString(false));
+    console.log("URI: " + docUri.toString(false));
 
     await activate(docUri);
 
     let actualFoldingRanges = await vscode.commands.executeCommand<vscode.FoldingRange[]>(
-        'vscode.executeFoldingRangeProvider',
+        "vscode.executeFoldingRangeProvider",
         docUri
     );
 
