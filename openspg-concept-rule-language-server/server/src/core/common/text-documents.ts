@@ -16,14 +16,14 @@ import {
     TextDocumentSyncKind,
     TextEdit,
     WillSaveTextDocumentParams
-} from 'vscode-languageserver';
-import { TextDocument } from 'vscode-languageserver-textdocument';
+} from "vscode-languageserver";
+import { TextDocument } from "vscode-languageserver-textdocument";
 import {
     EVENT_TEXT_DOCUMENTS_ON_CREATE,
     EVENT_TEXT_DOCUMENTS_ON_DELETE,
     EVENT_TEXT_DOCUMENTS_ON_SYNC
-} from './constants';
-import { ConceptRuleTextDocument } from './text-document';
+} from "./constants";
+import { ConceptRuleTextDocument } from "./text-document";
 
 export interface TextDocumentConnection {
     onDidOpenTextDocument(handler: NotificationHandler<DidOpenTextDocumentParams>): Disposable;
@@ -284,9 +284,9 @@ export class TextDocuments<T extends TextDocument> {
 
     public patchDocument = (
         uri: string,
-        languageId: string = 'schema',
+        languageId: string = "schema",
         version: number = 1,
-        content: string = ''
+        content: string = ""
     ): T => {
         if (this.has(uri)) return this.get(uri)!;
         const document = this._configuration.create(uri, languageId, version, content);

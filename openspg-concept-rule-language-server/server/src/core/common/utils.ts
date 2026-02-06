@@ -1,4 +1,4 @@
-import { Position } from 'vscode-languageserver';
+import { Position } from "vscode-languageserver";
 
 /**
  * check the second point is after the first point

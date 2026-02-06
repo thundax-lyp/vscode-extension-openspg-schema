@@ -1,7 +1,7 @@
-import { Context, OnExit } from '../context';
+import { Context, OnExit } from "../context";
 
 export const onExit =
     ({ connection }: Context): OnExit =>
-    () => {
-        connection.console.log('exited');
-    };
+        () => {
+            connection.console.log("exited");
+        };
