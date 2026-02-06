@@ -1,12 +1,12 @@
-import * as path from 'path';
-import * as vscode from 'vscode';
+import * as path from "path";
+import * as vscode from "vscode";
 
-import { LanguageClient, LanguageClientOptions, ServerOptions, TransportKind } from 'vscode-languageclient/node';
+import { LanguageClient, LanguageClientOptions, ServerOptions, TransportKind } from "vscode-languageclient/node";
 
 class MyOutputChannel implements vscode.OutputChannel {
-    name = 'Extension';
+    name = "Extension";
 
-    constructor(name: string = 'Extension') {
+    constructor(name: string = "Extension") {
         this.name = name;
     }
 
@@ -23,19 +23,19 @@ class MyOutputChannel implements vscode.OutputChannel {
     }
 
     clear(): void {
-        console.log(`\n`.repeat(10));
+        console.log("\n".repeat(10));
     }
 
     show(column?: unknown, preserveFocus?: unknown): void {
-        console.log('MyOutputChannel.show(column, preserveFocus);');
+        console.log("MyOutputChannel.show(column, preserveFocus);");
     }
 
     hide(): void {
-        console.log('MyOutputChannel.hide();');
+        console.log("MyOutputChannel.hide();");
     }
 
     dispose(): void {
-        console.log('MyOutputChannel.dispose();');
+        console.log("MyOutputChannel.dispose();");
     }
 }
 
@@ -43,7 +43,7 @@ let client: LanguageClient;
 
 export const activate = (context: vscode.ExtensionContext) => {
     // The server is implemented in node
-    const serverModule = context.asAbsolutePath(path.join('server', 'dist', 'server.js'));
+    const serverModule = context.asAbsolutePath(path.join("server", "dist", "server.js"));
 
     // If the extension is launched in debug mode then the debug server options are used
     // Otherwise the run options are used
@@ -55,7 +55,7 @@ export const activate = (context: vscode.ExtensionContext) => {
         debug: {
             module: serverModule,
             options: {
-                execArgv: ['--nolazy', '--inspect=6009']
+                execArgv: ["--nolazy", "--inspect=6009"]
             },
             transport: TransportKind.ipc
         }
@@ -66,16 +66,16 @@ export const activate = (context: vscode.ExtensionContext) => {
         // Register the server for plain text documents
         documentSelector: [
             {
-                language: 'schema',
-                scheme: 'file'
+                language: "schema",
+                scheme: "file"
             },
             {
-                language: 'schema',
-                scheme: 'untitled'
+                language: "schema",
+                scheme: "untitled"
             }
         ],
         synchronize: {
-            fileEvents: vscode.workspace.createFileSystemWatcher('**/*.schema')
+            fileEvents: vscode.workspace.createFileSystemWatcher("**/*.schema")
         },
         initializationOptions: context.extensionPath,
         outputChannel: new MyOutputChannel()
@@ -83,15 +83,15 @@ export const activate = (context: vscode.ExtensionContext) => {
 
     // Create the language client and start the client.
     client = new LanguageClient(
-        'openspgSchemaLanguageServer',
-        'OpenSPG Schema Language Server',
+        "openspgSchemaLanguageServer",
+        "OpenSPG Schema Language Server",
         serverOptions,
         clientOptions
     );
 
     // Start the client. This will also launch the server
     client.start().then(() => {
-        console.log('OpenSPG Schema Language Server started');
+        console.log("OpenSPG Schema Language Server started");
     });
 };
 

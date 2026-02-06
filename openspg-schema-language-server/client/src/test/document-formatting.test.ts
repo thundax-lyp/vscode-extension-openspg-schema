@@ -1,9 +1,9 @@
-import * as vscode from 'vscode';
-import * as assert from 'assert';
-import { getDocUri, activate, createTicker, editor } from './helper';
+import * as vscode from "vscode";
+import * as assert from "assert";
+import { getDocUri, activate, createTicker, editor } from "./helper";
 
-suite('Document Formatting', () => {
-    const fileName = 'document-formatting.schema';
+suite("Document Formatting", () => {
+    const fileName = "document-formatting.schema";
     const docUri = getDocUri(fileName);
 
     const { fireTick, waitingForTick } = createTicker();
@@ -13,23 +13,23 @@ suite('Document Formatting', () => {
         fireTick();
     });
 
-    test('document-formatting.schema', async () => {
+    test("document-formatting.schema", async () => {
         await waitingForTick();
         const expectedText =
-            '' +
-            'namespace DocumentFormatting\n' +
-            '\n' +
-            'Person(人物): EntityType\n' +
-            '    desc: a great name\n' +
-            '    properties:\n' +
-            '        age(年龄): Text\n' +
-            '        birth(生日): Text\n' +
-            '\n' +
-            'Works(作品): EntityType\n' +
-            '    desc: a great book\n' +
-            '    properties:\n' +
-            '        author(作者): Person\n' +
-            '';
+            "" +
+            "namespace DocumentFormatting\n" +
+            "\n" +
+            "Person(人物): EntityType\n" +
+            "    desc: a great name\n" +
+            "    properties:\n" +
+            "        age(年龄): Text\n" +
+            "        birth(生日): Text\n" +
+            "\n" +
+            "Works(作品): EntityType\n" +
+            "    desc: a great book\n" +
+            "    properties:\n" +
+            "        author(作者): Person\n" +
+            "";
         await testDocumentFormatting(docUri, expectedText);
     });
 });
@@ -42,7 +42,7 @@ async function testDocumentFormatting(docUri: vscode.Uri, expectedText: string) 
     };
 
     const actualTextEdits = await vscode.commands.executeCommand<vscode.TextEdit[]>(
-        'vscode.executeFormatDocumentProvider',
+        "vscode.executeFormatDocumentProvider",
         docUri,
         options
     );

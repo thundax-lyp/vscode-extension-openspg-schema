@@ -1,9 +1,9 @@
-import * as vscode from 'vscode';
-import * as assert from 'assert';
-import { getDocUri, activate, doc, center, findKeywordRange, createTicker } from './helper';
+import * as vscode from "vscode";
+import * as assert from "assert";
+import { getDocUri, activate, doc, center, findKeywordRange, createTicker } from "./helper";
 
-suite('Document Highlight', () => {
-    const fileName = 'document-highlight.schema';
+suite("Document Highlight", () => {
+    const fileName = "document-highlight.schema";
     const docUri = getDocUri(fileName);
 
     const { fireTick, waitingForTick } = createTicker();
@@ -13,31 +13,31 @@ suite('Document Highlight', () => {
         fireTick();
     });
 
-    test(`Highlighting [EntityType]`, async () => {
+    test("Highlighting [EntityType]", async () => {
         await waitingForTick();
 
-        await testHighlight(docUri, center(findKeywordRange(doc, 'EntityType', 1)), [
-            toDocumentHighlight(findKeywordRange(doc, 'EntityType', 1)),
-            toDocumentHighlight(findKeywordRange(doc, 'EntityType', 2))
+        await testHighlight(docUri, center(findKeywordRange(doc, "EntityType", 1)), [
+            toDocumentHighlight(findKeywordRange(doc, "EntityType", 1)),
+            toDocumentHighlight(findKeywordRange(doc, "EntityType", 2))
         ]);
 
-        await testHighlight(docUri, center(findKeywordRange(doc, 'EntityType', 2)), [
-            toDocumentHighlight(findKeywordRange(doc, 'EntityType', 2)),
-            toDocumentHighlight(findKeywordRange(doc, 'EntityType', 2))
+        await testHighlight(docUri, center(findKeywordRange(doc, "EntityType", 2)), [
+            toDocumentHighlight(findKeywordRange(doc, "EntityType", 2)),
+            toDocumentHighlight(findKeywordRange(doc, "EntityType", 2))
         ]);
     });
 
-    test(`Highlighting [Person]`, async () => {
+    test("Highlighting [Person]", async () => {
         await waitingForTick();
 
-        await testHighlight(docUri, center(findKeywordRange(doc, 'Person', 1)), [
-            toDocumentHighlight(findKeywordRange(doc, 'Person', 1)),
-            toDocumentHighlight(findKeywordRange(doc, 'Person', 2))
+        await testHighlight(docUri, center(findKeywordRange(doc, "Person", 1)), [
+            toDocumentHighlight(findKeywordRange(doc, "Person", 1)),
+            toDocumentHighlight(findKeywordRange(doc, "Person", 2))
         ]);
 
-        await testHighlight(docUri, center(findKeywordRange(doc, 'Person', 2)), [
-            toDocumentHighlight(findKeywordRange(doc, 'Person', 1)),
-            toDocumentHighlight(findKeywordRange(doc, 'Person', 2))
+        await testHighlight(docUri, center(findKeywordRange(doc, "Person", 2)), [
+            toDocumentHighlight(findKeywordRange(doc, "Person", 1)),
+            toDocumentHighlight(findKeywordRange(doc, "Person", 2))
         ]);
     });
 });
@@ -55,7 +55,7 @@ const testHighlight = async (
     expectedHighlights: vscode.DocumentHighlight[]
 ) => {
     const actualHighlights = await vscode.commands.executeCommand<vscode.DocumentHighlight[]>(
-        'vscode.executeDocumentHighlights',
+        "vscode.executeDocumentHighlights",
         docUri,
         position
     );

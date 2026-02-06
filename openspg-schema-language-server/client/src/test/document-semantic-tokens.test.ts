@@ -1,14 +1,14 @@
-import * as vscode from 'vscode';
-import * as assert from 'assert';
-import { SemanticTokenTypes } from 'vscode-languageclient';
-import { getDocUri, activate, doc, findKeywordRange, createTicker, toRange } from './helper';
+import * as vscode from "vscode";
+import * as assert from "assert";
+import { SemanticTokenTypes } from "vscode-languageclient";
+import { getDocUri, activate, doc, findKeywordRange, createTicker, toRange } from "./helper";
 
-suite('Document Semantic Tokens', () => {
-    const fileName = 'document-semantic-tokens.schema';
+suite("Document Semantic Tokens", () => {
+    const fileName = "document-semantic-tokens.schema";
     const docUri = getDocUri(fileName);
 
     const { fireTick, waitingForTick } = createTicker();
-    let sourceCode = '';
+    let sourceCode = "";
 
     test(`Open [${fileName}]`, async () => {
         await activate(docUri);
@@ -16,44 +16,44 @@ suite('Document Semantic Tokens', () => {
         sourceCode = doc.getText();
     });
 
-    test(`Semantic Tokens [All]`, async () => {
+    test("Semantic Tokens [All]", async () => {
         await waitingForTick();
 
         await testSemanticTokens(
             docUri,
             toSemanticTokens([
-                { range: findKeywordRange(doc, 'namespace', 1), tokenType: SemanticTokenTypes.keyword },
-                { range: findKeywordRange(doc, 'DocumentSemanticTokens', 1), tokenType: SemanticTokenTypes.variable },
+                { range: findKeywordRange(doc, "namespace", 1), tokenType: SemanticTokenTypes.keyword },
+                { range: findKeywordRange(doc, "DocumentSemanticTokens", 1), tokenType: SemanticTokenTypes.variable },
 
-                { range: findKeywordRange(doc, 'Person', 1), tokenType: SemanticTokenTypes.struct },
-                { range: findKeywordRange(doc, '人物', 2), tokenType: SemanticTokenTypes.string },
-                { range: findKeywordRange(doc, 'EntityType', 1), tokenType: SemanticTokenTypes.keyword },
+                { range: findKeywordRange(doc, "Person", 1), tokenType: SemanticTokenTypes.struct },
+                { range: findKeywordRange(doc, "人物", 2), tokenType: SemanticTokenTypes.string },
+                { range: findKeywordRange(doc, "EntityType", 1), tokenType: SemanticTokenTypes.keyword },
 
-                { range: findKeywordRange(doc, 'desc', 1), tokenType: SemanticTokenTypes.keyword },
-                { range: findKeywordRange(doc, 'a great name', 1), tokenType: SemanticTokenTypes.string },
+                { range: findKeywordRange(doc, "desc", 1), tokenType: SemanticTokenTypes.keyword },
+                { range: findKeywordRange(doc, "a great name", 1), tokenType: SemanticTokenTypes.string },
 
-                { range: findKeywordRange(doc, 'properties', 1), tokenType: SemanticTokenTypes.keyword },
+                { range: findKeywordRange(doc, "properties", 1), tokenType: SemanticTokenTypes.keyword },
 
-                { range: findKeywordRange(doc, 'age', 1), tokenType: SemanticTokenTypes.struct },
-                { range: findKeywordRange(doc, '年龄', 1), tokenType: SemanticTokenTypes.string },
-                { range: findKeywordRange(doc, 'Text', 1), tokenType: SemanticTokenTypes.keyword },
+                { range: findKeywordRange(doc, "age", 1), tokenType: SemanticTokenTypes.struct },
+                { range: findKeywordRange(doc, "年龄", 1), tokenType: SemanticTokenTypes.string },
+                { range: findKeywordRange(doc, "Text", 1), tokenType: SemanticTokenTypes.keyword },
 
-                { range: findKeywordRange(doc, 'birth', 1), tokenType: SemanticTokenTypes.struct },
-                { range: findKeywordRange(doc, '生日', 1), tokenType: SemanticTokenTypes.string },
-                { range: findKeywordRange(doc, 'Text', 2), tokenType: SemanticTokenTypes.keyword },
+                { range: findKeywordRange(doc, "birth", 1), tokenType: SemanticTokenTypes.struct },
+                { range: findKeywordRange(doc, "生日", 1), tokenType: SemanticTokenTypes.string },
+                { range: findKeywordRange(doc, "Text", 2), tokenType: SemanticTokenTypes.keyword },
 
-                { range: findKeywordRange(doc, 'Works', 1), tokenType: SemanticTokenTypes.struct },
-                { range: findKeywordRange(doc, '作品', 2), tokenType: SemanticTokenTypes.string },
-                { range: findKeywordRange(doc, 'EntityType', 2), tokenType: SemanticTokenTypes.keyword },
+                { range: findKeywordRange(doc, "Works", 1), tokenType: SemanticTokenTypes.struct },
+                { range: findKeywordRange(doc, "作品", 2), tokenType: SemanticTokenTypes.string },
+                { range: findKeywordRange(doc, "EntityType", 2), tokenType: SemanticTokenTypes.keyword },
 
-                { range: findKeywordRange(doc, 'desc', 2), tokenType: SemanticTokenTypes.keyword },
-                { range: findKeywordRange(doc, 'a great book', 1), tokenType: SemanticTokenTypes.string },
+                { range: findKeywordRange(doc, "desc", 2), tokenType: SemanticTokenTypes.keyword },
+                { range: findKeywordRange(doc, "a great book", 1), tokenType: SemanticTokenTypes.string },
 
-                { range: findKeywordRange(doc, 'properties', 2), tokenType: SemanticTokenTypes.keyword },
+                { range: findKeywordRange(doc, "properties", 2), tokenType: SemanticTokenTypes.keyword },
 
-                { range: findKeywordRange(doc, 'author', 1), tokenType: SemanticTokenTypes.struct },
-                { range: findKeywordRange(doc, '作者', 1), tokenType: SemanticTokenTypes.string },
-                { range: findKeywordRange(doc, 'Person', 2), tokenType: SemanticTokenTypes.modifier }
+                { range: findKeywordRange(doc, "author", 1), tokenType: SemanticTokenTypes.struct },
+                { range: findKeywordRange(doc, "作者", 1), tokenType: SemanticTokenTypes.string },
+                { range: findKeywordRange(doc, "Person", 2), tokenType: SemanticTokenTypes.modifier }
             ])
         );
     });
@@ -77,7 +77,7 @@ const toSemanticTokens = (records: { range: vscode.Range; tokenType: SemanticTok
 
 const testSemanticTokens = async (docUri: vscode.Uri, expectedSemanticTokens: vscode.SemanticTokens) => {
     const actualSemanticTokens = await vscode.commands.executeCommand<vscode.SemanticTokens>(
-        'vscode.provideDocumentSemanticTokens',
+        "vscode.provideDocumentSemanticTokens",
         docUri
     );
 

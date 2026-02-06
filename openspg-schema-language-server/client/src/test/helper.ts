@@ -1,5 +1,5 @@
-import * as vscode from 'vscode';
-import * as path from 'path';
+import * as vscode from "vscode";
+import * as path from "path";
 
 export let doc: vscode.TextDocument;
 export let editor: vscode.TextEditor;
@@ -11,7 +11,7 @@ export let platformEol: string;
  */
 export async function activate(docUri: vscode.Uri) {
     // The extensionId is `publisher.name` from package.json
-    const ext = vscode.extensions.getExtension('thundax-lyp.openspg-schema-language-server')!;
+    const ext = vscode.extensions.getExtension("thundax-lyp.openspg-schema-language-server")!;
     await ext.activate();
 
     try {
@@ -28,7 +28,7 @@ export async function sleep(ms: number) {
 }
 
 export const getDocPath = (p: string) => {
-    return path.resolve(__dirname, '../../testFixture', p);
+    return path.resolve(__dirname, "../../testFixture", p);
 };
 
 export const getDocUri = (p: string) => {
@@ -58,7 +58,7 @@ export const findKeywordRange = (document: vscode.TextDocument, keyword: string,
     for (let i = 0; i < index; i++) {
         searchOffset = source.indexOf(keyword, nextOffset);
         if (searchOffset < 0) {
-            throw new Error('cannot find keyword: ' + keyword);
+            throw new Error("cannot find keyword: " + keyword);
         }
         nextOffset = searchOffset + keyword.length;
     }

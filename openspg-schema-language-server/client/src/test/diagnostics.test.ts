@@ -1,9 +1,9 @@
-import * as vscode from 'vscode';
-import * as assert from 'assert';
-import { getDocUri, activate, createTicker, toRange } from './helper';
+import * as vscode from "vscode";
+import * as assert from "assert";
+import { getDocUri, activate, createTicker, toRange } from "./helper";
 
-suite('Diagnostics', () => {
-    const fileName = 'diagnostics.schema';
+suite("Diagnostics", () => {
+    const fileName = "diagnostics.schema";
     const docUri = getDocUri(fileName);
 
     const { fireTick, waitingForTick } = createTicker();
@@ -13,7 +13,7 @@ suite('Diagnostics', () => {
         fireTick();
     });
 
-    test('Diagnoses [Full]', async () => {
+    test("Diagnoses [Full]", async () => {
         await waitingForTick();
 
         await testDiagnostics(docUri, [
@@ -47,7 +47,7 @@ const renderItem = (item: vscode.Diagnostic) => {
     });
 };
 
-const render = (items: vscode.Diagnostic[]) => (items || []).map((x) => renderItem(x)).join('\n');
+const render = (items: vscode.Diagnostic[]) => (items || []).map((x) => renderItem(x)).join("\n");
 
 async function testDiagnostics(docUri: vscode.Uri, expectedDiagnostics: vscode.Diagnostic[]) {
     await activate(docUri);
