@@ -1,6 +1,6 @@
-import { SemanticTokensBuilder, SemanticTokenTypes, SemanticTokenModifiers } from 'vscode-languageserver';
-import * as syntax from 'openspg-schema-antlr4';
-import { Context, OnSemanticTokens } from '../context';
+import { SemanticTokensBuilder, SemanticTokenTypes, SemanticTokenModifiers } from "vscode-languageserver";
+import * as syntax from "openspg-schema-antlr4";
+import { Context, OnSemanticTokens } from "../context";
 
 export const onSemanticTokens =
     (ctx: Context): OnSemanticTokens =>
@@ -47,7 +47,7 @@ export const onSemanticTokens =
         };
 
         syntax.visit(document.ast!, {
-            NamespaceDeclaration: ({ node }) => emitPrefixKeyword(node, 'namespace'),
+            NamespaceDeclaration: ({ node }) => emitPrefixKeyword(node, "namespace"),
             NamespaceVariable: ({ node }) => emit(node, SemanticTokenTypes.variable),
 
             BasicPropertyName: ({ node }) => emit(node, SemanticTokenTypes.property),
@@ -65,7 +65,7 @@ export const onSemanticTokens =
             StructureAlias: ({ node }) => emit(node, SemanticTokenTypes.string),
 
             StructureRealName: ({ node, path }) => {
-                if (path.split('.').includes('BasicStructureTypeExpression')) {
+                if (path.split(".").includes("BasicStructureTypeExpression")) {
                     emit(node, SemanticTokenTypes.modifier);
                 } else {
                     emit(node, SemanticTokenTypes.struct);
@@ -73,7 +73,7 @@ export const onSemanticTokens =
             },
 
             StructureSemanticName: ({ node, path }) => {
-                if (path.split('.').includes('BasicStructureTypeExpression')) {
+                if (path.split(".").includes("BasicStructureTypeExpression")) {
                     emit(node, SemanticTokenTypes.modifier);
                 } else {
                     emit(node, SemanticTokenTypes.struct);

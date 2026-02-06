@@ -1,8 +1,8 @@
-import { Range, TextEdit } from 'vscode-languageserver';
-import * as prettier from 'prettier/standalone';
-import * as syntax from 'openspg-schema-antlr4';
-import { Context, OnDocumentRangeFormatting } from '../context';
-import { Options } from 'prettier';
+import { Range, TextEdit } from "vscode-languageserver";
+import * as prettier from "prettier/standalone";
+import * as syntax from "openspg-schema-antlr4";
+import { Context, OnDocumentRangeFormatting } from "../context";
+import { Options } from "prettier";
 
 export const onDocumentRangeFormatting: OnDocumentRangeFormatting =
     ({ connection, documents }: Context) =>
@@ -12,12 +12,12 @@ export const onDocumentRangeFormatting: OnDocumentRangeFormatting =
             return null;
         }
 
-        const config = (await connection.workspace.getConfiguration('schema.formatter')) as Partial<Options>;
+        const config = (await connection.workspace.getConfiguration("schema.formatter")) as Partial<Options>;
         const source = document.getText();
         const range = Range.create(document.positionAt(0), document.positionAt(source.length));
 
         const prettierOptions = {
-            parser: 'openspg-schema-parser',
+            parser: "openspg-schema-parser",
             plugins: [
                 {
                     languages: syntax.languages,

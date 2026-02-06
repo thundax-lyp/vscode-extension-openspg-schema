@@ -1,1 +1,1 @@
-export * from './on-semantic-tokens';
+export * from "./on-semantic-tokens";

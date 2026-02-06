@@ -1,7 +1,7 @@
-import { DocumentSymbol, SymbolKind } from 'vscode-languageserver';
-import * as syntax from 'openspg-schema-antlr4';
-import { OnDocumentSymbol } from '../context';
-import { generate } from '../common';
+import { DocumentSymbol, SymbolKind } from "vscode-languageserver";
+import * as syntax from "openspg-schema-antlr4";
+import { OnDocumentSymbol } from "../context";
+import { generate } from "../common";
 
 export const onDocumentSymbol: OnDocumentSymbol =
     (ctx) =>
@@ -41,9 +41,9 @@ export const onDocumentSymbol: OnDocumentSymbol =
                 document.ast!.nodes.map((node) =>
                     (async () => {
                         switch (node.type) {
-                            case 'NamespaceDeclaration':
+                            case "NamespaceDeclaration":
                                 return handleNamespaceDeclaration(node);
-                            case 'EntityDeclaration':
+                            case "EntityDeclaration":
                                 return handleEntityDeclaration(node);
                         }
                     })()

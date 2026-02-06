@@ -1,6 +1,6 @@
-import { DocumentHighlight, DocumentHighlightKind, Range } from 'vscode-languageserver';
-import * as syntax from 'openspg-schema-antlr4';
-import { Context, OnDocumentHighlight } from '../context';
+import { DocumentHighlight, DocumentHighlightKind, Range } from "vscode-languageserver";
+import * as syntax from "openspg-schema-antlr4";
+import { Context, OnDocumentHighlight } from "../context";
 
 export const onDocumentHighlight: OnDocumentHighlight =
     ({ documents }: Context) =>
@@ -11,7 +11,7 @@ export const onDocumentHighlight: OnDocumentHighlight =
         }
 
         const createSelector = document.createPositionSelector(position);
-        const selectedPath = document.getPathAt<syntax.SyntaxNode>(createSelector('*'));
+        const selectedPath = document.getPathAt<syntax.SyntaxNode>(createSelector("*"));
         if (!selectedPath) {
             return null;
         }

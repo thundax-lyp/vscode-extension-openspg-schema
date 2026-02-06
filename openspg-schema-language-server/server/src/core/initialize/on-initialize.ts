@@ -1,12 +1,12 @@
-import { SemanticTokenModifiers, SemanticTokenTypes, TextDocumentSyncKind } from 'vscode-languageserver';
-import { Context, OnInitialize } from '../context';
+import { SemanticTokenModifiers, SemanticTokenTypes, TextDocumentSyncKind } from "vscode-languageserver";
+import { Context, OnInitialize } from "../context";
 
 export const onInitialize =
     (_: Context): OnInitialize =>
     async () => {
         return {
             serverInfo: {
-                name: 'OpenSPG Schema Language Server'
+                name: "OpenSPG Schema Language Server"
             },
             capabilities: {
                 textDocumentSync: {

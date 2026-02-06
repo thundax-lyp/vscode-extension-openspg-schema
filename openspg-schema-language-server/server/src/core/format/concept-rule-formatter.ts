@@ -1,5 +1,5 @@
-import * as prettier from 'prettier/standalone';
-import * as syntax from 'openspg-concept-rule-antlr4';
+import * as prettier from "prettier/standalone";
+import * as syntax from "openspg-concept-rule-antlr4";
 
 export const format = async (
     source: string,
@@ -9,7 +9,7 @@ export const format = async (
     }
 ) => {
     const prettierOptions = {
-        parser: 'openspg-concept-rule-prettier-parser',
+        parser: "openspg-concept-rule-prettier-parser",
         plugins: [
             {
                 languages: syntax.languages,

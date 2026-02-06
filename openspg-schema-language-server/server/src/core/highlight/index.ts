@@ -1,1 +1,1 @@
-export * from './on-document-highlight';
+export * from "./on-document-highlight";

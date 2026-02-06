@@ -1,15 +1,15 @@
-import { Connection } from 'vscode-languageserver';
-import { SchemaTextDocument, TextDocuments } from './common';
-import { Context } from './context';
-import { onExit, onInitialize, onInitialized } from './initialize';
-import { onDocumentSymbol } from './symbol';
-import { onDocumentFormatting } from './format';
-import { onDefinition, onHover, onReferences } from './definition';
-import { onDocumentHighlight } from './highlight';
-import { onSemanticTokens } from './semantic-token';
-import { onFoldingRanges } from './folding';
-import { onDiagnostics } from './diagnostic';
-import { ASTRequest, onAST } from './ast';
+import { Connection } from "vscode-languageserver";
+import { SchemaTextDocument, TextDocuments } from "./common";
+import { Context } from "./context";
+import { onExit, onInitialize, onInitialized } from "./initialize";
+import { onDocumentSymbol } from "./symbol";
+import { onDocumentFormatting } from "./format";
+import { onDefinition, onHover, onReferences } from "./definition";
+import { onDocumentHighlight } from "./highlight";
+import { onSemanticTokens } from "./semantic-token";
+import { onFoldingRanges } from "./folding";
+import { onDiagnostics } from "./diagnostic";
+import { ASTRequest, onAST } from "./ast";
 
 const initDocuments = (_: Connection): TextDocuments<SchemaTextDocument> => {
     const documents = new TextDocuments(SchemaTextDocument);
