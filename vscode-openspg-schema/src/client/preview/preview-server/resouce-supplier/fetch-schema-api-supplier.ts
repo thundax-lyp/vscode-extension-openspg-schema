@@ -1,5 +1,5 @@
-import * as http from 'http';
-import { ResourceSupplier } from './resource-supplier';
+import * as http from "http";
+import { ResourceSupplier } from "./resource-supplier";
 
 export class FetchSchemaApiSupplier implements ResourceSupplier {
     private readonly supplier: () => Promise<string>;
@@ -9,14 +9,14 @@ export class FetchSchemaApiSupplier implements ResourceSupplier {
     }
 
     async isSupport(req: http.IncomingMessage) {
-        const requestUrl = new URL(req.url ?? '/', 'http://127.0.0.1');
-        return requestUrl.pathname === '/openspg/api/schema/fetch' && req.method === 'POST';
+        const requestUrl = new URL(req.url ?? "/", "http://127.0.0.1");
+        return requestUrl.pathname === "/openspg/api/schema/fetch" && req.method === "POST";
     }
 
     async getResource() {
         return {
-            getContentType: async () => 'application/json; charset=utf-8',
-            getCacheControl: async () => 'no-store',
+            getContentType: async () => "application/json; charset=utf-8",
+            getCacheControl: async () => "no-store",
             getContent: async () => this.supplier()
         };
     }

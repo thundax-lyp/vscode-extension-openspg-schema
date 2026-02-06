@@ -1,1 +1,1 @@
-export * from './schema-preview-server';
+export * from "./schema-preview-server";

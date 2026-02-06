@@ -1,6 +1,6 @@
-import * as vscode from 'vscode';
-import * as http from 'http';
-import { ResourceSupplier } from './resource-supplier';
+import * as vscode from "vscode";
+import * as http from "http";
+import { ResourceSupplier } from "./resource-supplier";
 
 const LIGHT_THEME = `
 :root {
@@ -42,13 +42,13 @@ const THEMES: Record<string, string> = {
 
 export class FetchThemeApiSupplier implements ResourceSupplier {
     async isSupport(req: http.IncomingMessage) {
-        return req.url?.endsWith('schema-theme.css') ?? false;
+        return req.url?.endsWith("schema-theme.css") ?? false;
     }
 
     async getResource() {
         return {
-            getContentType: async () => 'text/css',
-            getCacheControl: async () => 'no-store',
+            getContentType: async () => "text/css",
+            getCacheControl: async () => "no-store",
             getContent: async () => {
                 const theme = this.currentTheme();
                 return THEMES[theme];
@@ -56,17 +56,17 @@ export class FetchThemeApiSupplier implements ResourceSupplier {
         };
     }
 
-    currentTheme(): 'light' | 'dark' | 'highContrast' {
+    currentTheme(): "light" | "dark" | "highContrast" {
         const themeKind = vscode.window.activeColorTheme.kind;
         switch (themeKind) {
             case vscode.ColorThemeKind.Light:
-                return 'light';
+                return "light";
             case vscode.ColorThemeKind.Dark:
-                return 'dark';
+                return "dark";
             case vscode.ColorThemeKind.HighContrast:
-                return 'highContrast';
+                return "highContrast";
             default:
-                return 'light';
+                return "light";
         }
     }
 }

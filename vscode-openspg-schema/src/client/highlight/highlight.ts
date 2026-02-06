@@ -5,7 +5,7 @@ import {
     Position,
     ProviderResult,
     TextDocument
-} from 'vscode';
+} from "vscode";
 
 export class SchemaDocumentHighlightProvider implements DocumentHighlightProvider {
     provideDocumentHighlights(
@@ -13,6 +13,6 @@ export class SchemaDocumentHighlightProvider implements DocumentHighlightProvide
         position: Position,
         token: CancellationToken
     ): ProviderResult<DocumentHighlight[]> {
-        throw new Error('Method not implemented.');
+        throw new Error("Method not implemented.");
     }
 }

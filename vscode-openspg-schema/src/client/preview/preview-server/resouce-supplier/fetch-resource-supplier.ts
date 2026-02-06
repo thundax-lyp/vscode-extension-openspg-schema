@@ -1,14 +1,14 @@
-import * as vscode from 'vscode';
-import * as http from 'http';
-import * as path from 'path';
-import { ResourceSupplier } from './resource-supplier';
+import * as vscode from "vscode";
+import * as http from "http";
+import * as path from "path";
+import { ResourceSupplier } from "./resource-supplier";
 
 const MIME_TYPES: Record<string, string> = {
-    '.html': 'text/html; charset=utf-8',
-    '.js': 'text/javascript',
-    '.css': 'text/css',
-    '.svg': 'image/svg+xml',
-    '.json': 'application/json; charset=utf-8'
+    ".html": "text/html; charset=utf-8",
+    ".js": "text/javascript",
+    ".css": "text/css",
+    ".svg": "image/svg+xml",
+    ".json": "application/json; charset=utf-8"
 };
 
 const lookupMimeType = (resourceName: string) => {
@@ -16,7 +16,7 @@ const lookupMimeType = (resourceName: string) => {
     if (extname in MIME_TYPES) {
         return MIME_TYPES[extname];
     }
-    return 'application/octet-stream';
+    return "application/octet-stream";
 };
 
 export class FetchResourceSupplier implements ResourceSupplier {
@@ -39,22 +39,22 @@ export class FetchResourceSupplier implements ResourceSupplier {
         const [content, mimeType] = await this.loadResource(resourceName);
         return {
             getContentType: async () => mimeType,
-            getCacheControl: async () => 'no-store',
+            getCacheControl: async () => "no-store",
             getContent: async () => content
         };
     }
 
     private getResourceName(req: http.IncomingMessage) {
-        const requestUrl = new URL(req.url ?? '/', 'http://127.0.0.1/');
+        const requestUrl = new URL(req.url ?? "/", "http://127.0.0.1/");
         let resourceName = requestUrl.pathname;
-        if (resourceName.endsWith('/')) {
-            resourceName += 'index.html';
+        if (resourceName.endsWith("/")) {
+            resourceName += "index.html";
         }
         return resourceName;
     }
 
     private getResourceUri(resourceName: string) {
-        return vscode.Uri.joinPath(this.extensionUri, 'resources', 'preview', resourceName);
+        return vscode.Uri.joinPath(this.extensionUri, "resources", "preview", resourceName);
     }
 
     private async loadResource(resourceName: string): Promise<[string, string]> {

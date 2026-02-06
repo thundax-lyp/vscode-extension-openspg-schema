@@ -1,11 +1,11 @@
-import * as vscode from 'vscode';
-import { v4 as generateUuid } from 'uuid';
-import * as syntax from 'openspg-schema-antlr4';
-import { PreviewServer } from './preview-server';
-import { getSchemaLanguageClient } from '../../extension';
-import { KGEntity, KGNamespace, KGSchema, parseEntity, parseNamespace } from './kg';
+import * as vscode from "vscode";
+import { v4 as generateUuid } from "uuid";
+import * as syntax from "openspg-schema-antlr4";
+import { PreviewServer } from "./preview-server";
+import { getSchemaLanguageClient } from "../../extension";
+import { KGEntity, KGNamespace, KGSchema, parseEntity, parseNamespace } from "./kg";
 
-const PREVIEW_VIEW_TYPE = 'openspg.schema.preview';
+const PREVIEW_VIEW_TYPE = "openspg.schema.preview";
 
 interface CachedSchema {
     namespace: CachedNamespace | undefined;
@@ -85,7 +85,7 @@ export class SchemaPreviewPanel {
 
         vscode.window.onDidChangeActiveTextEditor(
             (editor) => {
-                if (editor && editor.document.languageId === 'schema') {
+                if (editor && editor.document.languageId === "schema") {
                     void this.initPanel();
                 }
             },
@@ -100,7 +100,7 @@ export class SchemaPreviewPanel {
 
     private async handleDidChangeActiveColorTheme() {
         if (this.isWebviewReady) {
-            await this.postMessage('refresh-theme');
+            await this.postMessage("refresh-theme");
         }
     }
 
@@ -184,17 +184,17 @@ export class SchemaPreviewPanel {
 
         await this.updatePanelData();
         const previewUrl = await this.previewServer.getPreviewUrl();
-        console.log('='.repeat(40) + previewUrl);
+        console.log("=".repeat(40) + previewUrl);
 
         this.panel.title = getTitle(this.document);
 
         this.panel.webview.onDidReceiveMessage(
             (message) => {
-                console.log('='.repeat(20));
+                console.log("=".repeat(20));
                 console.log(message);
-                if (message.command === 'ready') {
+                if (message.command === "ready") {
                     this.panel.webview.postMessage({
-                        command: 'init',
+                        command: "init",
                         payload: { t: Date.now() }
                     });
                 }
@@ -217,19 +217,19 @@ export class SchemaPreviewPanel {
         );
 
         if (this.isWebviewReady) {
-            await this.postMessage('refresh-schema');
+            await this.postMessage("refresh-schema");
         }
     }
 
     private async loadWebviewHtml(previewUrl: string): Promise<string> {
-        const templateUri = vscode.Uri.joinPath(this.extensionUri, 'resources', 'preview', 'template.html');
+        const templateUri = vscode.Uri.joinPath(this.extensionUri, "resources", "preview", "template.html");
         const template = (await vscode.workspace.fs.readFile(templateUri)).toString();
         return template.replace(/{{\s*previewUrl\s*}}/g, previewUrl).replace(/{{\s*nonce\s*}}/g, generateUuid());
     }
 
     private async loadSchema(document: vscode.TextDocument): Promise<CachedSchema> {
         const client = getSchemaLanguageClient();
-        const nodes = await client.sendRequest<syntax.SourceUnitNode[]>('openspg-schema/ast', {
+        const nodes = await client.sendRequest<syntax.SourceUnitNode[]>("openspg-schema/ast", {
             textDocument: {
                 uri: document.uri.toString()
             }
@@ -239,7 +239,7 @@ export class SchemaPreviewPanel {
         const getText = ({ range }: syntax.SyntaxNode) => content.substring(range[0], range[1] + 1);
 
         const namespaces = nodes
-            .filter((x) => x?.type === 'NamespaceDeclaration')
+            .filter((x) => x?.type === "NamespaceDeclaration")
             .map((x) => {
                 const { range } = x;
                 return {
@@ -250,7 +250,7 @@ export class SchemaPreviewPanel {
             });
 
         const entities = nodes
-            .filter((x) => x?.type === 'EntityDeclaration')
+            .filter((x) => x?.type === "EntityDeclaration")
             .map((x) => {
                 const { range } = x;
                 return {
@@ -267,9 +267,9 @@ export class SchemaPreviewPanel {
     }
 
     private async postMessage(type: string, args: Record<string, any> = {}) {
-        console.log('postMessage: ' + type);
+        console.log("postMessage: " + type);
         await this.panel.webview.postMessage({
-            action: 'openspg.command',
+            action: "openspg.command",
             payload: {
                 type,
                 args

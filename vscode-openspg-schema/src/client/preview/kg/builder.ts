@@ -1,6 +1,6 @@
-import * as syntax from 'openspg-schema-antlr4';
-import { v4 as generateUuid } from 'uuid';
-import { KGEntity, KGNamespace, KGProperty } from './types';
+import * as syntax from "openspg-schema-antlr4";
+import { v4 as generateUuid } from "uuid";
+import { KGEntity, KGNamespace, KGProperty } from "./types";
 
 export type GetText = (n: syntax.SyntaxNode) => string;
 
@@ -16,13 +16,13 @@ export const parseEntity = (node: syntax.EntityDeclaration, getText?: GetText) =
 
     const name = [...declaration.name.variable.semanticNames, declaration.name.variable.realName]
         .map((x) => x.text)
-        .join('#');
+        .join("#");
 
     const aliasName = declaration.alias.variable.text;
 
     const types = (
-        structureType.type === 'BasicStructureTypeExpression' ? [structureType.variable] : structureType.variables
-    ).map((x) => getText?.(x) ?? 'Unknown');
+        structureType.type === "BasicStructureTypeExpression" ? [structureType.variable] : structureType.variables
+    ).map((x) => getText?.(x) ?? "Unknown");
 
     const properties = children.map((x) => parseProperty(x, getText));
 

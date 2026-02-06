@@ -1,14 +1,14 @@
-import * as vscode from 'vscode';
-import * as http from 'http';
-import { KGSchema } from '../kg';
+import * as vscode from "vscode";
+import * as http from "http";
+import { KGSchema } from "../kg";
 import {
     FetchResourceSupplier,
     FetchSchemaApiSupplier,
     FetchThemeApiSupplier,
     ResourceSupplier
-} from './resouce-supplier';
+} from "./resouce-supplier";
 
-const PREVIEW_PATH = '/openspg/';
+const PREVIEW_PATH = "/openspg/";
 
 export class PreviewServer {
     private server: http.Server | undefined;
@@ -51,9 +51,9 @@ export class PreviewServer {
                 void this.handleRequest(req, res);
             });
 
-            this.server.listen(0, '0.0.0.0', () => {
+            this.server.listen(0, "0.0.0.0", () => {
                 const address = this.server?.address();
-                if (address && typeof address !== 'string') {
+                if (address && typeof address !== "string") {
                     this.port = address.port;
                 }
                 resolve();
@@ -61,7 +61,7 @@ export class PreviewServer {
         });
 
         if (this.port === undefined) {
-            throw new Error('Failed to start preview server.');
+            throw new Error("Failed to start preview server.");
         }
 
         return this.port;
@@ -79,8 +79,8 @@ export class PreviewServer {
                 const resource = await resourceSupplier.getResource(req);
                 if (resource) {
                     res.writeHead(200, {
-                        'Content-Type': await resource.getContentType(),
-                        'Cache-Control': await resource.getCacheControl()
+                        "Content-Type": await resource.getContentType(),
+                        "Cache-Control": await resource.getCacheControl()
                     });
                     res.end(await resource.getContent());
                     return;
@@ -94,9 +94,9 @@ export class PreviewServer {
     private async generateSchema() {
         if (this.currentSchema) {
             const replacer = (key: string, value: any) => {
-                if (key === 'range') {
+                if (key === "range") {
                     return undefined;
-                } else if (key === 'children' && value && Array.isArray(value) && value.length === 0) {
+                } else if (key === "children" && value && Array.isArray(value) && value.length === 0) {
                     return undefined;
                 }
                 return value;
@@ -105,13 +105,13 @@ export class PreviewServer {
             return JSON.stringify(
                 {
                     code: 0,
-                    message: 'Success',
+                    message: "Success",
                     data: this.currentSchema
                 },
                 replacer
             );
         } else {
-            return JSON.stringify({ code: -1, message: 'Error' });
+            return JSON.stringify({ code: -1, message: "Error" });
         }
     }
 }
